@@ -74,10 +74,10 @@
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item active"><a href="/" class="nav-link pl-0">Inicio</a></li>
                     <li class="nav-item"><a href="about.html" class="nav-link">Ahorcado</a></li>
-                    <li class="nav-item"><a href="teacher.html" class="nav-link">Memoria</a></li>
+                    <li class="nav-item"><a href="about.html" class="nav-link">Memoria</a></li>
                     <li class="nav-item"><a href="courses.html" class="nav-link">Sopa Letra</a></li>
                     @if (Auth::check())
-                    
+                        <li class="nav-item"><a href="{{route('memorama')}}" class="nav-link">Memoria</a></li>
                         <li class="nav-item" ><a href="{{route('competencia')}}" class="nav-link">Competencias</a></li>
                         <li class="nav-item">
                             <div style="    display: flex;

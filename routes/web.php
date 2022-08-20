@@ -25,6 +25,9 @@ Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallba
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/competencia', [VistaController::class,'competencia'])->name('competencia');
+    Route::get('/memorama', [VistaController::class,'memorama'])->name('memorama');
 });
+
+
 
 
