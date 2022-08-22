@@ -22,25 +22,25 @@ $('#nuevoCompetencia').click(function () {
                             <div class="col-xl-3">
                                 <div class="input-field">
                                     <input id="itmFechaInicio" type="text" class="datepicker validate">
-                                    <label for="itmFechaInicio">Fecha Inicia *</label>
+                                    <label for="itmFechaInicio">Fecha Inicial *</label>
                                 </div>
                             </div>
                             <div class="col-xl-3">
                                 <div class="input-field">
                                     <input id="itmHoraInicio" type="text" class="timepicker validate">
-                                    <label for="itmHoraInicio">Hora Inicia *</label>
+                                    <label for="itmHoraInicio">Hora Inicial *</label>
                                 </div>
                             </div>
                             <div class="col-xl-3">
                                 <div class="input-field">
                                     <input id="itmFechaTermina" type="text" class="datepicker validate">
-                                    <label for="itmFechaTermina">Fecha Termina * </label>
+                                    <label for="itmFechaTermina">Fecha Final * </label>
                                 </div>
                             </div>
                             <div class="col-xl-3">
                                 <div class="input-field">
                                     <input id="itmHoraTermina" type="text" class="timepicker validate">
-                                    <label for="itmHoraTermina">Hora Termina *</label>
+                                    <label for="itmHoraTermina">Hora Final *</label>
                                 </div>
                             </div>
                             <div class="col-xl-12" style="text-align: right">
@@ -57,7 +57,7 @@ $('#nuevoCompetencia').click(function () {
     $('.datepicker').datepicker({
         format:'yyyy-mm-dd',
         i18n:{
-                months:['Enero','Febrero','Marzo','Abril','Mayo','Junio','Agosto','Setiembre','Octubre','Nomviembre','Diciembre'],
+                months:['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Setiembre','Octubre','Nomviembre','Diciembre'],
                 monthsShort:['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Set','Oct','Nov','Dic'],
                 weekdays:['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'],
                 weekdaysShort:['Dom','Lun','Mar','Mie','Jue','Vie','Sab'],
@@ -102,7 +102,7 @@ const renderCompetencia = () => {
                                     <div class="row justify-content-between">
                                         <div class="col">
                                             <p class="title-competencia">${element.Nombre}</p>
-                                            <p>${element.FechaInicio} a ${element.FechaTermino}</p>
+                                            <p>${element.FechaInicioAdd} a ${element.FechaTerminoAdd}</p>
                                         </div>
                                         <div>
                                             <a class='dropdown-trigger' href='#' data-target='dropdown${index}'>
@@ -168,7 +168,7 @@ $('#content-app').on('click','.editarCompetencia',function () {
     $('#itmHoraTermina').val(fecha[1]).focus()
     $('#sendCompetencia').removeClass('btnSend')
     $('#sendCompetencia').addClass('btnEdit')
-    $('#sendCompetencia').html(`Editar <i class="material-icons right">edit</i>`)
+    $('#sendCompetencia').html(`Actualizar`)
     CodigoCompetencia = key
     // editarCompetencia(key)
 });

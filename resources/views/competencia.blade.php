@@ -36,6 +36,14 @@
         .dropdown-content li>a, .dropdown-content li>span {
             color: #106997;
         }
+        .is-today{
+            background: #000;
+            color: #fff!important;
+            border-radius: 0px;
+        }
+        datepicker-table td.is-selected {
+            background-color: #26a69a!important;
+        }
     </style>
 @endsection
 @section('content')
@@ -44,7 +52,7 @@
         <div class="container">
             <div class="d-flex">
                 <div class="col-xl-3">
-                    <p style="font-size: 1.2rem;font-weight: 900;text-transform: uppercase;color: #263e50;">Competencia</p>
+                    <p style="font-size: 1.2rem;font-weight: 900;text-transform: uppercase;color: #263e50;">Competencias</p>
                     <div class="list-option">
                         <div class="item-option d-flex" id="listarCompetencia">
                             <div><img src="{{asset('assets/web/img/list.png')}}" alt="" style="width: 30px;"></div>

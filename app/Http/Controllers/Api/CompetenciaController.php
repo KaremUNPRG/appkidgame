@@ -7,6 +7,8 @@ use App\Models\Competencia;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use Illuminate\Support\Facades\DB;
+
 class CompetenciaController extends Controller
 {
     private $auth ;
@@ -21,7 +23,9 @@ class CompetenciaController extends Controller
      */
     public function index()
     {
-        $competencia = Competencia::where('Vigente','=',1)
+        $competencia = Competencia::select(['*',DB::raw('date_format(FechaInicio, "%d/%m/%Y %h:%i%p") as FechaInicioAdd'),
+                                                DB::raw('date_format(FechaTermino, "%d/%m/%Y %h:%i%p") as FechaTerminoAdd')])
+                                ->where('Vigente','=',1)
                                 ->where('CodigoUsuario','=',$this->auth->Codigo)
                                 ->orderBy('Codigo','desc')->get();
         return response()->json([
@@ -46,7 +50,7 @@ class CompetenciaController extends Controller
         $newCompetencia->save();
 
         return response()->json([
-            'mensaje' => 'Competencia Registrado Correctamente'
+            'mensaje' => 'Competencia Registrada Correctamente'
         ], 200, []);
     }
 
@@ -77,7 +81,7 @@ class CompetenciaController extends Controller
         $newCompetencia->save();
 
         return response()->json([
-            'mensaje' => 'Se edito correctamente'
+            'mensaje' => 'Se Editó Correctamente'
         ], 200, []);
     }
 
@@ -94,7 +98,7 @@ class CompetenciaController extends Controller
         $newCompetencia->save();
 
         return response()->json([
-            'mensaje' => 'Eliminado Correctamente'
+            'mensaje' => 'Se Eliminó Correctamente'
         ], 200, []);
     }
 }
