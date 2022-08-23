@@ -124,7 +124,7 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`Codigo`, `Nombre`, `Apellido`, `Email`, `Vigente`, `Sexo`, `CodigoPais`, `IdGoogle`, `Avatar`) VALUES
-(2, 'Steven Antony', 'Castillo Flores', 'scastillofl@unprg.edu.pe', b'1', NULL, NULL, '115460688301571550736', 'https://lh3.googleusercontent.com/a-/AFdZucpZTu19Os2E1nuCUEHXXJrCkOIZIJDffHHgtG49=s96-c'),
+(2, 'Ricardo Antonio', 'Castillo Flores', 'scastillofl@unprg.edu.pe', b'1', NULL, NULL, '115460688301571550736', 'https://lh3.googleusercontent.com/a-/AFdZucpZTu19Os2E1nuCUEHXXJrCkOIZIJDffHHgtG49=s96-c'),
 (3, 'Noely', 'Moscol', 'noeuk244@gmail.com', b'1', NULL, NULL, '114747495562042171438', 'https://lh3.googleusercontent.com/a/AItbvmmPtYNuTXhKieLd-KkSceVP8rB82ZyK4H6h-ajJ=s96-c');
 
 --

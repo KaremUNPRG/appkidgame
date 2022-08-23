@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\CompetenciaController;
+use App\Http\Controllers\Api\MemoramaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,4 +25,9 @@ Route::middleware(['authapi'])->group(function () {
     Route::get('competencia',[CompetenciaController::class,'index']);
     Route::delete('competencia',[CompetenciaController::class,'destroy']);
     Route::put('competencia',[CompetenciaController::class,'update']);
+
+    Route::post('memorama',[MemoramaController::class,'store']);
+    Route::get('memorama',[MemoramaController::class,'index']);
+    Route::delete('memorama',[MemoramaController::class,'destroy']);
+    Route::put('memorama',[MemoramaController::class,'update']);
 });

@@ -23,7 +23,7 @@ class AuthApi
             return response()->json([
                 'mensaje'   => 'Token incorrecto'
             ], 400, []);
-        }
+        } 
 
     }
 }

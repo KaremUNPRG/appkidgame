@@ -18,14 +18,14 @@
         .form-nuevo{
             padding: 20px;
         }
-        .item-competencia{
+        .item-memorama{
             background: #fff;
             border-left: 4px solid #1eaaf1;
             margin: 15px 0px;
             padding-top: 20px;
             padding-bottom: 20px;
         }
-        .title-competencia{
+        .title-memorama{
             font-size: 1.5rem;
             font-weight: bold;
         }
@@ -44,13 +44,13 @@
         <div class="container">
             <div class="d-flex">
                 <div class="col-xl-3">
-                    <p style="font-size: 1.2rem;font-weight: 900;text-transform: uppercase;color: #263e50;">Competencia</p>
+                    <p style="font-size: 1.2rem;font-weight: 900;text-transform: uppercase;color: #263e50;">Juego de Memoria</p>
                     <div class="list-option">
-                        <div class="item-option d-flex" id="listarCompetencia">
+                        <div class="item-option d-flex" id="listarMemorama">
                             <div><img src="{{asset('assets/web/img/list.png')}}" alt="" style="width: 30px;"></div>
                             <div class="font-weight-bold text-option"> Lista</div>
                         </div>
-                        <div class="item-option d-flex" id="nuevoCompetencia">
+                        <div class="item-option d-flex" id="nuevoMemorama">
                             <div ><img src="{{asset('assets/web/img/registro.png')}}" alt="" style="width: 30px;"></div>
                             <div class="font-weight-bold text-option"> Nuevo</div>
                         </div>
@@ -70,5 +70,5 @@
 @endsection
 
 @section('script')
-    <script src="{{asset('assets/web/main/competencia.js')}}" type="module"></script>
+    <script src="{{asset('assets/web/main/memorama.js')}}" type="module"></script>
 @endsection
