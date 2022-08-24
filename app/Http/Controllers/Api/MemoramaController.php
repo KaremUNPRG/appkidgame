@@ -22,8 +22,9 @@ class MemoramaController extends Controller
      */
     public function index()
     {
-        $memorama = DB::select("select *,j.Codigo as codigoJuego from juego j inner join tema t on j.CodigoTema = t.Codigo inner join usuario u on u.Codigo = t.CodigoUsuario 
-        where u.Codigo = ? and j.Tipo = 1 and j.Vigente = 1", [$this->auth->Codigo]);
+        $memorama = DB::select("select *,j.Codigo as codigoJuego,j.Titulo as TituloJuego 
+        from juego j inner join tema t on j.CodigoTema = t.Codigo inner join usuario u on u.Codigo = t.CodigoUsuario 
+        where u.Codigo = ? and j.Tipo = 1 and j.Vigente = 1 and j.Borrador = 0", [$this->auth->Codigo]);
         return response()->json([
         'data' => $memorama
         ], 200, []);
@@ -37,7 +38,21 @@ class MemoramaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $newJuego = new Juego;
+        $newJuego->Titulo = $request->itmTitulo;
+        $newJuego->Tipo = 1;
+        $newJuego->Tiempo = $request->itmTiempo;
+        $newJuego->Fecha = date('Y-m-d H:i:s');
+        $newJuego->Privado = $request->itmPrivado;
+        $newJuego->Fondo = $request->itmFondo;
+        $newJuego->Borrador = 1;
+        $newJuego->CodigoTema = $request->CodigoTema;
+        $newJuego->save();
+
+        return response()->json([
+            'mensaje' => 'Juego Generado',
+            'codigo'    => $newJuego->Codigo
+        ], 200, []);
     }
 
     /**
@@ -58,9 +73,22 @@ class MemoramaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $newJuego = Juego::find($request->itmCodigoJuego);
+        $newJuego->Titulo = $request->itmTitulo;
+        $newJuego->Tiempo = $request->itmTiempo;
+        $newJuego->Privado = $request->itmPrivado;
+        $newJuego->Fondo = $request->itmFondo;
+        if($request->itmRegistro == 'SI'){
+            $newJuego->Borrador = 0;    
+        }
+        $newJuego->CodigoTema = $request->CodigoTema;
+        $newJuego->save();
+
+        return response()->json([
+            'mensaje' => $request->itmRegistro == 'SI' ? 'Juego Registrado' : 'Juego Actualizado'
+        ], 200, []);
     }
 
     /**
