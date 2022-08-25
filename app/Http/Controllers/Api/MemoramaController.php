@@ -20,11 +20,11 @@ class MemoramaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index() //LISTAR BASE DE MEMORAMA
     {
-        $memorama = DB::select("select *,j.Codigo as codigoJuego,j.Titulo as TituloJuego 
+        $memorama = DB::select("select *,j.Codigo as codigoJuego,j.Titulo as TituloJuego, t.Titulo as TituloTema 
         from juego j inner join tema t on j.CodigoTema = t.Codigo inner join usuario u on u.Codigo = t.CodigoUsuario 
-        where u.Codigo = ? and j.Tipo = 1 and j.Vigente = 1 and j.Borrador = 0", [$this->auth->Codigo]);
+        where u.Codigo = ? and j.Tipo = 1 and j.Vigente = 1", [$this->auth->Codigo]);
         return response()->json([
         'data' => $memorama
         ], 200, []);
@@ -36,6 +36,7 @@ class MemoramaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    
     public function store(Request $request)
     {
         $newJuego = new Juego;

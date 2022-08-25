@@ -36,6 +36,9 @@
         .dropdown-content li>a, .dropdown-content li>span {
             color: #106997;
         }
+        .item-borrador{
+            border-left: 4px solid red;
+        }
     </style>
 @endsection
 @section('content')

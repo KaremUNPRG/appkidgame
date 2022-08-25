@@ -6,10 +6,11 @@ const renderMemorama = () => {
     list(function (response) {  
         let itemMemorama = '';
         response.data.forEach(function (element, index) {
-            itemMemorama += ` <div class="col-12 item-memorama">
+            itemMemorama += ` <div class="col-12 item-memorama ${element.Borrador==1?"item-borrador":""}">
                                     <div class="row justify-content-between">
                                         <div class="col">
                                             <p class="title-memorama">Titulo: ${element.TituloJuego}</p>
+                                            <p class="tema-memorama">Tema del Juego: ${element.TituloTema}</p>
                                             <p class="tiempo-memorama">Tiempo: ${element.Tiempo}</p>
                                             <p class="fecha-memorama">Fecha: ${element.Fecha}</p>
                                         </div>
@@ -18,7 +19,8 @@ const renderMemorama = () => {
                                                 <i class="material-icons" style="font-size: 2rem">more_vert</i>
                                             </a>
                                             <ul id='dropdown${index}' class='dropdown-content'>
-                                                <li><a href="#!" class="editarMemorama" data-info='${JSON.stringify(element)}' data-key="${element.codigoJuego}"><i class="material-icons">create</i>Editar</a></li>
+                                                
+                                                <li><a href="#!" class="editarMemorama" data-info='${JSON.stringify(element)}' data-key="${element.codigoJuego}"><i class="material-icons">create</i>${element.Borrador==1?"Restaurar":"Editar"}</a></li>
                                                 <li><a href="#!" class="deleteMemorama" data-key="${element.codigoJuego}"><i class="material-icons">delete</i>Eliminar</a></li>
                                                 <li><a href="#!"><i class="material-icons">insert_link</i>Compartir</a></li>
                                             </ul>                                  
@@ -100,7 +102,7 @@ $('#nuevoMemorama').click(function(){
                                 </div>
                             </div>
                             <div class="col-xl-12" style="text-align: right">
-                                <button id="sendCompetencia" class="btn waves-effect waves-light blue btnSend" type="submit" name="action">Registrar
+                                <button id="sendMemorama" class="btn waves-effect waves-light blue btnSend" type="submit" name="action">Registrar
                                     <i class="material-icons right">send</i>
                                 </button>
                             </div>
@@ -151,6 +153,52 @@ $('#content-app').on('click','.btnSend',function () {
         CodigoTema: $('#itmTema').val(),
         itmCodigoJuego:CodigoJuegoMemorama,
         itmRegistro:'SI'
+      },
+      function (response) { 
+        Swal.fire({
+            title: response.mensaje,
+            icon:'success',
+            showDenyButton: true,
+            showCancelButton: false,
+            confirmButtonText: 'Listar',
+            denyButtonText: `Nuevo`,
+          }).then((result) => {
+            if (result.isConfirmed) {  
+                renderMemorama()
+            } else if (result.isDenied) {
+                $('#nuevoMemorama').click()
+            }
+          })
+    })
+})
+
+$('#content-app').on('click','.editarMemorama',function () { 
+    var key = $(this).data('key')
+
+    // console.log($(this).data('info'));
+    var data = $(this).data('info')
+    $('#nuevoMemorama').click()
+    $('#itmTitulo').val(data.TituloJuego).focus()
+    $('#itmTiempo').val(data.Tiempo).focus()
+    $('#itmPrivado').val(data.Privado).focus()
+    $('#itmFondo').val(data.Fondo).focus()
+    $('#itmTema').val(data.CodigoTema).focus()
+    $('#sendMemorama').removeClass('btnSend')
+    $('#sendMemorama').addClass('btnEdit')
+    $('#sendMemorama').html(`Actualizar`)
+    CodigoJuegoMemorama = key
+    // editarMemorama(key)
+});
+
+$('#content-app').on('click','.btnEdit',function () { 
+    editar({
+        itmTitulo: $('#itmTitulo').val(),
+        itmTiempo: $('#itmTiempo').val(),
+        itmPrivado: $('#itmPrivado').prop('checked') ? 1 : 0,
+        itmFondo: $('#itmFondo').val(),
+        CodigoTema: $('#itmTema').val(),
+        itmCodigoJuego:CodigoJuegoMemorama,
+        itmRegistro:'NO'
       },
       function (response) { 
         Swal.fire({
