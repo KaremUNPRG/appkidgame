@@ -8,7 +8,6 @@ const templateValoracion = (cantidad) => {
     console.log(renderHtml);
     return renderHtml
 }
-{/* <span class="ion-ios-star text-warning"></span> */}
 
 const templateItemJuego = (element) => {
     return `<div class="col-md-6 col-lg-4">

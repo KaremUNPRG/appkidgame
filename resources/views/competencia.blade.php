@@ -93,7 +93,7 @@
                             <div ><img src="{{asset('assets/web/img/registro.png')}}" alt="" style="width: 30px;"></div>
                             <div class="font-weight-bold text-option"> Nuevo</div>
                         </div>
-                        <div class="item-option d-flex">
+                        <div class="item-option d-flex" id="rankingCompetencia">
                             <div><img src="{{asset('assets/web/img/ranking.png')}}" alt="" style="width: 30px;"></div>
                             <div class="font-weight-bold text-option"> Ranking</div>
                         </div>

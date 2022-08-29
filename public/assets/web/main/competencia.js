@@ -338,3 +338,56 @@ $(document).on('click','.btnRemoveJuego',function () {
     renderAddJuegoCompetencia()
 })
 
+$('#rankingCompetencia').click(function () {  
+    let htmlRender = `<div class="form-nuevo">
+                        <div class="row">
+                            <div class="col-xl-10">
+                                <div class="input-field">
+                                    <input id="itmNombre" type="text" class="validate">
+                                    <label for="itmNombre">Nombre * </label>
+                                </div>
+                            </div>
+                            <div class="col-xl-2">
+                                <div class="input-field">
+                                    <input id="itmClave" type="text" class="validate ">
+                                    <label for="itmClave">Clave</label>
+                                </div>
+                            </div>
+                            <div class="col-xl-3">
+                                <div class="input-field">
+                                    <input id="itmFechaInicio" type="text" class="datepicker validate">
+                                    <label for="itmFechaInicio">Fecha Inicial *</label>
+                                </div>
+                            </div>
+                            <div class="col-xl-3">
+                                <div class="input-field">
+                                    <input id="itmHoraInicio" type="text" class="timepicker validate">
+                                    <label for="itmHoraInicio">Hora Inicial *</label>
+                                </div>
+                            </div>
+                            <div class="col-xl-3">
+                                <div class="input-field">
+                                    <input id="itmFechaTermina" type="text" class="datepicker validate">
+                                    <label for="itmFechaTermina">Fecha Final * </label>
+                                </div>
+                            </div>
+                            <div class="col-xl-3">
+                                <div class="input-field">
+                                    <input id="itmHoraTermina" type="text" class="timepicker validate">
+                                    <label for="itmHoraTermina">Hora Final *</label>
+                                </div>
+                            </div>
+                            <div class="col-12" >
+                                ${htmlRenderAddJuego()}
+                            </div>
+                            <div class="col-xl-12" style="text-align: right">
+                                <button id="sendCompetencia" class="btn waves-effect waves-light blue btnSend" type="submit" name="action">Registrar
+                                    <i class="material-icons right">send</i>
+                                </button>
+                            </div>
+                           
+                        </div>
+                    </div>`;
+    
+    $('.render-html').html(htmlRender);
+})
