@@ -136,7 +136,7 @@ class CompetenciaController extends Controller
         $juegos = Juego::select(['juego.Titulo as TitJuego','tema.Titulo as TitTema','juego.Tipo','juego.Tiempo','juego.Codigo as CodigoJuego'])
                         ->join('tema','tema.Codigo','=','juego.CodigoTema')
                         ->where('juego.Vigente','=',1)
-                        ->where('juego.CodigoUsuario','=',$this->auth->Codigo)
+                        ->where('tema.CodigoUsuario','=',$this->auth->Codigo)
                         ->get();
         return response()->json([
             'data' => $juegos
