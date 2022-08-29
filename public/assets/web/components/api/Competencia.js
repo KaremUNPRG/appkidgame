@@ -67,3 +67,33 @@ export const editar =  async (body,success) => {
     });
 }
 
+export const listarJuego =  async (success) => {
+
+    let response = await fetch(`${url}/competencia/juegos`, { 
+        method: "GET",
+        headers: headersList()
+    })
+    .then(response => response.json())
+    .then(data => {
+        success(data)
+    })
+    .catch(function(error) {
+        console.log('Hubo un problema con la petición Fetch:' + error.message);
+    });
+}
+
+export const juegoCompetencia =  async (codigo, success) => {
+
+    let response = await fetch(`${url}/competencia/get/${codigo}`, { 
+        method: "GET",
+        headers: headersList()
+    })
+    .then(response => response.json())
+    .then(data => {
+        success(data)
+    })
+    .catch(function(error) {
+        console.log('Hubo un problema con la petición Fetch:' + error.message);
+    });
+}
+

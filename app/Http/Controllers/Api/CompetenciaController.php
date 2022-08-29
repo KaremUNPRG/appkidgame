@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\User;
+use App\Models\Juego;
 use App\Models\Competencia;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
+use App\Models\JuegoCompetencia;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 class CompetenciaController extends Controller
 {
@@ -23,8 +25,8 @@ class CompetenciaController extends Controller
      */
     public function index()
     {
-        $competencia = Competencia::select(['*',DB::raw('date_format(FechaInicio, "%d/%m/%Y %h:%i%p") as FechaInicioAdd'),
-                                                DB::raw('date_format(FechaTermino, "%d/%m/%Y %h:%i%p") as FechaTerminoAdd')])
+        $competencia = Competencia::select(['*',DB::raw('date_format(FechaInicio, "%d/%m/%Y %h:%i %p") as FechaInicioAdd'),
+                                                DB::raw('date_format(FechaTermino, "%d/%m/%Y %h:%i %p") as FechaTerminoAdd')])
                                 ->where('Vigente','=',1)
                                 ->where('CodigoUsuario','=',$this->auth->Codigo)
                                 ->orderBy('Codigo','desc')->get();
@@ -41,6 +43,7 @@ class CompetenciaController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
         $newCompetencia = new Competencia;
         $newCompetencia->Nombre = $request->itmNombre;
         $newCompetencia->CodigoUsuario = $this->auth->Codigo;
@@ -48,6 +51,14 @@ class CompetenciaController extends Controller
         $newCompetencia->FechaTermino = $request->itmFechaTermino.' '.$request->itmHoraTermino;
         $newCompetencia->Clave = empty($request->itmClave)?null:$request->itmClave;
         $newCompetencia->save();
+
+        foreach ($request->itmListaJuego as $key => $value) {
+            
+            $newJuegoComp = new JuegoCompetencia();
+            $newJuegoComp->CodigoJuego = $value['CodigoJuego'];
+            $newJuegoComp->CodigoCompetencia = $newCompetencia->Codigo;
+            $newJuegoComp->save();
+        }
 
         return response()->json([
             'mensaje' => 'Competencia Registrada Correctamente'
@@ -57,12 +68,19 @@ class CompetenciaController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Competencia  $competencia
      * @return \Illuminate\Http\Response
      */
-    public function show(Competencia $competencia)
+    public function show($codigoCompetencia)
     {
-        //
+        $juegos = JuegoCompetencia::select(['juego.Titulo as TitJuego','tema.Titulo as TitTema','juego.Tipo','juego.Tiempo',
+                                            'juego.Codigo as CodigoJuego'])
+                                ->join('juego','juego.Codigo','juegocompetencia.CodigoJuego')
+                                ->join('tema','tema.Codigo','=','juego.CodigoTema')
+                                ->where('juegocompetencia.CodigoCompetencia','=',$codigoCompetencia)
+                                ->get();
+        return response()->json([
+            'data' => $juegos
+        ], 200, []);
     }
 
     /**
@@ -79,6 +97,13 @@ class CompetenciaController extends Controller
         $newCompetencia->FechaTermino = $request->itmFechaTermino.' '.$request->itmHoraTermino;
         $newCompetencia->Clave = empty($request->itmClave)?null:$request->itmClave;
         $newCompetencia->save();
+        JuegoCompetencia::where('CodigoCompetencia','=',$request->Competencia)->delete();
+        foreach ($request->itmListaJuego as $key => $value) {
+            $newJuegoComp = new JuegoCompetencia();
+            $newJuegoComp->CodigoJuego = $value['CodigoJuego'];
+            $newJuegoComp->CodigoCompetencia = $newCompetencia->Codigo;
+            $newJuegoComp->save();
+        }
 
         return response()->json([
             'mensaje' => 'Se Editó Correctamente'
@@ -99,6 +124,22 @@ class CompetenciaController extends Controller
 
         return response()->json([
             'mensaje' => 'Se Eliminó Correctamente'
+        ], 200, []);
+    }
+
+    /**
+     * Listar todos los tipos de juego para competencia
+     * @return \Illuminate\Http\Response
+     */
+    public function listaJuego()
+    {
+        $juegos = Juego::select(['juego.Titulo as TitJuego','tema.Titulo as TitTema','juego.Tipo','juego.Tiempo','juego.Codigo as CodigoJuego'])
+                        ->join('tema','tema.Codigo','=','juego.CodigoTema')
+                        ->where('juego.Vigente','=',1)
+                        ->where('juego.CodigoUsuario','=',$this->auth->Codigo)
+                        ->get();
+        return response()->json([
+            'data' => $juegos
         ], 200, []);
     }
 }

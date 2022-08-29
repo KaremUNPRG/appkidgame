@@ -8,37 +8,8 @@
                 <h2 class="mb-4"><span>Juegos</span> Recientes</h2>
             </div>
         </div>
-        <div class="row">
-            @for ($i = 0; $i < 7; $i++)
-                <div class="col-md-6 col-lg-4 ftco-animate">
-                    <div class="blog-entry">
-                        <a href="blog-single.html" class="block-20 d-flex align-items-end"
-                            style="background-image: url('https://blog.ida.cl/wp-content/uploads/sites/5/2020/04/tamano-redes-blog-655x470.png');">
-                            <!-- <div class="meta-date text-center p-2">
-                                        <span class="day">27</span>
-                                        <span class="mos">Junio</span>
-                                        <span class="yr">2022</span>
-                                    </div> -->
-                        </a>
-                        <div class="text bg-white p-4">
-                            <h3 class="heading"><a href="#">Memoria</a></h3>
-                            <p>Inperio Inca.</p>
-                            <div class="d-flex align-items-center mt-4">
-                                <p class="mb-0"><a href="#" class="btn btn-primary">Jugar <span
-                                            class="ion-ios-arrow-round-forward"></span></a></p>
-                                <p class="ml-auto mb-0">
-                                    <a href="#" class="mr-2">
-                                        @for ($j=0; $j < 6-$i; $j++)
-                                            <span class="ion-ios-star text-warning"></span>
-                                        @endfor
-                                    </a>
-                                    <a href="#" class="meta-chat"><span class="icon-chat"></span> {{6-$i}}</a>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endfor
+        <div class="row renderHtmlListaJuego">
+
         </div>
     </div>
 </section>
@@ -113,6 +84,7 @@
             localStorage.setItem('accessToken',@json($accessToken));
         </script>
     @endif
+    <script src="{{asset('assets/web/main/inicio.js')}}" type="module"></script>
     <script>
         $('.modal').modal();
     </script>

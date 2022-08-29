@@ -1,10 +1,32 @@
-import { store, list,eliminar, editar } from "../components/api/Competencia.js";
+import { store, list,eliminar, editar, listarJuego, juegoCompetencia } from "../components/api/Competencia.js";
 
 var CodigoCompetencia = null
+var ListaJuegosCompetencia = []
 
+var ListaJuego = []
+
+const htmlRenderPreloader = () => {
+    return `<div class="progress">
+                <div class="indeterminate"></div>
+            </div>`
+}
+
+const htmlRenderAddJuego = () => {
+    return `<div>
+                <div>
+                    <div class="header-juego modal-trigger" data-target="modal1">
+                        <div><h6>Juegos</h6></div>
+                    </div>
+                    <div class="content-juego">
+                        
+                    </div>
+                </div>
+            </div>`
+}
 
 $('#nuevoCompetencia').click(function () {  
     CodigoCompetencia = null
+    ListaJuegosCompetencia = []
     let htmlRender = `<div class="form-nuevo">
                         <div class="row">
                             <div class="col-xl-10">
@@ -43,14 +65,21 @@ $('#nuevoCompetencia').click(function () {
                                     <label for="itmHoraTermina">Hora Final *</label>
                                 </div>
                             </div>
+                            <div class="col-12" >
+                                ${htmlRenderAddJuego()}
+                            </div>
                             <div class="col-xl-12" style="text-align: right">
                                 <button id="sendCompetencia" class="btn waves-effect waves-light blue btnSend" type="submit" name="action">Registrar
                                     <i class="material-icons right">send</i>
                                 </button>
                             </div>
+                           
                         </div>
                     </div>`;
+    
     $('.render-html').html(htmlRender);
+    
+    $('.tooltipped').tooltip()
     $('.timepicker').timepicker({
         twelveHour:false
     });
@@ -73,7 +102,8 @@ $('#content-app').on('click','.btnSend',function () {
         itmHoraInicio: $('#itmHoraInicio').val(),
         itmFechaTermino: $('#itmFechaTermina').val(),
         itmHoraTermino: $('#itmHoraTermina').val(),
-        itmClave: $('#itmClave').val()
+        itmClave: $('#itmClave').val(),
+        itmListaJuego: ListaJuegosCompetencia
       },
       function (response) { 
         Swal.fire({
@@ -92,7 +122,6 @@ $('#content-app').on('click','.btnSend',function () {
           })
     })
 })
-
 
 const renderCompetencia = () => {
     list(function (response) {  
@@ -139,10 +168,6 @@ const deleteCompetencia = (codigo) => {
     })
 }
 
-const editarCompetencia = (codigo) => {
-    // editarCompetencia
-}
-
 $('#listarCompetencia').click(function () { 
     renderCompetencia()
 })
@@ -154,7 +179,6 @@ $('#content-app').on('click','.deleteCompetencia',function () {
 
 $('#content-app').on('click','.editarCompetencia',function () { 
     var key = $(this).data('key')
-
     // console.log($(this).data('info'));
     var data = $(this).data('info')
     $('#nuevoCompetencia').click()
@@ -170,6 +194,10 @@ $('#content-app').on('click','.editarCompetencia',function () {
     $('#sendCompetencia').addClass('btnEdit')
     $('#sendCompetencia').html(`Actualizar`)
     CodigoCompetencia = key
+    juegoCompetencia(CodigoCompetencia, function (response) {  
+        ListaJuegosCompetencia = response.data
+        renderAddJuegoCompetencia()
+    })
     // editarCompetencia(key)
 });
 
@@ -186,7 +214,8 @@ $('#content-app').on('click','.btnEdit',function () {
         itmFechaTermino: $('#itmFechaTermina').val(),
         itmHoraTermino: $('#itmHoraTermina').val(),
         itmClave: $('#itmClave').val(),
-        Competencia: CodigoCompetencia
+        Competencia: CodigoCompetencia,
+        itmListaJuego: ListaJuegosCompetencia
       },
       function (response) { 
         Swal.fire({
@@ -205,3 +234,107 @@ $('#content-app').on('click','.btnEdit',function () {
           })
     })
 })
+
+/**
+ * Proceso de agregar juegos a la competencia
+ */
+const renderItemJuego = (element) => {
+    let findIndex = ListaJuegosCompetencia.findIndex(obj => obj.CodigoJuego == element.CodigoJuego);
+    return `<div style="width:100%;margin: 10px 0px;box-shadow: 1px 1px 15px 1px rgb(0 0 0 / 10%);border-left: 5px solid rebeccapurple;">
+        <div class="d-flex align-items-center">
+            <div style="width:100%;padding:0px" class="col-1">
+                <div><img style="width: 100%;" src="assets/web/img/${element.Tipo == 1 ? 'perspectiva' 
+                        : (element.Tipo == 2 ? 'verdugo' : 'letras') }.png" alt=""></div>                     
+            </div>
+            <div class="col-9">${element.TitJuego}</div>
+            <div class="col-2">
+                ${
+                    (findIndex != -1) 
+                    ? 'Agregado' 
+                    : `<a data-key="${element.CodigoJuego}" class="btnAddJuego waves-effect waves-light btn text-white"><i class="material-icons prefix">fingerprint</i></a>`
+                }    
+            </div>
+        </div>
+    </div>`
+}
+
+$(document).on('click','.header-juego',function () {
+    $('.render-juego').html(htmlRenderPreloader())
+    listarJuego(function (response) {  
+        if (response.data.length > 0) {
+            let htmlRenderJuegos = ''
+            ListaJuego = response.data 
+            response.data.forEach(element => {
+                htmlRenderJuegos += renderItemJuego(element)
+            });
+            $('.render-juego').html(htmlRenderJuegos)
+        }else{
+            $('.render-juego').html("No tienes juegos disponible")
+        }
+    })
+});
+
+const renderAddJuegoCompetencia = () => {
+    let htmlRenderJuegos = ''
+    ListaJuegosCompetencia.forEach(element => {
+        htmlRenderJuegos += `<div style="width:100%;margin: 10px 0px;box-shadow: 1px 1px 15px 1px rgb(0 0 0 / 10%);border-left: 5px solid rebeccapurple;">
+                                <div class="d-flex align-items-center">
+                                    <div style="width:100%;padding:0px" class="col-1">
+                                        <div><img style="width: 100%;" src="assets/web/img/${element.Tipo == 1 ? 'perspectiva' 
+                                                : (element.Tipo == 2 ? 'verdugo' : 'letras') }.png" alt=""></div>                     
+                                    </div>
+                                    <div class="col-9">${element.TitJuego}</div>
+                                    <div class="col-2">
+                                        <a data-key="${element.CodigoJuego}" class="btnRemoveJuego waves-effect waves-light btn bg-danger text-white"><i class="material-icons prefix">delete</i></a>
+                                    </div>
+                                </div>
+                            </div>`
+    });
+    $('.content-juego').html(htmlRenderJuegos)
+}
+
+$(document).on('click','.btnAddJuego',function () {  
+    let key = $(this).data('key')
+    let find = ListaJuego.find(obj => obj.CodigoJuego == key);
+    ListaJuegosCompetencia.push(find)
+    $('.modal').modal('close')
+    renderAddJuegoCompetencia()
+})
+
+$('.itmSelectJuego').change(function () {  
+    let filter = ListaJuego.filter(obj => obj.Tipo == $(this).val()); 
+    let htmlRenderJuegos = '';
+    if ($(this).val() != 0) {
+        filter.forEach(element => {
+            htmlRenderJuegos += renderItemJuego(element)
+        });
+    }else{
+        ListaJuego.forEach(element => {
+            htmlRenderJuegos += renderItemJuego(element)
+        });
+    }
+    $('.render-juego').html(htmlRenderJuegos)
+})
+
+$('.itmBuscarJuego').keyup(function () {  
+    let filter = ListaJuego.filter(obj => obj.TitJuego.toUpperCase().includes($(this).val().toUpperCase()) == true); 
+    let htmlRenderJuegos = '';
+    if ($(this).val() != '') {
+        filter.forEach(element => {
+            htmlRenderJuegos += renderItemJuego(element)
+        });
+    }else{
+        ListaJuego.forEach(element => {
+            htmlRenderJuegos += renderItemJuego(element)
+        });
+    }
+    $('.render-juego').html(htmlRenderJuegos)
+})
+
+$(document).on('click','.btnRemoveJuego',function () {  
+    let codigo = $(this).data('key')
+    let index = ListaJuegosCompetencia.findIndex(obj => obj.CodigoJuego == codigo)
+    ListaJuegosCompetencia.splice(index,1)
+    renderAddJuegoCompetencia()
+})
+
