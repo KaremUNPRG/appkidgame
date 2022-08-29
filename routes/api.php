@@ -35,4 +35,5 @@ Route::middleware(['authapi'])->group(function () {
     Route::get('memorama',[MemoramaController::class,'index']);
     Route::delete('memorama',[MemoramaController::class,'destroy']);
     Route::put('memorama',[MemoramaController::class,'update']);
+    Route::get('memorama/listar/tema',[MemoramaController::class,'listarTema']);
 });

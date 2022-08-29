@@ -1,6 +1,21 @@
-import { store, list,eliminar, editar } from "../components/api/Memorama.js";
+import { store, list,eliminar, editar, listarTema } from "../components/api/Memorama.js";
 
 var CodigoJuegoMemorama = null;
+var ListaCartaJuego = [];
+var ListaTema = [];
+
+const htmlRenderCarta = () => {
+    return `<div>
+                <div>
+                    <div class="header-carta modal-trigger" data-target="modal1">
+                        <div><h6>Carta</h6></div>
+                    </div>
+                    <div class="content-carta">
+                        
+                    </div>
+                </div>
+            </div>`
+}
 
 const renderMemorama = () => {
     list(function (response) {  
@@ -38,6 +53,9 @@ const renderMemorama = () => {
 
 $(document).ready(function () {
     renderMemorama()
+    listarTema(function (response) {
+        ListaTema = response.data
+    })
 });
 
 $('#listarMemorama').click(function () { 
@@ -65,9 +83,23 @@ $('#content-app').on('click','.deleteMemorama',function () {
 
 $('#nuevoMemorama').click(function(){
     CodigoJuegoMemorama = null;
+    ListaCartaJuego = []
+    let renderHtmlTema = ''
+    ListaTema.forEach(element => {
+        renderHtmlTema += `<option value="${element.Codigo}" selected>${element.Titulo}</option>`
+    })
+
     let renderHtml = `<div class="form-nuevo">
                         <div class="row">
-                            <div class="col-xl-10">
+                            <div class="col-xl-5">
+                                <div class="input-field">
+                                    <select id="itmTema">
+                                        ${renderHtmlTema}
+                                    </select>
+                                    <label>Tema</label>
+                                </div>
+                            </div>
+                            <div class="col-xl-5">
                                 <div class="input-field">
                                     <input id="itmTitulo" type="text" class="validate executeBorrador">
                                     <label for="itmTitulo">Titulo * </label>
@@ -92,14 +124,8 @@ $('#nuevoMemorama').click(function(){
                                     <input id="itmFondo" type="color" class="validate">
                                 </div>
                             </div>
-                            <div class="col-xl-4">
-                                <div class="input-field">
-                                    <select id="itmTema">
-                                        <option value="" disabled selected>Elegir Tema</option>
-                                        <option value="1">Informatica</option>
-                                    </select>
-                                    <label>Tema</label>
-                                </div>
+                            <div class="col-12" >
+                                ${htmlRenderCarta()}
                             </div>
                             <div class="col-xl-12" style="text-align: right">
                                 <button id="sendMemorama" class="btn waves-effect waves-light blue btnSend" type="submit" name="action">Registrar
@@ -109,8 +135,8 @@ $('#nuevoMemorama').click(function(){
                         </div>
                     </div>`
     $('.render-html').html(renderHtml);
+    $('select').formSelect(); 
     
-    $('select').formSelect();
 })
 
 $(document).on('change','.executeBorrador',function () {
@@ -120,7 +146,8 @@ $(document).on('change','.executeBorrador',function () {
             itmTiempo: $('#itmTiempo').val(),
             itmPrivado: $('#itmPrivado').prop('checked') ? 1 : 0,
             itmFondo: $('#itmFondo').val(),
-            CodigoTema: $('#itmTema').val()
+            CodigoTema: $('#itmTema').val(),
+            itmListaCarta: ListaCartaJuego
           },
           function (response) { 
             console.log(response);
@@ -216,4 +243,77 @@ $('#content-app').on('click','.btnEdit',function () {
             }
           })
     })
+})
+
+$('.itmTipoRecurso').change(function () {
+    if($(this).val() == '01'){
+        $('.itmRecurso').attr('type','text')
+    }else{
+        $('.itmRecurso').attr('type','file')
+    }
+})
+
+var recursoTemporal = null;
+
+$('.itmRecurso').change(function () {
+    recursoTemporal = null;
+    if ($('.itmTipoRecurso').val() == '01') {
+        $('.content-imagen').attr('src',$(this).val())
+        recursoTemporal = $(this).val()
+    }else{
+        const file = this.files[0];
+        if (file){
+          let reader = new FileReader();
+          reader.onload = function(event){
+            recursoTemporal = event.target.result
+            $('.content-imagen').attr('src', event.target.result);
+          }
+          reader.readAsDataURL(file);
+        }
+    }
+})
+
+const renderAddCartaJuego = (data) => {
+    let html = ''
+    data.forEach(element => {
+        html += `<div style="width:100%;margin: 10px 0px;box-shadow: 1px 1px 15px 1px rgb(0 0 0 / 10%);border-left: 5px solid rebeccapurple;">
+                    <div class="d-flex align-items-center">
+                        <div style="width:100%;padding:0px" class="col-1">
+                            <div><img style="width: 100%;" src="${element.Imagen}" alt=""></div>                     
+                        </div>
+                        <div class="col-9">${element.Descripcion}</div>
+                        <div class="col-2">
+                            <a data-key="${element.Codigo}" class="btnRemoveCarta waves-effect waves-light btn bg-danger text-white"><i class="material-icons prefix">delete</i></a>
+                        </div>
+                    </div>
+                </div>`
+    })
+    $('.content-carta').html(html)
+}
+
+$('.btnAgregarCarta').click(function () {
+    ListaCartaJuego.push({
+        'Codigo' : (ListaCartaJuego.length +1),
+        'Descripcion' : $('.itmDescripcionCarta').val(),
+        'Tipo'        : $('.itmTipoRecurso').val(),
+        'Imagen'      : recursoTemporal
+    })
+    renderAddCartaJuego(ListaCartaJuego)
+})
+
+$(document).on('change','#itmFondo',function () {
+    $('.form-nuevo').css({"background-color":`${$(this).val()}`})
+})
+
+$(document).on('click','.header-carta',function () {
+    $('.itmDescripcionCarta').val('')
+    $('.content-imagen').attr('src', '');
+    $('.itmRecurso').val('')
+})
+
+$(document).on('click','.btnRemoveCarta',function () {  
+    let codigo = $(this).data('key')
+    let index = ListaCartaJuego.findIndex(obj => obj.Codigo == codigo)
+    ListaCartaJuego.splice(index,1)
+    renderAddCartaJuego(ListaCartaJuego)
 })

@@ -39,6 +39,19 @@
         .item-borrador{
             border-left: 4px solid red;
         }
+
+        .header-carta{
+            border-bottom: 10px solid #1eaaf1;
+            cursor: pointer;
+        }
+        .header-carta > div{
+            background: #1eaaf1;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            padding: 0px 25px;
+            color: #fff;
+            display: inline-block;
+        }
     </style>
 @endsection
 @section('content')
@@ -69,9 +82,54 @@
             </div>
         </div>
     </div>
-
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <h5>Agregar Carta</h5>
+            <div>
+                <div class="d-flex flex-wrap">
+                    <div class="col-md-8 col-12">
+                        <div class="col-12">
+                            <div class="input-field">
+                                <input id="icon_prefix" type="text" class="itmDescripcionCarta">
+                                <label for="icon_prefix">Descripción</label>
+                            </div>
+                            
+                        </div>
+                        <div class="col-12">
+                            <div class="input-field">
+                                <select class="itmTipoRecurso">
+                                    <option value="02" selected>Archivo</option>
+                                    <option value="01" >URL</option>
+                                </select>
+                                <label>Tipo Recurso</label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="input-field">
+                                <input type="file" placeholder="Url..." class="itmRecurso" accept="image/*">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="imagen-previa">
+                            <img src="" style="width: 100%;" class="content-imagen" alt="">
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect bg-danger text-white waves-green btn-flat">Cancelar</a>
+            <a href="#!" class="modal-close waves-effect bg-info text-white waves-green btn-flat btnAgregarCarta">Agregar</a>
+        </div>
+    </div>
 @endsection
 
 @section('script')
     <script src="{{asset('assets/web/main/memorama.js')}}" type="module"></script>
+    <script>
+        $('.modal').modal();
+        $('select').formSelect();
+    </script>
 @endsection

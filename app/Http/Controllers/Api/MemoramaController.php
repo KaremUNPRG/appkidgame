@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Juego;
+use App\Models\Memorama;
 
 use Illuminate\Support\Facades\DB;
 
@@ -49,6 +50,33 @@ class MemoramaController extends Controller
         $newJuego->Borrador = 1;
         $newJuego->CodigoTema = $request->CodigoTema;
         $newJuego->save();
+
+        $carpeta = 'storage/memorama/'.$this->auth->Codigo."_".date('Y-m');
+        if(!file_exists($carpeta)){
+            mkdir($carpeta,'0777');
+        }
+        foreach ($request->itmListaCarta as $key => $value) {
+            $archivo = '';
+            if($value['Tipo'] == '02'){
+                $extension = explode('/',$value['Imagen']);
+                $extension = explode(';',$extension[1]);
+                $extension = $extension[0];
+                $img = str_replace('data:image/'.$extension.';base64,','',$value['Imagen']);
+                $img = base64_decode($img);
+                $archivo = $carpeta.'/'.$value['Descripcion'].'_'.time().'.'.$extension;
+                file_put_contents($archivo,$img);
+            }else{
+                $archivo = $carpeta.'/'.$value['Descripcion'].'_'.time().'.jpg';
+                file_put_contents($archivo,file_get_contents($value['Imagen']));
+            }
+
+            $newMemorama = new Memorama;
+            $newMemorama->CodigoJuego = $newJuego->Codigo;
+            $newMemorama->Descripcion = $value['Descripcion'];
+            $newMemorama->Imagen = $archivo;
+            $newMemorama->save();
+
+        }
 
         return response()->json([
             'mensaje' => 'Juego Generado',
@@ -106,6 +134,14 @@ class MemoramaController extends Controller
 
         return response()->json([
             'mensaje' => 'Se Eliminó Correctamente'
+        ], 200, []);
+    }
+
+    public function listarTema()
+    {
+        $tema = DB::select('select * from Tema where Vigente = 1 and CodigoUsuario = ?',[$this->auth->Codigo]);
+        return response()->json([
+            'data' => $tema
         ], 200, []);
     }
 }
