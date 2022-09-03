@@ -20,12 +20,17 @@ Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
 
+Route::get('/jugarAhorcado', function () {
+    return view('jugarAhorcado');
+})->name('jugarAhorcado');
+
 Route::get('auth/google', [GoogleController::class, 'redirectToGoogle']);
 Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/competencia', [VistaController::class,'competencia'])->name('competencia');
     Route::get('/memorama', [VistaController::class,'memorama'])->name('memorama');
+    Route::get('/ahorcado', [VistaController::class,'ahorcado'])->name('ahorcado');
 });
 
 

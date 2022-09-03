@@ -84,7 +84,7 @@
             localStorage.setItem('accessToken',@json($accessToken));
         </script>
     @endif
-    <script src="{{asset('assets/web/main/inicio.js')}}" type="module"></script>
+    <script src="{{asset('assets/web/main/inicio.js')}}?v1={{time()}}" type="module"></script>
     <script>
         $('.modal').modal();
     </script>

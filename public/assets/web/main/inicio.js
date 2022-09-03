@@ -20,7 +20,7 @@ const templateItemJuego = (element) => {
                         <h3 class="heading"><a href="#">${element.TitTema}</a></h3>
                         <p>${element.TitJuego}</p>
                         <div class="d-flex align-items-center mt-4">
-                            <p class="mb-0"><a href="#" class="btn btn-primary">Jugar <span
+                            <p class="mb-0"><a data-key="${element.Tipo}" data-id="${element.CodigoJuego}" href="#" class="jugar btn btn-primary">Jugar <span
                                         class="ion-ios-arrow-round-forward"></span></a></p>
                             <p class="ml-auto mb-0">
                                 <a href="#" class="mr-2">
@@ -45,4 +45,18 @@ $(document).ready(function () {
         });
         $('.renderHtmlListaJuego').html(renderHtmlListaJuego)
     })
+});
+
+
+const buscarJuego = (tipo,codigo) => {
+    if(tipo == 2){  
+        $(location).attr('href',`jugarAhorcado?id=${btoa(codigo)}`);  
+    }  
+}
+
+$(document).on('click','.jugar',function () { 
+    alert('sasas');
+    var key = $(this).data('key')
+    var codigo = $(this).data('id')
+    buscarJuego(key, codigo)
 });

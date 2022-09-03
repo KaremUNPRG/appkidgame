@@ -6,6 +6,11 @@ use App\Http\Controllers\Api\InicioController;
 use App\Http\Controllers\Api\MemoramaController;
 use App\Http\Controllers\Api\CompetenciaController;
 
+
+use App\Http\Controllers\Api\AhorcadoController;
+use App\Http\Controllers\Api\TemaController;
+use App\Http\Controllers\Api\JuegoController;
+use App\Http\Controllers\Api\PuntajeController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -36,4 +41,19 @@ Route::middleware(['authapi'])->group(function () {
     Route::delete('memorama',[MemoramaController::class,'destroy']);
     Route::put('memorama',[MemoramaController::class,'update']);
     Route::get('memorama/listar/tema',[MemoramaController::class,'listarTema']);
+});
+
+Route::get('jugar-ahorcado/{id}',[JuegoController::class,'jugarAhorcado']);
+
+Route::middleware(['authapi'])->group(function () {
+    Route::post('ahorcado',[AhorcadoController::class,'store']);
+    Route::get('ahorcado',[AhorcadoController::class,'index']);
+    Route::delete('ahorcado',[AhorcadoController::class,'destroy']);
+    Route::put('ahorcado',[AhorcadoController::class,'update']);
+    Route::put('ahorcado/restore',[AhorcadoController::class,'restore']);
+    Route::post('puntaje-ahorcado',[PuntajeController::class,'storePuntajeAhorcado']);    
+});
+    
+Route::middleware(['authapi'])->group(function () {
+    Route::get('tema',[TemaController::class,'index']);    
 });

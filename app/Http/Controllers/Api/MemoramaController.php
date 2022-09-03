@@ -139,7 +139,7 @@ class MemoramaController extends Controller
 
     public function listarTema()
     {
-        $tema = DB::select('select * from Tema where Vigente = 1 and CodigoUsuario = ?',[$this->auth->Codigo]);
+        $tema = DB::select('select * from juego where Vigente = 1 and CodigoUsuario = ?',[$this->auth->Codigo]);
         return response()->json([
             'data' => $tema
         ], 200, []);
