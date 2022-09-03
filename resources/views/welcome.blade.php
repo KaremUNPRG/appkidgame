@@ -73,6 +73,51 @@
         </div>
     </div>
 </section>
+<div id="mComentario" class="mComentario modal" style="width: 25%;">
+    <div class="modal-content">
+        <h4 class="titleJuego"></h4>
+        <div class="content-valoracion">
+            <div class="estrella-val d-flex justify-content-between">
+                <div class="puntuacion">
+                    <h1 class="m-0">3.7</h1>
+                    <div>
+                        <span class="ion-ios-star text-warning"></span>
+                        <span class="ion-ios-star text-warning"></span>
+                        <span class="ion-ios-star text-warning"></span>
+                        <span class="ion-ios-star text-warning"></span>
+                        <span class="ion-ios-star text-secondary"></span>
+                    </div>
+                    <div>3</div>
+                </div>
+                <div class="grafica col pl-5">
+                    <div class="d-flex     align-items-center">
+                        <div class="px-2">5</div>
+                        <progress id="5Estrella" max="100" value="70" class="col"> 70% </progress>
+                    </div>
+                    <div class="d-flex     align-items-center">
+                        <div class="px-2">4</div>
+                        <progress id="4Estrella" max="100" value="70" class="col"> 70% </progress>
+                    </div>
+                    <div class="d-flex     align-items-center">
+                        <div class="px-2">3</div>
+                        <progress id="3Estrella" max="100" value="70" class="col"> 70% </progress>
+                    </div>
+                    <div class="d-flex     align-items-center">
+                        <div class="px-2">2</div>
+                        <progress id="2Estrella" max="100" value="70" class="col"> 70% </progress>
+                    </div>
+                    <div class="d-flex     align-items-center">
+                        <div class="px-2">1</div>
+                        <progress id="1Estrella" max="100" value="70" class="col"> 70% </progress>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cerrar</a>
+    </div>
+</div>
 
 @endsection
 @section('script')

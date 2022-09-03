@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\User;
 use App\Models\Juego;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -9,6 +10,12 @@ use App\Http\Controllers\Controller;
 
 class InicioController extends Controller
 {
+
+    private $auth ;
+    public function __construct(Request $request) {
+        $this->auth = User::ApiAuth(empty($request->header('authorization'))?'':$request->header('authorization'));
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -24,7 +31,7 @@ class InicioController extends Controller
                         ->where('juego.Vigente','=','1')
                         ->where('juego.Borrador','=','0')
                         ->groupBy('juego.Codigo')
-                        ->orderBy('juego.Codigo','desc')->get();
+                        ->orderBy('ValoracionPunto','desc')->get();
 
         return response()->json([
             'data' => $juegos
@@ -51,6 +58,25 @@ class InicioController extends Controller
     public function show($id)
     {
         //
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $CodigoJuego
+     * @return \Illuminate\Http\Response
+     */
+    public function showValoracion($CodigoJuego)
+    {
+        $valoracion = Juego::select(['juego.Titulo as TitJuego','juego.Codigo as CodigoJuego','v.Valoracion',
+                                    'v.Comentario'])
+                            ->leftjoin('valoracion as v','juego.Codigo','v.CodigoJuego')
+                            ->where('juego.Codigo','=',$CodigoJuego)
+                            ->orderBy('v.Fecha','desc')
+                            ->get();
+        return response()->json([
+            'data' => $valoracion
+        ], 200, []);
     }
 
     /**

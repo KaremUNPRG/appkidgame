@@ -62,13 +62,16 @@ class User extends Authenticatable
 
     public static function ApiAuth(string $token)
     {
-        $explodeToken = explode(' ',$token);
-        $user = self::select([
+        $user = null;
+        if (!empty($token)) {
+            $explodeToken = explode(' ',$token);
+            $user = self::select([
                             'usuario.Codigo'
                         ])
                         ->join('credencial','credencial.CodigoUsuario','=','usuario.Codigo')
                         ->where('AccessToken','=',$explodeToken[1])
                         ->first();
+        }
         return $user;
     }
 }

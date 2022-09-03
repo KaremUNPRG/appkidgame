@@ -1,4 +1,4 @@
-import { listaJuego } from "../components/api/Inicio.js";
+import { listaJuego, listaValoracion } from "../components/api/Inicio.js";
 
 const templateValoracion = (cantidad) => {
     let renderHtml = ''
@@ -22,9 +22,9 @@ const templateItemJuego = (element) => {
                         <div class="d-flex align-items-center mt-4">
                             <p class="mb-0"><a data-key="${element.Tipo}" data-id="${element.CodigoJuego}" href="#" class="jugar btn btn-primary">Jugar <span
                                         class="ion-ios-arrow-round-forward"></span></a></p>
-                            <p class="ml-auto mb-0">
+                            <p class="ml-auto mb-0 viewComentario modal-trigger" data-key="${element.CodigoJuego}" href="#mComentario">
                                 <a href="#" class="mr-2">
-                                    ${(element.ValoracionPunto > 0) ? templateValoracion(element.ValoracionPunto) : '<span class="ion-ios-star text-secondary"></span>'}
+                                    ${(element.ValoracionPunto > 0) ? templateValoracion(element.ValoracionPunto) : ''}
                                 </a>
                                 <a href="#" class="meta-chat">
                                     <span class="ion-md-chatboxes"></span> 
@@ -54,8 +54,15 @@ const buscarJuego = (tipo,codigo) => {
     }  
 }
 
+$(document).on('click','.viewComentario',function () { 
+    // alert('sasas');
+    var key = $(this).data('key')
+    listaValoracion(key,function (response) {  
+        $('.titleJuego').text(response.data[0].TitJuego)
+    })
+});
 $(document).on('click','.jugar',function () { 
-    alert('sasas');
+    // alert('sasas');
     var key = $(this).data('key')
     var codigo = $(this).data('id')
     buscarJuego(key, codigo)
