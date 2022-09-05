@@ -52,6 +52,26 @@
             color: #fff;
             display: inline-block;
         }
+
+        .how-pos3 {
+          position: absolute;
+          top: 0px;
+            right: 14px;
+            background: red;
+            line-height: 1;
+            cursor: pointer;
+            
+            
+            
+        }
+        
+        .hov3 {
+          opacity: 0.6;
+}
+
+.hov3:hover {
+  opacity: 1;
+}
     </style>
 @endsection
 @section('content')

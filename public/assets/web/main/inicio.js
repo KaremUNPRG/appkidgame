@@ -12,13 +12,13 @@ const templateValoracion = (cantidad) => {
 const templateItemJuego = (element) => {
     return `<div class="col-md-6 col-lg-4">
                 <div class="blog-entry" style="box-shadow: 1px 1px 11px 1px rgb(0 0 0 / 10%);">
-                    <a href="#" class="block-20 d-flex align-items-end"
+                    <a href="#" data-key="${element.Tipo}" data-id="${element.CodigoJuego}" class="jugar block-20 d-flex align-items-end"
                         style="background-image: url('assets/web/img/${element.Tipo == 1 ? 'perspectiva' 
                         : (element.Tipo == 2 ? 'verdugo' : 'letras') }.png');background-size: auto;">
                     </a>
                     <div class="text bg-white p-4">
-                        <h3 class="heading"><a href="#">${element.TitTema}</a></h3>
-                        <p>${element.TitJuego}</p>
+                        <h3 class="heading"><a href="#">${element.TitJuego}</a></h3>
+                        <p>${element.TitTema}</p>
                         <div class="d-flex align-items-center mt-4">
                             <p class="mb-0"><a data-key="${element.Tipo}" data-id="${element.CodigoJuego}" href="#" class="jugar btn btn-primary">Jugar <span
                                         class="ion-ios-arrow-round-forward"></span></a></p>

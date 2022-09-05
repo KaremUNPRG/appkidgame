@@ -53,7 +53,7 @@ const renderAhorcado = () => {
 
 }
 function inicio() {
-
+console.log(ID);
 generaABC("a","z");
 cargarSegundo();
 cont = 6;

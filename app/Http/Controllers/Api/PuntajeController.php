@@ -26,7 +26,7 @@ class PuntajeController extends Controller
         $newJuegoUsuario->save();
 
         $newPuntaje = new Puntaje;
-        $newPuntaje->Codigo =  $newJuegoUsuario->Codigo;
+        $newPuntaje->CodigoJuegoUsuario =  $newJuegoUsuario->Codigo;
         $newPuntaje->Vidas = $request->itmVidas;
         $newPuntaje->TiempoTotal = $request->itmTiempoTotal;
         $newPuntaje->TiempoDemorado = $request->itmTiempoDemorado;

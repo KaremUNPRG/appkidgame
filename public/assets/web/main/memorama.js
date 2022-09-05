@@ -90,7 +90,13 @@ $('#nuevoMemorama').click(function(){
     })
 
     let renderHtml = `<div class="form-nuevo">
+
                         <div class="row">
+
+                        <button class="cerrar how-pos3 hov3">
+					        <img id="cerrar" src="assets/web/img/icon-close.png" alt="CLOSE">
+				        </button>
+
                             <div class="col-xl-5">
                                 <div class="input-field">
                                     <select id="itmTema">
@@ -317,3 +323,7 @@ $(document).on('click','.btnRemoveCarta',function () {
     ListaCartaJuego.splice(index,1)
     renderAddCartaJuego(ListaCartaJuego)
 })
+
+$('#content-app').on('click','.cerrar',function () { 
+    renderMemorama()
+});

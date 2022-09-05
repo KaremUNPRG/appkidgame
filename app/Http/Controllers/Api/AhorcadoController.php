@@ -27,9 +27,9 @@ class AhorcadoController extends Controller
                             'juego.Privado','tema.Descripcion','tema.Codigo as CodTema','Fecha', 
                             'Palabra', 'tiempo', 'Pista', 'Fondo'
                             ])
-                            ->join('tema','juego.codTema','=','tema.Codigo')
+                            ->join('tema','juego.codigoTema','=','tema.Codigo')
                             ->join('ahorcado','juego.Codigo','=','ahorcado.CodigoJuego')
-                            ->where('juego.tipo','=',1)
+                            ->where('juego.tipo','=',2)
                             ->where('tema.codigoUsuario','=',$this->auth->Codigo)
                             ->orderBy('juego.Vigente','desc')->get();
        
@@ -50,19 +50,20 @@ class AhorcadoController extends Controller
 
         $newJuego = new Juego;
         $newJuego->Titulo = $request->itmTitulo;
-        $newJuego->Tipo = 1;
+        $newJuego->Tipo = 2;
         $newJuego->Fondo = $request->itmFondo;
         $newJuego->Tiempo = $request->itmTiempo;
         $newJuego->Fecha = $request->itmFecha;
         $newJuego->Privado = $request->itmPrivado;
         $newJuego->Vigente = 1;
-        $newJuego->CodTema = $request->itmTema;
+        $newJuego->Borrador = 1;
+        $newJuego->codigoTema = $request->itmTema;
         $newJuego->save();
 
         $newAhorcado = new Ahorcado;
-        $newAhorcado->Codigo =  $newJuego->Codigo;
+        $newAhorcado->CodigoJuego =  $newJuego->Codigo;
         $newAhorcado->Palabra = $request->itmPalabra;
-        $newAhorcado->Pistas = $request->itmPistas;
+        $newAhorcado->Pista = $request->itmPistas;
         $newAhorcado->save();
 
         return response()->json([
@@ -95,12 +96,12 @@ class AhorcadoController extends Controller
         $newJuego->Fondo = $request->itmFondo;
         $newJuego->Fecha = $request->itmFecha;
         $newJuego->Privado = $request->itmPrivado;
-        $newJuego->CodTema = $request->itmTema;
+        $newJuego->codigoTema = $request->itmTema;
         $newJuego->save();
 
         $newAhorcado = Ahorcado::find($request->Ahorcado);
         $newAhorcado->Palabra = $request->itmPalabra;
-        $newAhorcado->Pistas = $request->itmPistas;
+        $newAhorcado->Pista = $request->itmPistas;
         $newAhorcado->save();
 
 

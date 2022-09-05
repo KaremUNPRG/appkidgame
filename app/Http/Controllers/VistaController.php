@@ -12,6 +12,11 @@ class VistaController extends Controller
         return view('competencia');
     }
 
+    public function ahorcado()
+    {
+        return view('ahorcado');
+    }
+
     public function memorama()
     {
         return view('juegos.memorama.memorama');
