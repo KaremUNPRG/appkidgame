@@ -54,13 +54,86 @@ const buscarJuego = (tipo,codigo) => {
     }  
 }
 
+const buildEstrella = (estrella) => {
+    let render = ''
+    for (let index = 0; index < 5; index++) {
+        render += (index) < Number(estrella).toFixed(0) 
+                                    ? `<span class="ion-ios-star text-warning"></span>` 
+                                    : `<span class="ion-ios-star text-secondary"></span>`
+    }
+    return render
+}
+
 $(document).on('click','.viewComentario',function () { 
     // alert('sasas');
     var key = $(this).data('key')
+
     listaValoracion(key,function (response) {  
-        $('.titleJuego').text(response.data[0].TitJuego)
+        let estadistica = response.data.estadistica
+        let renderEstrella = ''
+        let renderComentario = ''
+        $('.titleJuego').text(response.data.comentarios[0].TitJuego)
+        $('.puntacionRender').text(estadistica.Valoracion == '--'?'--':Number(estadistica.Valoracion).toFixed(1) )
+
+        for (let index = 0; index   < 5; index++) {
+            let elementE = `${index+1}Estrella`
+            if (estadistica.Valoracion != '--') {
+                $('#'+elementE).val(estadistica.Estrellas[index] * 100 / estadistica.Total)
+            }else{
+                $('#'+elementE).val(0)
+            }
+        }
+        renderEstrella = buildEstrella( estadistica.Valoracion != '--' ?estadistica.Valoracion:0  )
+        response.data.comentarios.forEach(element => {
+            if(element.Comentario != null){
+                renderComentario += `<div class="item-comentario pb-4">
+                                    <div class="header-comentario d-flex">
+                                        <div class="avatar-comentario">
+                                            <img style="width: 30px;" src="${element.Avatar}" alt="">
+                                        </div>
+                                        <div class="user-comentario">
+                                            <span>${element.Usuario}</span>
+                                        </div>
+                                    </div>
+                                    <div class="body-comentario">
+                                        <div class="susEstrellas">
+                                            ${buildEstrella(element.Valoracion)}
+                                            <span style="    font-size: 0.8rem;">${element.Fecha}</span>
+                                        </div>
+                                        <div class="susComentario py-1">
+                                            ${element.Comentario}
+                                        </div>
+                                    </div>
+                                </div>`
+            }
+            
+        });
+        $('.renderPuntuacion').html(renderEstrella)
+        $('.content-comentario').html(renderComentario)
+        $('.totalUser').text(estadistica.Total)
     })
 });
+
+$('.sendComentario').click(function () {  
+    let auth = localStorage.getItem('accessToken')
+    if (auth == null) {
+        Swal.fire({
+            icon: 'info',
+            title: 'Debe iniciar sesion'
+          })
+    }
+})
+
+$('.selectEstrella').click(function () {  
+    let auth = localStorage.getItem('accessToken')
+    if (auth == null) {
+        Swal.fire({
+            icon: 'info',
+            title: 'Debe iniciar sesion'
+          })
+    }
+})
+
 $(document).on('click','.jugar',function () { 
     // alert('sasas');
     var key = $(this).data('key')

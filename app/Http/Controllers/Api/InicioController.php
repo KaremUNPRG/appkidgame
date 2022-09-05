@@ -68,14 +68,34 @@ class InicioController extends Controller
      */
     public function showValoracion($CodigoJuego)
     {
+        $estadistica = [
+            'Valoracion'    => '--',
+            'Total'         => 0,
+            'Estrellas'     => [0,0,0,0,0]
+        ];
         $valoracion = Juego::select(['juego.Titulo as TitJuego','juego.Codigo as CodigoJuego','v.Valoracion',
-                                    'v.Comentario'])
+                                    'v.CodigoJuego as CodigoJV',
+                                    'v.Comentario',DB::raw('CONCAT(u.Nombre," ",u.Apellido) as Usuario'),'u.Avatar',
+                                    DB::raw('date_format(v.Fecha, "%d/%m/%Y") as Fecha')])
                             ->leftjoin('valoracion as v','juego.Codigo','v.CodigoJuego')
+                            ->leftjoin('usuario as u','u.Codigo','v.CodigoUsuario')
                             ->where('juego.Codigo','=',$CodigoJuego)
                             ->orderBy('v.Fecha','desc')
                             ->get();
+        $puntuacionTotal = 0;
+        foreach ($valoracion as $key => $value) {
+            if (!empty($value->CodigoJV)) {
+                $estadistica['Total'] += 1;
+                $puntuacionTotal += $value->Valoracion;
+                $estadistica['Estrellas'][$value->Valoracion - 1] += 1; 
+            }
+        }
+        $estadistica['Valoracion'] = ($estadistica['Total'] != 0 ? ($puntuacionTotal / $estadistica['Total']) : $estadistica['Valoracion']);
         return response()->json([
-            'data' => $valoracion
+            'data' => [
+                'estadistica' => $estadistica,
+                'comentarios' =>  $valoracion
+            ]
         ], 200, []);
     }
 
