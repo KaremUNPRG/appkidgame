@@ -105,10 +105,14 @@ class InicioController extends Controller
                             ->where('juego.Codigo','=',$CodigoJuego)
                             ->orderBy('v.Fecha','desc')
                             ->get();
-        $miValoracion = Valoracion::select(['CodigoJuego','Valoracion','Comentario'])
+        $miValoracion = null;
+        if (isset($this->auth->Codigo)) {
+            $miValoracion = Valoracion::select(['CodigoJuego','Valoracion','Comentario'])
                                 ->where('CodigoJuego','=',$CodigoJuego)
                                 ->where('CodigoUsuario','=',$this->auth->Codigo) 
                                 ->first();
+        }
+        
 
         $puntuacionTotal = 0;
         foreach ($valoracion as $key => $value) {

@@ -20,8 +20,8 @@ const templateItemJuego = (element) => {
                         : (element.Tipo == 2 ? 'verdugo' : 'letras') }.png');background-size: auto;">
                     </a>
                     <div class="text bg-white p-4">
-                        <h3 class="heading"><a href="#">${element.TitTema}</a></h3>
-                        <p>${element.TitJuego}</p>
+                        <h3 class="heading"><a href="#">${element.TitJuego}</a></h3>
+                        <p>${element.TitTema}</p>
                         <div class="d-flex align-items-center mt-4">
                             <p class="mb-0"><a data-key="${element.Tipo}" data-id="${element.CodigoJuego}" href="#" class="jugar btn btn-primary">Jugar <span
                                         class="ion-ios-arrow-round-forward"></span></a></p>
