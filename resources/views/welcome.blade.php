@@ -43,7 +43,7 @@
 @endsection
 @section('content')
 
-<section class="ftco-section bg-light">
+<section class="ftco-section bg-light" style="padding: 0px;">
     <div class="container">
         <div class="row justify-content-center mb-5 pb-2">
             <div class="col-md-8 text-center heading-section ftco-animate">
@@ -115,7 +115,7 @@
         </div>
     </div>
 </section>
-<div id="mComentario" class="mComentario modal" style="width: 25%;">
+<div id="mComentario" class="mComentario modal" style="width: 40%;">
     <div class="modal-content">
         <h4 class="titleJuego"></h4>
         <div class="content-valoracion">
