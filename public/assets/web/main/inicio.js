@@ -1,4 +1,7 @@
-import { listaJuego, listaValoracion } from "../components/api/Inicio.js";
+import { listaJuego, listaValoracion, insertValoracion } from "../components/api/Inicio.js";
+
+var valoracionGlobal = 0;
+var codigoJuegoGlobal = null;
 
 const templateValoracion = (cantidad) => {
     let renderHtml = ''
@@ -64,73 +67,114 @@ const buildEstrella = (estrella) => {
     return render
 }
 
+const renderValoracion = (response) => {
+    let estadistica = response.data.estadistica
+    let renderEstrella = ''
+    let renderMiEstrella = ''
+    let renderComentario = ''
+    $('.titleJuego').text(response.data.comentarios[0].TitJuego)
+    $('.sendComentario').data('key',response.data.comentarios[0].CodigoJuego)
+    $('.puntacionRender').text(estadistica.Valoracion == '--'?'--':Number(estadistica.Valoracion).toFixed(1) )
+
+    if (response.data.miValoracion != null) {
+        valoracionGlobal = response.data.miValoracion.Valoracion
+        $('#itemComentario').val(response.data.miValoracion.Comentario)
+    }else{
+        valoracionGlobal = 0
+        $('#itemComentario').val('')
+    }
+
+    for (let index = 0; index   < 5; index++) {
+        let elementE = `${index+1}Estrella`
+        if (estadistica.Valoracion != '--') {
+            $('#'+elementE).val(estadistica.Estrellas[index] * 100 / estadistica.Total)
+        }else{
+            $('#'+elementE).val(0)
+        }
+        renderMiEstrella += ` <span class="ion-ios-star ${index < Number(valoracionGlobal).toFixed(0) ? 'text-warning' : 'text-secondary'} selectEstrella" data-index="${index+1}"></span>`
+    }
+    renderEstrella = buildEstrella( estadistica.Valoracion != '--' ?estadistica.Valoracion:0  )
+    response.data.comentarios.forEach(element => {
+        if(element.Comentario != null){
+            renderComentario += `<div class="item-comentario pb-4">
+                                <div class="header-comentario d-flex">
+                                    <div class="avatar-comentario">
+                                        <img style="width: 30px;" src="${element.Avatar}" alt="">
+                                    </div>
+                                    <div class="user-comentario">
+                                        <span>${element.Usuario}</span>
+                                    </div>
+                                </div>
+                                <div class="body-comentario">
+                                    <div class="susEstrellas">
+                                        ${buildEstrella(element.Valoracion)}
+                                        <span style="    font-size: 0.8rem;">${element.Fecha}</span>
+                                    </div>
+                                    <div class="susComentario py-1">
+                                        ${element.Comentario}
+                                    </div>
+                                </div>
+                            </div>`
+        }
+        
+    });
+    $('.renderPuntuacion').html(renderEstrella)
+    $('.content-comentario').html(renderComentario)
+    $('.misEstrellas').html(renderMiEstrella)
+    $('.totalUser').text(estadistica.Total)
+}
+
 $(document).on('click','.viewComentario',function () { 
     // alert('sasas');
     var key = $(this).data('key')
-
-    listaValoracion(key,function (response) {  
-        let estadistica = response.data.estadistica
-        let renderEstrella = ''
-        let renderComentario = ''
-        $('.titleJuego').text(response.data.comentarios[0].TitJuego)
-        $('.puntacionRender').text(estadistica.Valoracion == '--'?'--':Number(estadistica.Valoracion).toFixed(1) )
-
-        for (let index = 0; index   < 5; index++) {
-            let elementE = `${index+1}Estrella`
-            if (estadistica.Valoracion != '--') {
-                $('#'+elementE).val(estadistica.Estrellas[index] * 100 / estadistica.Total)
-            }else{
-                $('#'+elementE).val(0)
-            }
-        }
-        renderEstrella = buildEstrella( estadistica.Valoracion != '--' ?estadistica.Valoracion:0  )
-        response.data.comentarios.forEach(element => {
-            if(element.Comentario != null){
-                renderComentario += `<div class="item-comentario pb-4">
-                                    <div class="header-comentario d-flex">
-                                        <div class="avatar-comentario">
-                                            <img style="width: 30px;" src="${element.Avatar}" alt="">
-                                        </div>
-                                        <div class="user-comentario">
-                                            <span>${element.Usuario}</span>
-                                        </div>
-                                    </div>
-                                    <div class="body-comentario">
-                                        <div class="susEstrellas">
-                                            ${buildEstrella(element.Valoracion)}
-                                            <span style="    font-size: 0.8rem;">${element.Fecha}</span>
-                                        </div>
-                                        <div class="susComentario py-1">
-                                            ${element.Comentario}
-                                        </div>
-                                    </div>
-                                </div>`
-            }
-            
-        });
-        $('.renderPuntuacion').html(renderEstrella)
-        $('.content-comentario').html(renderComentario)
-        $('.totalUser').text(estadistica.Total)
-    })
+    codigoJuegoGlobal = key
+    listaValoracion(key,renderValoracion)
 });
 
 $('.sendComentario').click(function () {  
     let auth = localStorage.getItem('accessToken')
+    var keyJuego = $(this).data('key');
     if (auth == null) {
         Swal.fire({
             icon: 'info',
             title: 'Debe iniciar sesion'
           })
+    }else{
+        insertValoracion({
+            itmCodigoJuego:keyJuego,
+            itmValoracion:valoracionGlobal,
+            itmComentario:$('#itemComentario').val()
+        },function (response) {
+            listaValoracion(keyJuego,renderValoracion)  
+            Swal.fire({
+                icon: 'success',
+                title: 'Valoración guardada'
+              })
+        })
     }
 })
 
-$('.selectEstrella').click(function () {  
+$(document).on('click','.selectEstrella',function () {  
     let auth = localStorage.getItem('accessToken')
+    console.log($(this).data('index'));
+    valoracionGlobal = $(this).data('index')
     if (auth == null) {
         Swal.fire({
             icon: 'info',
             title: 'Debe iniciar sesion'
           })
+    }else{
+        insertValoracion({
+            itmCodigoJuego:codigoJuegoGlobal,
+            itmValoracion:valoracionGlobal,
+            itmComentario:$('#itemComentario').val()
+        },function (response) {
+            listaValoracion(codigoJuegoGlobal,renderValoracion)  
+            Swal.fire({
+                icon: 'success',
+                title: 'Valoración guardada'
+              })
+        })
     }
 })
 

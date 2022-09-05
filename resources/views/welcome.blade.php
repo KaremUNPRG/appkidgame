@@ -14,6 +14,31 @@
             font-size: 1rem;
             font-weight: 500;
         }
+        .mComentario::-webkit-scrollbar {
+            width: 8px;    
+            height: 8px;
+        }
+        .mComentario::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 4px;
+        }
+
+        .mComentario::-webkit-scrollbar-thumb:hover {
+            background: #b3b3b3;
+            box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+        }
+
+        .mComentario::-webkit-scrollbar-thumb:active {
+            background-color: #999999;
+        }
+        .mComentario::-webkit-scrollbar-track {
+            background: #e1e1e1;
+            border-radius: 4px;
+        }
+        .mComentario::-webkit-scrollbar-track:hover,
+        .mComentario::-webkit-scrollbar-track:active {
+        background: #d4d4d4;
+        }
     </style>
 @endsection
 @section('content')
@@ -129,14 +154,14 @@
             <div class="miComentario">
                 <div class="input-field d-flex align-items-center">
                     <input placeholder="Escribir...." id="itemComentario" autocomplete="off" type="text" class="">
-                    <i class="material-icons sendComentario" style="font-size: 2rem;cursor: pointer;">send</i>
+                    <i class="material-icons sendComentario" data-key="" style="font-size: 2rem;cursor: pointer;">send</i>
                     <label for="itemComentario" style="font-size: 2rem;transform: translateY(-34px) scale(0.8);">
                         <div class="misEstrellas">
-                            <span class="ion-ios-star text-secondary selectEstrella"></span>
-                            <span class="ion-ios-star text-secondary selectEstrella"></span>
-                            <span class="ion-ios-star text-secondary selectEstrella"></span>
-                            <span class="ion-ios-star text-secondary selectEstrella"></span>
-                            <span class="ion-ios-star text-secondary selectEstrella"></span>
+                            {{-- <span class="ion-ios-star text-secondary selectEstrella" data-index="1"></span>
+                            <span class="ion-ios-star text-secondary selectEstrella" data-index="2"></span>
+                            <span class="ion-ios-star text-secondary selectEstrella" data-index="3"></span>
+                            <span class="ion-ios-star text-secondary selectEstrella" data-index="4"></span>
+                            <span class="ion-ios-star text-secondary selectEstrella" data-index="5"></span> --}}
                         </div>
                     </label>
                 </div>
