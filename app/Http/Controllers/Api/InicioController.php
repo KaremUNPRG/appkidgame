@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\User;
 use App\Models\Juego;
+use App\Models\Valoracion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -46,7 +47,29 @@ class InicioController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $valoracion = Valoracion::where('CodigoJuego','=',$request->itmCodigoJuego)
+                                    ->where('CodigoUsuario','=',$this->auth->Codigo)
+                                    ->first();
+        if (empty($valoracion)) {
+            $newValoracion = new Valoracion();
+            $newValoracion->CodigoJuego    = $request->itmCodigoJuego;
+            $newValoracion->CodigoUsuario  = $this->auth->Codigo;
+            $newValoracion->Valoracion = $request->itmValoracion ;
+            $newValoracion->Fecha = date('Y-m-d h:i:s');
+            $newValoracion->Comentario = empty($request->itmComentario)?null:$request->itmComentario;
+            $newValoracion->save();
+        }else{
+            $valoracion = Valoracion::where('CodigoJuego','=',$request->itmCodigoJuego)
+                                    ->where('CodigoUsuario','=',$this->auth->Codigo)
+                                    ->update([
+                                        'Valoracion' => $request->itmValoracion,
+                                        'Comentario' => empty($request->itmComentario)?null:$request->itmComentario
+                                    ]);
+        }
+
+        return response()->json([
+            'mensaje' => 'Valoracion actualizada'
+        ], 200, []);
     }
 
     /**
@@ -68,14 +91,47 @@ class InicioController extends Controller
      */
     public function showValoracion($CodigoJuego)
     {
+        $estadistica = [
+            'Valoracion'    => '--',
+            'Total'         => 0,
+            'Estrellas'     => [0,0,0,0,0]
+        ];
         $valoracion = Juego::select(['juego.Titulo as TitJuego','juego.Codigo as CodigoJuego','v.Valoracion',
-                                    'v.Comentario'])
+                                    'v.CodigoJuego as CodigoJV',
+                                    'v.Comentario',DB::raw('CONCAT(u.Nombre," ",u.Apellido) as Usuario'),'u.Avatar',
+                                    DB::raw('date_format(v.Fecha, "%d/%m/%Y") as Fecha')])
                             ->leftjoin('valoracion as v','juego.Codigo','v.CodigoJuego')
+                            ->leftjoin('usuario as u','u.Codigo','v.CodigoUsuario')
                             ->where('juego.Codigo','=',$CodigoJuego)
                             ->orderBy('v.Fecha','desc')
                             ->get();
+        $miValoracion = null;
+        if (isset($this->auth->Codigo)) {
+            $miValoracion = Valoracion::select(['CodigoJuego','Valoracion','Comentario'])
+                                ->where('CodigoJuego','=',$CodigoJuego)
+                                ->where('CodigoUsuario','=',$this->auth->Codigo) 
+                                ->first();
+        }
+        
+
+        $puntuacionTotal = 0;
+        foreach ($valoracion as $key => $value) {
+            if (!empty($value->CodigoJV)) {
+                $estadistica['Total'] += 1;
+                $puntuacionTotal += $value->Valoracion;
+                if ($value->Valoracion > 0) {
+                    
+                    $estadistica['Estrellas'][$value->Valoracion - 1] += 1;
+                } 
+            }
+        }
+        $estadistica['Valoracion'] = ($estadistica['Total'] != 0 ? ($puntuacionTotal / $estadistica['Total']) : $estadistica['Valoracion']);
         return response()->json([
-            'data' => $valoracion
+            'data' => [
+                'estadistica' => $estadistica,
+                'comentarios' =>  $valoracion,
+                'miValoracion'=> $miValoracion
+            ]
         ], 200, []);
     }
 

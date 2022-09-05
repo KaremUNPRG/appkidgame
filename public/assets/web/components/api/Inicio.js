@@ -29,3 +29,21 @@ export const listaValoracion =  async (codigo,success) => {
         console.log('Hubo un problema con la petición Fetch:' + error.message);
     });
 }
+
+export const insertValoracion =  async (body,success) => {
+
+    let bodyContent = JSON.stringify(body);
+
+    let response = await fetch(`${url}/juego/valoracion`, { 
+        method: "POST",
+        body: bodyContent,
+        headers: headersList()
+    })
+    .then(response => response.json())
+    .then(data => {
+        success(data)
+    })
+    .catch(function(error) {
+        console.log('Hubo un problema con la petición Fetch:' + error.message);
+    });
+}

@@ -21,4 +21,10 @@ class VistaController extends Controller
     {
         return view('juegos.memorama.memorama');
     }
+
+    public function salirApp()
+    {
+        Auth::logout(); 
+        return redirect('/');
+    }
 }

@@ -19,6 +19,8 @@
     <link rel="stylesheet" href="{{asset('template/css/style.css')}}">
     <link rel="stylesheet" href="{{asset('materialize/css/materialize.min.css')}}">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
     @yield('style')
     <style>
         .row{
@@ -37,6 +39,35 @@
         }
         .modal{
             height: auto;
+        }
+        .option-configuracion{
+            position: absolute;
+            box-shadow: 1px 1px 11px 1px rgb(0 0 0 / 10%);
+            color: #000;
+            padding: 20px;
+            bottom: -100px;
+            right: 0;
+            background: #fff;
+            z-index: 111;
+            width: 200px;
+            display: none;
+            /* transform: translateX(200px);  */
+        }
+
+        .option-configuracion a{
+            color: #001;
+        }
+
+        .show-option{
+            animation: optionuser 0.5s;
+            transition: 0.5s;
+            display: block;
+            /* transform: translateX(0px)!important; */
+        }
+
+        @keyframes optionuser {
+            0% { transform: translateX(200px);  }
+            100% { transform: translateX(0px);  }
         }
     </style>
 
@@ -78,8 +109,8 @@
                         <li class="nav-item"><a href="{{route('ahorcado')}}" class="nav-link">Ahorcado</a></li>
                         <li class="nav-item"><a href="{{route('memorama')}}" class="nav-link">Memoria</a></li>
                         <li class="nav-item" ><a href="{{route('competencia')}}" class="nav-link">Competencias</a></li>
-                        <li class="nav-item">
-                            <div style="    display: flex;
+                        <li class="nav-item" style="position: relative">
+                            <div class="configuracion-user" style="    display: flex;
                             align-items: center;
                             height: 100%;">
                                 <img style="width: 50px;
@@ -87,7 +118,18 @@
                                 border-radius: 50%;
                                 cursor: pointer;
                                 margin-left: 20px;" src="{{Auth::user()->Avatar}}" alt="">
+                                <div class="option-configuracion">
+                                    <ul>
+                                        <li><a href=""><span class="material-symbols-outlined">
+                                            person_pin
+                                            </span> Mi Cuenta</a></li>
+                                        <li class="salirCuenta"><a href="#"><span class="material-symbols-outlined">
+                                            exit_to_app
+                                            </span><span class="ion-md-setting"></span> Cerrar Sesión</a></li>
+                                    </ul>
+                                </div>
                             </div>
+                            
                         </li>
                     @else
                         <li class="nav-item"><a href="#" class="nav-link modal-trigger" data-target="modal1" ><span class="icon-user"></span>
@@ -230,6 +272,21 @@
     <script src="{{asset('materialize/js/materialize.min.js')}}"></script>
     <script src="{{asset('assets/web/main/script.js')}}"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $('.configuracion-user img').click(function () { 
+            if ($('.option-configuracion').hasClass('show-option')) {
+                $('.option-configuracion').removeClass('show-option')
+            }else{
+                
+                $('.option-configuracion').addClass('show-option')
+            }
+         })
+
+         $('.salirCuenta').click(function () {
+            localStorage.removeItem('accessToken');
+            window.location.href = '/salir'
+         })
+    </script>
     @yield('script')
 </body>
 

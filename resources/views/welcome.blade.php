@@ -1,4 +1,46 @@
 @extends('layout.main')
+@section('style')
+    <style>
+        .selectEstrella{
+            cursor: pointer;
+        }
+        .avatar-comentario{
+            padding-right: 20px;
+        }
+        .avatar-comentario img{
+            border-radius: 50%;
+        }
+        .user-comentario span{
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        .mComentario::-webkit-scrollbar {
+            width: 8px;    
+            height: 8px;
+        }
+        .mComentario::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 4px;
+        }
+
+        .mComentario::-webkit-scrollbar-thumb:hover {
+            background: #b3b3b3;
+            box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+        }
+
+        .mComentario::-webkit-scrollbar-thumb:active {
+            background-color: #999999;
+        }
+        .mComentario::-webkit-scrollbar-track {
+            background: #e1e1e1;
+            border-radius: 4px;
+        }
+        .mComentario::-webkit-scrollbar-track:hover,
+        .mComentario::-webkit-scrollbar-track:active {
+        background: #d4d4d4;
+        }
+    </style>
+@endsection
 @section('content')
 
 <section class="ftco-section bg-light">
@@ -79,39 +121,54 @@
         <div class="content-valoracion">
             <div class="estrella-val d-flex justify-content-between">
                 <div class="puntuacion">
-                    <h1 class="m-0">3.7</h1>
-                    <div>
-                        <span class="ion-ios-star text-warning"></span>
-                        <span class="ion-ios-star text-warning"></span>
-                        <span class="ion-ios-star text-warning"></span>
-                        <span class="ion-ios-star text-warning"></span>
-                        <span class="ion-ios-star text-secondary"></span>
+                    <h1 class="m-0 puntacionRender"></h1>
+                    <div class="renderPuntuacion">
                     </div>
-                    <div>3</div>
+                    <div class="totalUser"></div>
                 </div>
                 <div class="grafica col pl-5">
                     <div class="d-flex     align-items-center">
                         <div class="px-2">5</div>
-                        <progress id="5Estrella" max="100" value="70" class="col"> 70% </progress>
+                        <progress id="5Estrella" max="100" value="0" class="col"> </progress>
                     </div>
                     <div class="d-flex     align-items-center">
                         <div class="px-2">4</div>
-                        <progress id="4Estrella" max="100" value="70" class="col"> 70% </progress>
+                        <progress id="4Estrella" max="100" value="0" class="col"></progress>
                     </div>
                     <div class="d-flex     align-items-center">
                         <div class="px-2">3</div>
-                        <progress id="3Estrella" max="100" value="70" class="col"> 70% </progress>
+                        <progress id="3Estrella" max="100" value="0" class="col"></progress>
                     </div>
                     <div class="d-flex     align-items-center">
                         <div class="px-2">2</div>
-                        <progress id="2Estrella" max="100" value="70" class="col"> 70% </progress>
+                        <progress id="2Estrella" max="100" value="0" class="col"></progress>
                     </div>
                     <div class="d-flex     align-items-center">
                         <div class="px-2">1</div>
-                        <progress id="1Estrella" max="100" value="70" class="col"> 70% </progress>
+                        <progress id="1Estrella" max="100" value="0" class="col"></progress>
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="content-accion py-3">
+            <div class="miComentario">
+                <div class="input-field d-flex align-items-center">
+                    <input placeholder="Escribir...." id="itemComentario" autocomplete="off" type="text" class="">
+                    <i class="material-icons sendComentario" data-key="" style="font-size: 2rem;cursor: pointer;">send</i>
+                    <label for="itemComentario" style="font-size: 2rem;transform: translateY(-34px) scale(0.8);">
+                        <div class="misEstrellas">
+                            {{-- <span class="ion-ios-star text-secondary selectEstrella" data-index="1"></span>
+                            <span class="ion-ios-star text-secondary selectEstrella" data-index="2"></span>
+                            <span class="ion-ios-star text-secondary selectEstrella" data-index="3"></span>
+                            <span class="ion-ios-star text-secondary selectEstrella" data-index="4"></span>
+                            <span class="ion-ios-star text-secondary selectEstrella" data-index="5"></span> --}}
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="content-comentario">
+            
         </div>
     </div>
     <div class="modal-footer">
