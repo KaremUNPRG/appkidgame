@@ -25,7 +25,7 @@ class MemoramaController extends Controller
     {
         $memorama = DB::select("select *,j.Codigo as codigoJuego,j.Titulo as TituloJuego, t.Titulo as TituloTema 
         from juego j inner join tema t on j.CodigoTema = t.Codigo inner join usuario u on u.Codigo = t.CodigoUsuario 
-        where u.Codigo = ? and j.Tipo = 1 and j.Vigente = 1", [$this->auth->Codigo]);
+        where u.Codigo = ? and j.Tipo = 1 and j.Vigente = 1 order by Fecha desc", [$this->auth->Codigo]);
         return response()->json([
         'data' => $memorama
         ], 200, []);
@@ -51,7 +51,7 @@ class MemoramaController extends Controller
         $newJuego->CodigoTema = $request->CodigoTema;
         $newJuego->save();
 
-        $carpeta = 'storage/memorama/'.$this->auth->Codigo."_".date('Y-m');
+        $carpeta = '/storage/memorama/'.$this->auth->Codigo."_".date('Y-m');
         if(!file_exists($carpeta)){
             mkdir($carpeta,'0777');
         }
@@ -139,7 +139,7 @@ class MemoramaController extends Controller
 
     public function listarTema()
     {
-        $tema = DB::select('select * from juego where Vigente = 1 and CodigoUsuario = ?',[$this->auth->Codigo]);
+        $tema = DB::select('select * from tema where Vigente = 1 and CodigoUsuario = ?',[$this->auth->Codigo]);
         return response()->json([
             'data' => $tema
         ], 200, []);

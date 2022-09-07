@@ -22,4 +22,9 @@ class VistaController extends Controller
         Auth::logout(); 
         return redirect('/');
     }
+
+    public function jugarMemorama()
+    {
+        return view('juegos.memorama.jugarMemorama');
+    }
 }

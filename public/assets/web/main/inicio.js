@@ -55,6 +55,10 @@ const buscarJuego = (tipo,codigo) => {
     if(tipo == 2){  
         $(location).attr('href',`jugarAhorcado?id=${btoa(codigo)}`);  
     }  
+    if(tipo == 1){
+        $(location).attr('href',`jugar-memoria/${codigo}?id=${codigo}`);
+        j
+    }
 }
 
 const buildEstrella = (estrella) => {

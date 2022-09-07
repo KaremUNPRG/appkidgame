@@ -48,16 +48,34 @@ class JuegoController extends Controller
             return response()->json([
                 'data' => $juego, 
             ], 200, []); 
-       
+    }
 
-
-}
-
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    public function jugarMemorama(Request $request)
+    {
+        $juegoArray = [];
+        $juego = Juego::select([
+                            'juego.Titulo', 'Palabra','carta.Descripcion as DescCarta','Imagen',
+                            'tema.Descripcion', 'tiempo','Fondo','carta.Codigo as CodigoCarta'
+                            ])
+                            ->join('tema','juego.CodigoTema','=','tema.Codigo')
+                            ->join('carta','juego.Codigo','=','carta.CodigoJuego')
+                            ->where('juego.Codigo','=',$request->id)->get();
+        foreach ($juego as $key => $value) {
+            array_push($juegoArray,[
+                'Key' => $key."01",
+                'Imagen'=> $value->Imagen,
+                'DescCarta'=> $value->DescCarta
+            ]);
+        }
+        foreach ($juego as $key => $value) {
+            array_push($juegoArray,[
+                'Key' => $key."02",
+                'Imagen'=> $value->Imagen,
+                'DescCarta'=> $value->DescCarta
+            ]);
+        }
+        return response()->json([
+            'data' => $juegoArray, 
+        ], 200, []); 
+    }
 }

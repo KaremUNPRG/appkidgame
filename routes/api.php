@@ -29,6 +29,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('inicio/juego',[InicioController::class,'index']);
 Route::get('juego/valoracion/{CodigoJuego}',[InicioController::class,'showValoracion']);
 
+Route::post('juegomemorama/',[JuegoController::class,'jugarMemorama']);
+
 Route::middleware(['authapi'])->group(function () {
     Route::post('competencia',[CompetenciaController::class,'store']);
     Route::get('competencia',[CompetenciaController::class,'index']);
