@@ -500,7 +500,7 @@ function pintarGuiones(_palabra) {
 // Compruba si ha finalizado
 function compruebaFin() {
     if( oculta.indexOf("_") == -1 ) {
-      let htmlrender = `<button id="reset" class="reset">Reiniciar</button>`
+
       document.getElementById("mensaje").innerHTML = "GANASTE";
       let suma = (+$('#min').html())*60 + (+$('#seg').html());
       terminarTurno(suma,palabra.length);   
@@ -508,16 +508,10 @@ function compruebaFin() {
       for (var i = 0; i < buttons.length; i++) {
         buttons[i].disabled = true;
       }
-      //document.getElementById("reset").innerHTML = "Empezar";
-      $('#content').html(htmlrender);
-      $('#content').on('click','.reset',function () { 
-        location.reload();
-      });
       
     }else if( cont == 0 ) {
-      let htmlrender = `<button id="reset" class="reset">Reiniciar</button>`
+
       document.getElementById("mensaje").innerHTML = "PERDISTE";
-      //document.getElementById("pista").disabled = true;
      
       let suma = (+$('#min').html())*60 + (+$('#seg').html());
       
@@ -531,11 +525,7 @@ function compruebaFin() {
       for (var i = 0; i < buttons.length; i++) {
         buttons[i].disabled = true;
       }
-      //document.getElementById("reset").innerHTML = "Empezar";
-      $('#content').html(htmlrender);
-      $('#content').on('click','.reset',function () { 
-        location.reload();
-      });
+
     }
   }
   
