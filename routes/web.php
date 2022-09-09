@@ -33,6 +33,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/competencia', [VistaController::class,'competencia'])->name('competencia');
     Route::get('/memorama', [VistaController::class,'memorama'])->name('memorama');
     Route::get('/ahorcado', [VistaController::class,'ahorcado'])->name('ahorcado');
+    Route::get('/sopaletras', [VistaController::class,'sopaletras'])->name('sopaletras');
 });
 
 

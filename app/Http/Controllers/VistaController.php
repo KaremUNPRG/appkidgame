@@ -14,12 +14,17 @@ class VistaController extends Controller
 
     public function ahorcado()
     {
-        return view('ahorcado');
+        return view('juegos.ahorcado.ahorcado');
     }
 
     public function memorama()
     {
         return view('juegos.memorama.memorama');
+    }
+
+    public function sopaletras()
+    {
+        return view('juegos.sopaletras.sopaletras');
     }
 
     public function salirApp()

@@ -72,7 +72,12 @@
         .form-nuevo{
             padding: 20px;
         }
-        .item-competencia{
+
+        .tiempo{
+            font-size: 1rem;
+            font-weight: bold;
+        }
+        .item-ahorcado{
             background: #fff;
             margin: 15px 0px;
             padding-top: 20px;
@@ -109,6 +114,66 @@
 .hov3:hover {
   opacity: 1;
 }
+#abcdario{
+display: flex !important;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-right: 3px;
+    padding-left: 3px;
+    padding-top: 40px;
+}
+
+.letra:disabled {
+  color:rgba(255, 0, 0, 0.5);
+}
+picture {
+  position: relative;
+}
+picture img {
+  position: absolute;
+  top: 10px;
+  height: 100px;
+}
+#image5, #image4, #image3,
+#image2, #image1, #image0 {
+  opacity: 0;
+  transition: opacity .3s ease;
+}
+
+.fade-in {
+  opacity: 1 !important;
+}
+
+@media (max-width: 767.98px) {
+
+  .d-flex {
+    display: block !important;
+}
+
+.list-option {
+    display: flex !important;
+}
+
+.palabra{
+  font-size: 30px;
+}
+
+picture img {
+
+  height: 85px;
+}
+
+.render-html{
+    padding-right: 1px;
+    padding-left: 1px;
+}
+
+.how-pos3{
+  right: 0px;
+}
+
+}
+
     </style>
 @endsection
 
@@ -130,7 +195,7 @@
 <div style="min-height: 900px;background: #f0f2f5;padding: 40px 0px">
         <div class="container">
             <div class="d-flex">
-                <div class="form-group col-xl-3">
+                <div class="form-group col-3">
                     <p style="font-size: 1.2rem;font-weight: 900;text-transform: uppercase;color: #263e50;">AHORCADO</p>
                     <div class="list-option">
                         <div class="item-option d-flex" id="listarAhorcado">

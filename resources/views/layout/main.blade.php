@@ -108,6 +108,7 @@
                         
                         <li class="nav-item"><a href="{{route('ahorcado')}}" class="nav-link">Ahorcado</a></li>
                         <li class="nav-item"><a href="{{route('memorama')}}" class="nav-link">Memoria</a></li>
+                        <li class="nav-item" ><a href="{{route('sopaletras')}}" class="nav-link">Sopa de letras</a></li>
                         <li class="nav-item" ><a href="{{route('competencia')}}" class="nav-link">Competencias</a></li>
                         <li class="nav-item" style="position: relative">
                             <div class="configuracion-user" style="    display: flex;

@@ -11,6 +11,8 @@ use App\Http\Controllers\Api\AhorcadoController;
 use App\Http\Controllers\Api\TemaController;
 use App\Http\Controllers\Api\JuegoController;
 use App\Http\Controllers\Api\PuntajeController;
+use App\Http\Controllers\Api\SopaLetrasController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -44,6 +46,13 @@ Route::middleware(['authapi'])->group(function () {
     Route::delete('memorama',[MemoramaController::class,'destroy']);
     Route::put('memorama',[MemoramaController::class,'update']);
     Route::get('memorama/listar/tema',[MemoramaController::class,'listarTema']);
+
+    Route::get('sopaletras/temas', [SopaLetrasController::class,'getTemas']);
+    Route::post('sopaletras', [SopaLetrasController::class,'store']);
+    Route::get('sopaletras', [SopaLetrasController::class,'index']);
+    Route::delete('sopaletras',[SopaLetrasController::class,'destroy']);
+    Route::put('sopaletras',[SopaLetrasController::class,'update']);
+
 });
 
 Route::get('jugar-ahorcado/{id}',[JuegoController::class,'jugarAhorcado']);

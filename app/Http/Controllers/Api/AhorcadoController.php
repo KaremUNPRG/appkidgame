@@ -23,8 +23,8 @@ class AhorcadoController extends Controller
     public function index()
     {
         $juego = Juego::select([
-                            'juego.Codigo','juego.Vigente', 'juego.Titulo',
-                            'juego.Privado','tema.Descripcion','tema.Codigo as CodTema','Fecha', 
+                            'juego.Codigo','juego.Vigente', 'juego.Titulo as TitJuego',
+                            'juego.Privado','tema.Titulo as Tema','tema.Codigo as CodTema','Fecha', 
                             'Palabra', 'tiempo', 'Pista', 'Fondo'
                             ])
                             ->join('tema','juego.codigoTema','=','tema.Codigo')

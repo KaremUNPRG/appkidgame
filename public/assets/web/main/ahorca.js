@@ -40,7 +40,7 @@ const renderAhorcado = () => {
             pistas = element.Pistas;
             pintarGuiones(palabra);  
             $("#main-container").css("background", `${element.Fondo}`);
-            // $("#main-container").css("background", `radial-gradient(circle, ${element.Fondo} 6%, #1C1C1C 100%)`);
+            //$("#main-container").css("background", `radial-gradient(circle, ${element.Fondo} 6%, #1C1C1C 100%)`);
             $('.titulo').html(element.Titulo);
             $('.tema').html(element.Descripcion);
             for (var i = 0; i < buttons.length; i++) {
