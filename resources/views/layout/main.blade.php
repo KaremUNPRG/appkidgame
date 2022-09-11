@@ -69,6 +69,9 @@
             0% { transform: translateX(200px);  }
             100% { transform: translateX(0px);  }
         }
+        .ftco-navbar-light.scrolled{
+            margin-top: -0px;
+        }
     </style>
 
 </head>
