@@ -292,6 +292,19 @@
             window.location.href = '/salir'
          })
     </script>
+    @if (!Auth::check())
+        <script>
+             localStorage.removeItem('accessToken');
+        </script>
+    @endif
+    @if (session('accessToken'))
+        @php
+            $accessToken =session('accessToken');
+        @endphp
+        <script>
+            localStorage.setItem('accessToken',@json($accessToken));
+        </script>
+    @endif
     @yield('script')
 </body>
 

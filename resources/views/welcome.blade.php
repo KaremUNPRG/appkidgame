@@ -178,14 +178,7 @@
 
 @endsection
 @section('script')
-    @if (session('accessToken'))
-        @php
-            $accessToken =session('accessToken');
-        @endphp
-        <script>
-            localStorage.setItem('accessToken',@json($accessToken));
-        </script>
-    @endif
+    
     <script src="{{asset('assets/web/main/inicio.js')}}?v1={{time()}}" type="module"></script>
     <script>
         $('.modal').modal();
