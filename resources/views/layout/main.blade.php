@@ -7,7 +7,7 @@
 
     <link href="https://fonts.googleapis.com/css?family=Work+Sans:100,200,300,400,500,600,700,800,900" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Fredericka+the+Great" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="{{asset('template/css/open-iconic-bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{asset('template/css/animate.css')}}">
     <link rel="stylesheet" href="{{asset('template/css/owl.carousel.min.css')}}">

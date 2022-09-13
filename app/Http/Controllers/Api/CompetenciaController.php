@@ -142,4 +142,27 @@ class CompetenciaController extends Controller
             'data' => $juegos
         ], 200, []);
     }
+
+    /**
+     * Listar todos los tipos de juego para competencia
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function listaJuegoCompetencia(Request $request)
+    {
+        $juegos = JuegoCompetencia::select(['juego.Titulo as TitJuego','tema.Titulo as TitTema','juego.Tipo','juego.Tiempo',
+                                            'juego.Codigo as CodigoJuego',DB::raw('select p.Puntaje from puntaje as p Inner join juegousuario as ju on 
+                                            p.CodigoJuegoUsuario = ju.Codigo where ju.CodigoUsuario = '.Auth::user()->Codigo.' and 
+                                            ju.CodigoJuego = juegocompetencia.CodigoJuego and ju.CodigoCompetencia = juegocompetencia.CodigoCompetencia')])
+                                ->join('juego','juego.Codigo','juegocompetencia.CodigoJuego')
+                                ->join('tema','tema.Codigo','=','juego.CodigoTema')
+                                ->leftjoin('puntaje.')
+                                ->where('juegocompetencia.CodigoCompetencia','=',$request->Competencia)
+                                ->get();
+                            
+        return response()->json([
+            'data' => $juegos
+        ], 200, []);
+    }
 }

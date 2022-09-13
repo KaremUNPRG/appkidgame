@@ -38,7 +38,8 @@ Route::middleware(['authapi'])->group(function () {
     Route::get('competencia/get/{codigoCompetencia}',[CompetenciaController::class,'show']);
     Route::put('competencia',[CompetenciaController::class,'update']);
     Route::get('competencia/juegos',[CompetenciaController::class,'listaJuego']);
-
+    Route::post('competencia/listarjuegos',[CompetenciaController::class,'listaJuegoCompetencia']);
+    
     Route::post('juego/valoracion',[InicioController::class,'store']);
     
     Route::post('memorama',[MemoramaController::class,'store']);
