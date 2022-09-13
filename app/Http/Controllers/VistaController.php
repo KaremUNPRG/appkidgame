@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use DateTime;
 use Illuminate\Http\Request;
 use App\Models\JuegoCompetencia;
 use Illuminate\Support\Facades\DB;
@@ -34,6 +35,7 @@ class VistaController extends Controller
     {
         $juegos = JuegoCompetencia::select(['juego.Titulo as TitJuego','tema.Titulo as TitTema','juego.Tipo','juego.Tiempo',
                                             'juego.Codigo as CodigoJuego','competencia.Nombre as NomCompetencia',
+                                            'competencia.FechaInicio as FechaInicio','competencia.FechaTermino as FechaTermino',
                                             DB::raw('(select p.Puntaje from puntaje as p Inner join juegousuario as ju on 
                                             p.CodigoJuegoUsuario = ju.Codigo where ju.CodigoUsuario = '.Auth::user()->Codigo.' and 
                                             ju.CodigoJuego = juegocompetencia.CodigoJuego and ju.CodigoCompetencia = juegocompetencia.CodigoCompetencia) as Puntaje')])
@@ -41,13 +43,25 @@ class VistaController extends Controller
                                 ->join('tema','tema.Codigo','=','juego.CodigoTema')
                                 ->join('competencia','competencia.Codigo','=','juegocompetencia.CodigoCompetencia')
                                 ->where('juegocompetencia.CodigoCompetencia','=',$codigo)
+                                ->where('competencia.Vigente','=',1)
                                 ->get();
         $puntuacionTotal = 0;
         foreach ($juegos as $key => $value) {
             $puntuacionTotal += ($value->Puntaje > 0)?$value->Puntaje:0;
         }
-                            // dd($juegos);
+
+        $disponible = null;
+        
+        if (count($juegos) > 0) {
+            $fechaInicio    = new DateTime($juegos[0]->FechaInicio);
+            $fechaTermino   = new DateTime($juegos[0]->FechaTermino);
+            $fechaActual    = new DateTime("now");
+            // dd($fechaActual);
+            $disponible = ($fechaActual >= $fechaInicio) && ($fechaActual <= $fechaTermino);
+        }
+        
         return view('competenciaJugar')
+                                ->with('disponible',$disponible)
                                 ->with('juegos',$juegos)
                                 ->with('puntajeTotal',$puntuacionTotal);
     }

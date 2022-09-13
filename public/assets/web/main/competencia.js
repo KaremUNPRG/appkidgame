@@ -133,7 +133,7 @@ const renderCompetencia = () => {
             itemCompetencia += ` <div class="col-12 item-competencia">
                                     <div class="row justify-content-between">
                                         <div class="col">
-                                            <p class="title-competencia">${element.Nombre}</p>
+                                            <p class="title-competencia"><a target="black" href="/competencia/jugar/${element.Codigo}">${element.Nombre}</a></p>
                                             <p>${element.FechaInicioAdd} a ${element.FechaTerminoAdd}</p>
                                         </div>
                                         <div>
@@ -144,6 +144,7 @@ const renderCompetencia = () => {
                                                 <li><a href="#!" class="editarCompetencia" data-info='${JSON.stringify(element)}' data-key="${element.Codigo}"><i class="material-icons">create</i>Editar</a></li>
                                                 <li><a href="#!" class="deleteCompetencia" data-key="${element.Codigo}"><i class="material-icons">delete</i>Eliminar</a></li>
                                                 <li><a href="${linkFacebook}" target="black"><i class="bi bi-facebook" style="font-size:22px"></i> Facebook</a></li>
+                                                <li><a target="black" href="https://api.whatsapp.com/send?text=http://127.0.0.1:8000/competencia/jugar/${element.Codigo}"><i class="bi bi-whatsapp" style="font-size:22px"></i> Whatsapp</a></li>
                                             </ul>                                  
                                         </div>
                                     </div>
