@@ -72,6 +72,10 @@
         .ftco-navbar-light.scrolled{
             margin-top: -0px;
         }
+        .ftco_navbar{
+            position: fixed;
+            background: #fff!important;
+        }
     </style>
 
 </head>
@@ -147,7 +151,9 @@
     </nav>
     <!-- END nav -->
 
-    @yield('content')
+    <div style="padding-top: 80px">
+        @yield('content')
+    </div>
 
    	<footer class="ftco-footer ftco-bg-dark ftco-section">
         <div class="container">
