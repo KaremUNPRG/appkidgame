@@ -1,8 +1,8 @@
 import { headersList, url } from "../ApiRest.js";
 
-export const listaJuego =  async (success) => {
+export const listaJuego =  async (body,success) => {
 
-    let response = await fetch(`${url}/inicio/juego`, { 
+    let response = await fetch(`${url}/inicio/juego?Modo=${body.Modo}`, { 
         method: "GET",
         headers: headersList()
     })

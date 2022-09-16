@@ -26,14 +26,15 @@
                                     <div class="d-flex align-items-center mt-4">
                                         <p class="mb-0">
                                             @if ($item->Puntaje == null)
-                                                <a data-key="{{$item->Tipo}}" data-id="{{$item->CodigoJuego}}" href="#" class="jugar btn btn-primary">Jugar <span
+                                                <a data-key="{{$item->Tipo}}" data-id="{{$item->CodigoJuego}}" 
+                                                    data-competencia="{{$item->CodigoCompetencia}}" href="#" class="jugar btn btn-primary">Jugar <span
                                                 class="ion-ios-arrow-round-forward"></span></a>
                                             @else
                                                 <a href="#" class="jugar btn btn-primary disable" disabled>Jugar <span
                                                 class="ion-ios-arrow-round-forward"></span></a>
                                             @endif
                                         </p>
-                                        <p class="ml-auto mb-0 viewComentario modal-trigger" data-key="${element.CodigoJuego}" href="#mComentario">
+                                        <p class="ml-auto mb-0 viewComentario modal-trigger" href="#mComentario">
                                             Puntaje :
                                             <strong>{{$item->Puntaje == null ? '--' : $item->Puntaje}}</strong>
                                         </p>

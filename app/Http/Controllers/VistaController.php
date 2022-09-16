@@ -35,6 +35,7 @@ class VistaController extends Controller
     {
         $juegos = JuegoCompetencia::select(['juego.Titulo as TitJuego','tema.Titulo as TitTema','juego.Tipo','juego.Tiempo',
                                             'juego.Codigo as CodigoJuego','competencia.Nombre as NomCompetencia',
+                                            'competencia.Codigo as CodigoCompetencia',
                                             'competencia.FechaInicio as FechaInicio','competencia.FechaTermino as FechaTermino',
                                             DB::raw('(select p.Puntaje from puntaje as p Inner join juegousuario as ju on 
                                             p.CodigoJuegoUsuario = ju.Codigo where ju.CodigoUsuario = '.Auth::user()->Codigo.' and 
@@ -45,6 +46,7 @@ class VistaController extends Controller
                                 ->where('juegocompetencia.CodigoCompetencia','=',$codigo)
                                 ->where('competencia.Vigente','=',1)
                                 ->get();
+        // dd($juegos);
         $puntuacionTotal = 0;
         foreach ($juegos as $key => $value) {
             $puntuacionTotal += ($value->Puntaje > 0)?$value->Puntaje:0;

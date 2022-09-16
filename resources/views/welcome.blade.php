@@ -39,18 +39,44 @@
         .mComentario::-webkit-scrollbar-track:active {
         background: #d4d4d4;
         }
+        .item-tab{
+            margin: 10px 20px;
+            cursor: pointer;
+            font-size: 1.3rem;
+        }
+
+        .item-tab-select{
+            font-weight: bold;
+            color: #2859fc;
+            position: relative;
+        }
+        .item-tab-select::after{
+            content: '';
+            border-left: 50px solid;
+            border-top: 3px solid;
+            position: absolute;
+            left: 0;
+            top: 30px;
+        }
     </style>
 @endsection
 @section('content')
 
-<section class="ftco-section bg-light" style="padding: 0px;">
+<section class="ftco-section bg-light" style="padding-top: 50px;">
     <div class="container">
         <div class="row justify-content-center mb-5 pb-2">
-            <div class="col-md-8 text-center heading-section ftco-animate">
-                <h2 class="mb-4"><span>Mejor </span> Valorados</h2>
+            <div class="item-tab item-tab-select" data-key="0">Reciente</div>
+            <div class="item-tab" data-key="1">Mejores</div>
+            <div style=" margin: 10px 20px;">
+                
+                <button type="button" class="btn" style="background: transparent;
+                color: #454545;border: 1px solid!important;margin-top: 0px;"><i class="bi bi-search"></i></button>
             </div>
+            {{-- <div class="col-md-8 text-center heading-section ftco-animate">
+                <h2 class="mb-4"><span>Mejor </span> Valorados</h2>
+            </div> --}}
         </div>
-        <div class="row renderHtmlListaJuego">
+        <div class="row renderHtmlListaJuego pt-5">
 
         </div>
     </div>

@@ -17,7 +17,7 @@ const templateItemJuego = (element) => {
                 <div class="blog-entry" style="box-shadow: 1px 1px 11px 1px rgb(0 0 0 / 10%);">
                     <a href="#" class="block-20 d-flex align-items-end"
                         style="background-image: url('assets/web/img/${element.Tipo == 1 ? 'perspectiva' 
-                        : (element.Tipo == 2 ? 'verdugo' : 'letras') }.png');background-size: auto;">
+                        : (element.Tipo == 2 ? 'verdugo' : 'letras') }.png');background-size: auto;height: 200px;">
                     </a>
                     <div class="text bg-white p-4">
                         <h3 class="heading"><a href="#">${element.TitJuego}</a></h3>
@@ -41,7 +41,7 @@ const templateItemJuego = (element) => {
 }
 
 $(document).ready(function () {
-    listaJuego(function (response) { 
+    listaJuego({Modo:0},function (response) { 
         let renderHtmlListaJuego = '' 
         response.data.forEach(element => {
             renderHtmlListaJuego += templateItemJuego(element)
@@ -57,7 +57,7 @@ const buscarJuego = (tipo,codigo) => {
     }  
     if(tipo == 1){
         $(location).attr('href',`jugar-memoria/${codigo}?id=${codigo}`);
-        j
+        
     }
 }
 
@@ -188,3 +188,16 @@ $(document).on('click','.jugar',function () {
     var codigo = $(this).data('id')
     buscarJuego(key, codigo)
 });
+
+$('.item-tab').click(function () {  
+    var key = $(this).data('key')
+    $('.item-tab').removeClass('item-tab-select');
+    $(this).addClass('item-tab-select');
+    listaJuego({Modo:key},function (response) { 
+        let renderHtmlListaJuego = '' 
+        response.data.forEach(element => {
+            renderHtmlListaJuego += templateItemJuego(element)
+        });
+        $('.renderHtmlListaJuego').html(renderHtmlListaJuego)
+    })
+})
