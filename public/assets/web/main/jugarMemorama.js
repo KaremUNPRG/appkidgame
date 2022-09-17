@@ -1,7 +1,8 @@
-import { juegoMemorama } from "../components/api/JugarMemorama.js";
+import { juegoMemorama, puntajeMemorama } from "../components/api/JugarMemorama.js";
 
 let params = new URLSearchParams(location.search);
 var ID = (params.get('id'));
+var IDCOMPETENCIA = params.get('id2') != null ? atob(params.get('id2')) : null;
 
 let tarjetasDestapadas =0;
 let tarjeta1=null;
@@ -15,13 +16,32 @@ let timer = 30;
 let timerInicial = 30;
 let tiempoRegresivoId = null;
 
-let mostrarMovimientos = document.getElementById('movimientos');
+// let mostrarMovimientos = document.getElementById('movimientos');
 let mostrarAciertos = document.getElementById('aciertos');
 let mostrarTiempo = document.getElementById('t-restante');
 
 var ListaCarta = []
 
-
+const agregarPuntaje = () => {
+    if(localStorage.getItem('accessToken')){
+        puntajeMemorama({
+            Juego : ID,
+            Competencia: IDCOMPETENCIA,
+            itmTiempoTotal:timerInicial,
+            itmTiempoDemorado : timerInicial - timer,
+            itmDescubiertas: aciertos,
+            itmTotales: ListaCarta.length/2
+        },function (response) {
+            $('.puntuacionrecord').html(`<h2 id="mipuntuacion" class="estadisticas">
+        Mi Puntuación:${response.puntaje.toFixed(2)} </h2> `);
+            Swal.fire({
+                title: "Tu puntaje es:" + response.puntaje.toFixed(2),
+                icon:'success',
+                showCancelButton: false,
+              })
+        })
+    }
+} 
 
 function bloquearTarjetas(){
     ListaCarta.forEach(element => {
@@ -34,8 +54,9 @@ function bloquearTarjetas(){
 function contarTiempo(){
     tiempoRegresivoId = setInterval(()=>{
         timer--;
-        mostrarTiempo.innerHTML = `Tiempo: ${timer} segundos`;
+        mostrarTiempo.innerHTML = `${timer} s`;
         if(timer ==0){
+            agregarPuntaje()
             clearInterval(tiempoRegresivoId);
             bloquearTarjetas();
         }
@@ -62,7 +83,7 @@ function destapar(id){
     
     //Deshabilitando primera tarjeta
     tarjeta1.disabled = true;
-    }else if(tarjetasDestapadas == 2){ 
+   }else if(tarjetasDestapadas == 2){ 
         tarjeta2 = document.getElementById(id);
         segundoResultado = ListaCarta.find(obj => obj.Key == id);
         //tarjeta2.innerHTML = segundoResultado.DescCarta;
@@ -71,7 +92,7 @@ function destapar(id){
 
         // Incrementar movimientos
         movimientos++;
-        mostrarMovimientos.innerHTML = `Movimientos: ${movimientos}`;
+        // mostrarMovimientos.innerHTML = `Movimientos: ${movimientos}`;
 
         if(primerResultado.DescCarta == segundoResultado.DescCarta)
         {
@@ -80,11 +101,12 @@ function destapar(id){
             //Aciertos
             aciertos++;
             mostrarAciertos.innerHTML = `Aciertos: ${aciertos}`;
-            if(aciertos == 8){
+            if(aciertos == (ListaCarta.length / 2)){
+                agregarPuntaje()
                 clearInterval(tiempoRegresivoId); 
                 mostrarAciertos.innerHTML = `Aciertos: ${aciertos} `;
-                mostrarTiempo.innerHTML = `Solo demoraste: ${timerInicial - timer} segundos `;
-                mostrarMovimientos.innerHTML = `Movimientos: ${movimientos} `;
+                mostrarTiempo.innerHTML = `Demoraste: ${timerInicial - timer} s `;
+                // mostrarMovimientos.innerHTML = `Movimientos: ${movimientos} `;
             }
         }else{
             //Mostrar momentaneamente y volver a tapar
@@ -103,14 +125,19 @@ function destapar(id){
 juegoMemorama({id:ID},function (response) {
     let htmlRender = ``
     response.data.sort(function() { return Math.random() - 0.5 });
-
-    console.log(response.data);
+    timer = response.juego.Tiempo
+    timerInicial = response.juego.Tiempo
+    mostrarTiempo.innerHTML = `${timerInicial} s`
     ListaCarta = response.data
     response.data.forEach(element => {
         htmlRender += `<button id="${element.Key}"  class="itemCarta"></button>`
     });
+    $('#main-container').css({'background':response.juego.Fondo})
+    if(localStorage.getItem('accessToken')){
+        $('.puntuacionrecord').html(`<h2 id="mipuntuacion" class="estadisticas">
+        Mi Puntuación:${response.juego.MiPuntaje} </h2> `);
 
-    console.log(htmlRender);
+    }
     $('.render-memorama').html(htmlRender)
 })
 

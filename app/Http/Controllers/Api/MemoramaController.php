@@ -51,7 +51,7 @@ class MemoramaController extends Controller
         $newJuego->CodigoTema = $request->CodigoTema;
         $newJuego->save();
 
-        $carpeta = '/storage/memorama/'.$this->auth->Codigo."_".date('Y-m');
+        $carpeta = 'storage/memorama/'.$this->auth->Codigo."_".date('Y-m');
         if(!file_exists($carpeta)){
             mkdir($carpeta,'0777');
         }
@@ -73,7 +73,7 @@ class MemoramaController extends Controller
             $newMemorama = new Memorama;
             $newMemorama->CodigoJuego = $newJuego->Codigo;
             $newMemorama->Descripcion = $value['Descripcion'];
-            $newMemorama->Imagen = $archivo;
+            $newMemorama->Imagen = '/'.$archivo;
             $newMemorama->save();
 
         }
@@ -87,12 +87,19 @@ class MemoramaController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int  $codigoMemorama
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($codigoMemorama)
     {
-        //
+        $cartas = DB::table('carta')->
+                                select(['carta.Descripcion','carta.Imagen','carta.Codigo'])
+                               
+                                ->where('carta.CodigoJuego','=',$codigoMemorama)
+                                ->get();
+        return response()->json([
+            'data' => $cartas
+        ], 200, []);
     }
 
     /**
@@ -114,6 +121,36 @@ class MemoramaController extends Controller
         }
         $newJuego->CodigoTema = $request->CodigoTema;
         $newJuego->save();
+        $carpeta = 'storage/memorama/'.$this->auth->Codigo."_".date('Y_m');
+        
+        if(!file_exists($carpeta)){
+            mkdir($carpeta,'0777');
+        }
+        // dd($carpeta);
+        foreach ($request->itmListaCarta as $key => $value) {
+            if ( !($value['CodigoCarta'] > 0)) {
+                $archivo = '';
+                if($value['Tipo'] == '02'){
+                    $extension = explode('/',$value['Imagen']);
+                    $extension = explode(';',$extension[1]);
+                    $extension = $extension[0];
+                    $img = str_replace('data:image/'.$extension.';base64,','',$value['Imagen']);
+                    $img = base64_decode($img);
+                    $archivo = $carpeta.'/'.$value['Descripcion'].'_'.time().'.'.$extension;
+                    file_put_contents($archivo,$img);
+                }else{
+                    $archivo = $carpeta.'/'.$value['Descripcion'].'_'.time().'.jpg';
+                    file_put_contents($archivo,file_get_contents($value['Imagen']));
+                }
+    
+                $newMemorama = new Memorama;
+                $newMemorama->CodigoJuego = $newJuego->Codigo;
+                $newMemorama->Descripcion = $value['Descripcion'];
+                $newMemorama->Imagen = '/'.$archivo;
+                $newMemorama->save();
+            }
+
+        }
 
         return response()->json([
             'mensaje' => $request->itmRegistro == 'SI' ? 'Juego Registrado' : 'Juego Actualizado'

@@ -7,9 +7,12 @@ use App\Models\JuegoUsuario;
 use App\Models\Puntaje;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class JuegoController extends Controller
 {
+    private $auth ;
     public function index()
     {
         $juego = Juego::select([
@@ -52,10 +55,17 @@ class JuegoController extends Controller
 
     public function jugarMemorama(Request $request)
     {
+        $this->auth = User::ApiAuth($request->header('Authorization'));
         $juegoArray = [];
         $juego = Juego::select([
-                            'juego.Titulo', 'Palabra','carta.Descripcion as DescCarta','Imagen',
-                            'tema.Descripcion', 'tiempo','Fondo','carta.Codigo as CodigoCarta'
+                            'juego.Titulo','carta.Descripcion as DescCarta','Imagen',
+                            'tema.Descripcion', 'tiempo','Fondo','carta.Codigo as CodigoCarta',
+                            'juego.Tiempo as Tiempo','juego.Fondo as Fondo',
+                            DB::raw('(select pt.Puntaje from puntaje as pt inner join 
+                            juegousuario as ju on pt.CodigoJuegoUsuario = ju.Codigo 
+                            where ju.CodigoJuego = juego.Codigo and 
+                            ju.CodigoUsuario '.($this->auth == null ? 'is null':(' = '.$this->auth->Codigo)).' and 
+                            ju.CodigoCompetencia  is null Limit 1) as MiPuntaje')
                             ])
                             ->join('tema','juego.CodigoTema','=','tema.Codigo')
                             ->join('carta','juego.Codigo','=','carta.CodigoJuego')
@@ -64,7 +74,7 @@ class JuegoController extends Controller
             array_push($juegoArray,[
                 'Key' => $key."01",
                 'Imagen'=> $value->Imagen,
-                'DescCarta'=> $value->DescCarta
+                'DescCarta'=> $value->DescCarta,
             ]);
         }
         foreach ($juego as $key => $value) {
@@ -76,6 +86,7 @@ class JuegoController extends Controller
         }
         return response()->json([
             'data' => $juegoArray, 
+            'juego'=> $juego[0]
         ], 200, []); 
     }
 }

@@ -47,6 +47,10 @@ Route::middleware(['authapi'])->group(function () {
     Route::delete('memorama',[MemoramaController::class,'destroy']);
     Route::put('memorama',[MemoramaController::class,'update']);
     Route::get('memorama/listar/tema',[MemoramaController::class,'listarTema']);
+    
+    Route::get('memorama/get/{codigoMemorama}',[MemoramaController::class,'show']);
+    
+    Route::post('puntaje-memorama',[PuntajeController::class,'storePuntajeMemorama']);    
 });
 
 Route::get('jugar-ahorcado/{id}',[JuegoController::class,'jugarAhorcado']);

@@ -212,10 +212,14 @@ picture img {
   color: #ffffff;
   font-size: 20px;
   font-weight: bold;
-  width: 30px;
-  height: 20px;
+  /* width: 30px; */
+  /* height: 20px; */
   margin-bottom: 1px;
   border-radius: 5px;
+}
+
+.swal2-confirm{
+  height: auto;
 }
 
 .cont-temporizador .bloque p{
@@ -324,19 +328,21 @@ button img{
 <div class="estadisticas">
     <h3>Tiempo:</h3>
         <div class="cont-temporizador">
-            <div class="bloque">
+            <!-- <div class="bloque">
                 <div class="minutos" id="minutos">--</div>
                 <p>M</p>
-            </div>
+            </div> -->
             <div class="bloque">
-                <div class="segundos" id="segundos">--</div>
+                <div class="segundos" id="t-restante">--</div>
                 <p>S</p>
             </div>
         </div>     
     </div>
     <h2 id="aciertos" class="estadisticas">Aciertos: 0</h2>
-            <h2 id="t-restante" class="estadisticas">Tiempo: 30 segundos</h2>
-            <h2 id="movimientos" class="estadisticas">Movimientos: 0</h2>
+            <!-- <h2 id="t-restante" class="estadisticas">Tiempo: 30 segundos</h2> -->
+    <div class="puntuacionrecord">
+      <!-- <h2 id="record" class="estadisticas">Record: --</h2> -->
+    </div>
 
 </section>
 </div>
