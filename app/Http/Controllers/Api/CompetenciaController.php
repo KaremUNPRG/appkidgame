@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Models\JuegoCompetencia;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Crypt;
 
 class CompetenciaController extends Controller
 {
@@ -163,6 +164,24 @@ class CompetenciaController extends Controller
                             
         return response()->json([
             'data' => $juegos
+        ], 200, []);
+    }
+
+    /**
+     * Listar todos los tipos de juego para competencia
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function verificarClave(Request $request)
+    {
+        $verificar = Competencia::where('Codigo','=',$request->Competencia)
+                                ->where('Clave','=',$request->Clave)
+                                ->count();
+                            
+        return response()->json([
+            'estado' => $verificar > 0 ? true : false,
+            'clave' => Crypt::encryptString($request->Clave)
         ], 200, []);
     }
 }

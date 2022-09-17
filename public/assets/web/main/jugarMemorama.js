@@ -122,7 +122,7 @@ function destapar(id){
 
 }
 
-juegoMemorama({id:ID},function (response) {
+juegoMemorama({id:ID,id2:IDCOMPETENCIA},function (response) {
     let htmlRender = ``
     response.data.sort(function() { return Math.random() - 0.5 });
     timer = response.juego.Tiempo
@@ -135,10 +135,11 @@ juegoMemorama({id:ID},function (response) {
     $('#main-container').css({'background':response.juego.Fondo})
     if(localStorage.getItem('accessToken')){
         $('.puntuacionrecord').html(`<h2 id="mipuntuacion" class="estadisticas">
-        Mi Puntuación:${response.juego.MiPuntaje} </h2> `);
+        Mi Puntuación:${response.juego.MiPuntaje == null ? '--' : response.juego.MiPuntaje} </h2> `);
 
     }
     $('.render-memorama').html(htmlRender)
+    $('.content-loader').addClass('hide')
 })
 
 $(document).on('click','.itemCarta',function () {

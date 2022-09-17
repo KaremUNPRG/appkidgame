@@ -305,47 +305,56 @@ button img{
     width: 100%;
     height: 100%;
 }
+#preloader_3{
+    margin: 20% 50%!important;
+}
+.content-loader{
+  position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    background: #fff;
+    min-height: 400px;
+    height: 100%;
+}
 
 </style>
 
 @endsection
 @section('content')
 <div class="main-container" id="main-container">
-  <div class="cont">
+  <div class="cont" style="position: relative;min-height: 400px;">
+    <div class="content-loader">
+      <div id="preloader_3"></div>
+    </div>
     <section class="section1">
-        <h1 class="titulo"></h1>
-        <h2 class="tema"></h2>
-        
-        <div class="flex-row no-warp">
-          <div class="render-memorama" style="display: grid;
-    grid-template-columns: repeat(4, 1fr);">
+            <h1 class="titulo"></h1>
+            <h2 class="tema"></h2>
+            
+            <div class="flex-row no-warp">
+              <div class="render-memorama" style="display: grid;
+        grid-template-columns: repeat(4, 1fr);">
 
-          </div>
-        
-        </div>
-</section>
-<section class="section2">
-<div class="estadisticas">
-    <h3>Tiempo:</h3>
-        <div class="cont-temporizador">
-            <!-- <div class="bloque">
-                <div class="minutos" id="minutos">--</div>
-                <p>M</p>
-            </div> -->
-            <div class="bloque">
-                <div class="segundos" id="t-restante">--</div>
-                <p>S</p>
+              </div>
+            
             </div>
-        </div>     
-    </div>
-    <h2 id="aciertos" class="estadisticas">Aciertos: 0</h2>
-            <!-- <h2 id="t-restante" class="estadisticas">Tiempo: 30 segundos</h2> -->
-    <div class="puntuacionrecord">
-      <!-- <h2 id="record" class="estadisticas">Record: --</h2> -->
-    </div>
+    </section>
+    <section class="section2">
+      
+        <div class="estadisticas">
+          <h3>Tiempo:</h3>
+          <div class="cont-temporizador">
+              <div class="bloque">
+                  <div class="segundos" id="t-restante">--</div>
+              </div>
+          </div>     
+        </div>
+        <h2 id="aciertos" class="estadisticas">Aciertos: 0</h2>
+        <div class="puntuacionrecord">
+        </div>
 
-</section>
-</div>
+    </section>
+  </div>
 </div>
       
 @endsection

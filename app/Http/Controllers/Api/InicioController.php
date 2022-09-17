@@ -31,8 +31,11 @@ class InicioController extends Controller
                         ->join('tema','tema.Codigo','=','juego.CodigoTema')
                         ->leftJoin('valoracion','valoracion.CodigoJuego','juego.Codigo')
                         ->where('juego.Vigente','=','1')
-                        ->where('juego.Borrador','=','0')
-                        ->groupBy('juego.Codigo');
+                        ->where('juego.Borrador','=','0');
+        if (isset($request->Buscar)) {
+            $juegos = $juegos->where('juego.Titulo','LIKE','%'.$request->Buscar.'%');
+        }       
+        $juegos = $juegos->groupBy('juego.Codigo');
         if ($request->Modo == 0) {
             $juegos = $juegos->orderBy('juego.Fecha','desc')->get();
         }else{

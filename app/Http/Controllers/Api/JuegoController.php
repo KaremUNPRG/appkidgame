@@ -65,7 +65,7 @@ class JuegoController extends Controller
                             juegousuario as ju on pt.CodigoJuegoUsuario = ju.Codigo 
                             where ju.CodigoJuego = juego.Codigo and 
                             ju.CodigoUsuario '.($this->auth == null ? 'is null':(' = '.$this->auth->Codigo)).' and 
-                            ju.CodigoCompetencia  is null Limit 1) as MiPuntaje')
+                            ju.CodigoCompetencia '.($request->id2 == null ? 'is null':(' = '.$request->id2)).' Limit 1) as MiPuntaje')
                             ])
                             ->join('tema','juego.CodigoTema','=','tema.Codigo')
                             ->join('carta','juego.Codigo','=','carta.CodigoJuego')

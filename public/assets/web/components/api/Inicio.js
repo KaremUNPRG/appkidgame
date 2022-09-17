@@ -2,7 +2,7 @@ import { headersList, url } from "../ApiRest.js";
 
 export const listaJuego =  async (body,success) => {
 
-    let response = await fetch(`${url}/inicio/juego?Modo=${body.Modo}`, { 
+    let response = await fetch(`${url}/inicio/juego?Modo=${body.Modo}&Buscar=${(body.Buscar == undefined ?'':body.Buscar)}`, { 
         method: "GET",
         headers: headersList()
     })

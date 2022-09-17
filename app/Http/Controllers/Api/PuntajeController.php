@@ -88,8 +88,8 @@ class PuntajeController extends Controller
             $newPuntaje->TiempoDemorado = $request->itmTiempoDemorado;
             $newPuntaje->CantidadDescubiertas = $request->itmDescubiertas;
             $newPuntaje->Totales = $request->itmTotales;
-            $tiempoPuntaje = ($updatePuntaje->TiempoDemorado <= 0)?0
-                                :($updatePuntaje->TiempoTotal/$updatePuntaje->TiempoDemorado);
+            $tiempoPuntaje = ($newPuntaje->TiempoDemorado <= 0)?0
+                                :($newPuntaje->TiempoTotal/$newPuntaje->TiempoDemorado);
             $puntaje = ($tiempoPuntaje)*($newPuntaje->CantidadDescubiertas/$newPuntaje->Totales);
             $newPuntaje->Puntaje = $puntaje;
             $newPuntaje->save();

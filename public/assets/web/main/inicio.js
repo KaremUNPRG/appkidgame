@@ -8,7 +8,6 @@ const templateValoracion = (cantidad) => {
     for (let index = 0; index < Number(cantidad); index++) {
         renderHtml += '<span class="ion-ios-star text-warning"></span>'
     }
-    console.log(renderHtml);
     return renderHtml
 }
 
@@ -41,6 +40,7 @@ const templateItemJuego = (element) => {
 }
 
 $(document).ready(function () {
+    $('.renderHtmlListaJuego').html(`<div id="preloader_3"></div>`)
     listaJuego({Modo:0},function (response) { 
         let renderHtmlListaJuego = '' 
         response.data.forEach(element => {
@@ -160,7 +160,6 @@ $('.sendComentario').click(function () {
 
 $(document).on('click','.selectEstrella',function () {  
     let auth = localStorage.getItem('accessToken')
-    console.log($(this).data('index'));
     valoracionGlobal = $(this).data('index')
     if (auth == null) {
         Swal.fire({
@@ -193,7 +192,21 @@ $('.item-tab').click(function () {
     var key = $(this).data('key')
     $('.item-tab').removeClass('item-tab-select');
     $(this).addClass('item-tab-select');
+    
+    $('.renderHtmlListaJuego').html(`<div id="preloader_3"></div>`)
     listaJuego({Modo:key},function (response) { 
+        let renderHtmlListaJuego = '' 
+        response.data.forEach(element => {
+            renderHtmlListaJuego += templateItemJuego(element)
+        });
+        $('.renderHtmlListaJuego').html(renderHtmlListaJuego)
+    })
+})
+
+$('.icon-buscar').click(function () {  
+    
+    $('.renderHtmlListaJuego').html(`<div id="preloader_3"></div>`)
+    listaJuego({Modo:0,Buscar:$('.input-buscar').val()},function (response) { 
         let renderHtmlListaJuego = '' 
         response.data.forEach(element => {
             renderHtmlListaJuego += templateItemJuego(element)
