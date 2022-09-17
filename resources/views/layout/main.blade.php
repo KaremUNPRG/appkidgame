@@ -71,10 +71,11 @@
         }
         .ftco-navbar-light.scrolled{
             margin-top: -0px;
+            background: #e2f1fc !important;
         }
         .ftco_navbar{
             position: fixed;
-            background: #fff!important;
+            background: #e2f1fc!important;
         }
         #preloader_3{
             position:relative;

@@ -5,8 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Models\User;
 use App\Models\Juego;
 use App\Models\Competencia;
-use Illuminate\Http\Request;
+use App\Models\JuegoUsuario;
 
+use Illuminate\Http\Request;
 use App\Models\JuegoCompetencia;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -53,8 +54,7 @@ class CompetenciaController extends Controller
         $newCompetencia->Clave = empty($request->itmClave)?null:$request->itmClave;
         $newCompetencia->save();
 
-        foreach ($request->itmListaJuego as $key => $value) {
-            
+        foreach ($request->itmListaJuego as $key => $value) { 
             $newJuegoComp = new JuegoCompetencia();
             $newJuegoComp->CodigoJuego = $value['CodigoJuego'];
             $newJuegoComp->CodigoCompetencia = $newCompetencia->Codigo;
@@ -182,6 +182,38 @@ class CompetenciaController extends Controller
         return response()->json([
             'estado' => $verificar > 0 ? true : false,
             'clave' => Crypt::encryptString($request->Clave)
+        ], 200, []);
+    }
+
+    public function agregarJuegoCompetencia(Request $request)
+    {
+        $sql = JuegoCompetencia::where('CodigoJuego','=',$request->Juego)
+                                ->where('CodigoCompetencia','=',$request->Competencia)
+                                ->count();
+        if (!($sql > 0)) {
+            $newJuegoComp = new JuegoCompetencia();
+            $newJuegoComp->CodigoJuego = $request->Juego;
+            $newJuegoComp->CodigoCompetencia = $request->Competencia;
+            $newJuegoComp->save();
+            
+            return response()->json([
+                'mensaje' => 'Se agrego Correctamente'
+            ], 200, []);
+        }else{
+            return response()->json([
+                'mensaje' => 'El juego ya se encuentra registrado'
+            ], 200, []);
+        }
+    }
+
+    public function verificarYaJugado(Request $request)
+    {
+        $sql = JuegoUsuario::where('CodigoJuego','=',$request->Juego)
+                            ->where('CodigoUsuario','=',$this->auth->Codigo)
+                            ->where('CodigoCompetencia','=',$request->Competencia)
+                            ->count();
+        return response()->json([
+            'jugado' => $sql > 0 ? true : false
         ], 200, []);
     }
 }

@@ -15,7 +15,7 @@ const htmlRenderAddJuego = () => {
     return `<div>
                 <div>
                     <div class="header-juego modal-trigger" data-target="modal1">
-                        <div><h6>Juegos</h6></div>
+                        <div><h6>Juegos <i class="bi bi-plus-circle-fill"></i></h6></div>
                     </div>
                     <div class="content-juego">
                         

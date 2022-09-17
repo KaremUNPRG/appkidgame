@@ -27,8 +27,12 @@ class VistaController extends Controller
         return redirect('/');
     }
 
-    public function jugarMemorama()
+    public function jugarMemorama($codigo)
     {
+        // dd($codigo);
+        // if(){
+            
+        // }
         return view('juegos.memorama.jugarMemorama');
     }
     

@@ -17,6 +17,7 @@ use App\Http\Controllers\GoogleController;
 */
 
 Route::get('/', function () {
+    // dd(session('ir'));
     return view('welcome');
 })->name('welcome');
 
