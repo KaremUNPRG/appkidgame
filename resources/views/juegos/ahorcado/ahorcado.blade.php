@@ -146,11 +146,11 @@ picture img {
 
 @media (max-width: 767.98px) {
 
-  .d-flex {
+  .fl {
     display: block !important;
 }
 
-.list-option {
+.lo {
     display: flex !important;
 }
 
@@ -194,10 +194,10 @@ picture img {
 
 <div style="min-height: 900px;background: #f0f2f5;padding: 40px 0px">
         <div class="container">
-            <div class="d-flex">
+            <div class="d-flex fl">
                 <div class="form-group col-3">
                     <p style="font-size: 1.2rem;font-weight: 900;text-transform: uppercase;color: #263e50;">AHORCADO</p>
-                    <div class="list-option">
+                    <div class="list-option lo">
                         <div class="item-option d-flex" id="listarAhorcado">
                             <div><img src="{{asset('assets/web/img/list.png')}}" alt="" style="width: 30px;"></div>
                             <div class="font-weight-bold text-option"> Lista</div>
@@ -221,9 +221,52 @@ picture img {
         </div>
     </div>
 
+
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <h5>Agregar Juego a Competencia</h5>
+            <div class="render-juego py-4 col-12">
+
+            </div>
+            <hr>
+            <div>
+                <div class="d-flex">
+                  <!--
+                    <div class="col-3">
+                        <div class="input-field">
+                            <select class="itmSelectJuego">
+                                <option value="0" selected>Existente</option>
+                                <option value="1">Nuevo</option>
+                            </select>
+                            <label>Competencia: </label>
+                        </div>
+                    </div>
+-->
+                    <div class="col-12">
+                        <div class="input-field">
+                            <i class="material-icons prefix">search</i>
+                            <input id="icon_prefix" placeholder="Buscar competencia" type="text" class="validate itmBuscarCompetencia">
+                            <label for="icon_prefix">Buscar Competencia</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="render-competencia py-4 col-12">
+
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect bg-danger text-white waves-green btn-flat">Cancelar</a>
+        </div>
+    </div>
+
 @endsection
 
 @section('script')
 
-    <script src="{{asset('assets/web/main/ahorcado.js')}}" type="module"></script>
+    <script src="{{asset('assets/web/main/ahorcado.js')}}" type="module"></script>    
+    <script>
+        $('.modal').modal();
+        $('select').formSelect();
+    </script>
 @endsection

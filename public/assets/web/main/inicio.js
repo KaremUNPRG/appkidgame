@@ -8,7 +8,7 @@ const templateValoracion = (cantidad) => {
     for (let index = 0; index < Number(cantidad); index++) {
         renderHtml += '<span class="ion-ios-star text-warning"></span>'
     }
-    console.log(renderHtml);
+    //console.log(renderHtml);
     return renderHtml
 }
 
@@ -123,13 +123,13 @@ const renderValoracion = (response) => {
     $('.misEstrellas').html(renderMiEstrella)
     $('.totalUser').text(estadistica.Total)
 }
-
 $(document).on('click','.viewComentario',function () { 
     // alert('sasas');
     var key = $(this).data('key')
     codigoJuegoGlobal = key
     listaValoracion(key,renderValoracion)
 });
+
 
 $('.sendComentario').click(function () {  
     let auth = localStorage.getItem('accessToken')

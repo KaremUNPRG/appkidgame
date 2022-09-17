@@ -1,5 +1,6 @@
-import { store, list,eliminar, editar,restaurar } from "../components/api/Ahorcado.js";
+import { store, list,eliminar, editar,restaurar,listarCompetencias,editarCompetencia} from "../components/api/Ahorcado.js";
 import { lista } from "../components/api/Tema.js";
+import { listarJuego, juegoCompetencia } from "../components/api/Competencia.js";
 
 var oculta = [];
 var CodigoAhorcado = null
@@ -8,6 +9,8 @@ var cont = 6;
 var palabra = "";
 var TiempoG = 0;
 var buttons = document.getElementsByClassName('letra');
+var ListaCompetencia = [];
+var ListaJuegosCompetencia = [];
 
 const listarTema = (cod) => {
     
@@ -176,6 +179,7 @@ const renderAhorcado = () => {
                                     <li><a href="#!" class="editarAhorcado" data-info='${JSON.stringify(element)}' data-key="${element.Codigo}"><i class="material-icons">create</i>Editar</a></li>
                                     <li><a href="#!" class="deleteAhorcado" data-key="${element.Codigo}"><i class="material-icons">delete</i>Eliminar</a></li>
                                     <li><a href="#!" class="jugar-ahorcado" data-info='${JSON.stringify(element)}' data-key="${element.Codigo}"><i class="material-icons">arrow_right</i>Probar</a></li>
+                                    <li><a href="#!" class="modal-trigger agregar-competencia" data-info='${JSON.stringify(element)}' data-key="${element.Codigo}" data-target="modal1"><i class="material-icons">add</i>Agregar a competencia</a></li>
                                 </ul>                                  
                 </div>
             </div>
@@ -269,7 +273,7 @@ $('#content-app').on('click','.editarAhorcado',function () {
     $('#itmTitulo').val(data.TitJuego).focus()
     $('#itmPalabra').val(data.Palabra).focus()
     $('#itmFondo').val(data.Fondo).focus()
-    $('#itmPistas').val(data.Pistas).focus()
+    $('#itmPistas').val(data.Pista).focus()
     $('#itmTiempo').val(data.tiempo).focus()
     if(data.Privado == 1){
         $('#itmPrivado').prop("checked", true)
@@ -323,8 +327,6 @@ $('#content-app').on('click','.btnEdit',function () {
 
 $('#content-app').on('click', '.jugar-ahorcado' , function () {
 
-    
-    var key = $(this).data('key')
     var data = $(this).data('info')
     console.log(data)
     let renderHtml = `
@@ -552,3 +554,125 @@ function compruebaFin() {
   }
 
 
+/// agregar juego a competencia
+
+const htmlRenderPreloader = () => {
+    return `<div class="progress">
+                <div class="indeterminate"></div>
+            </div>`
+}
+
+const renderItemJuego = (element) => {
+    return `<div style="width:100%;margin: 10px 0px;box-shadow: 1px 1px 15px 1px rgb(0 0 0 / 10%);border-left: 5px solid rebeccapurple;">
+        <div class="d-flex align-items-center">
+            <div style="width:100%;padding:0px" class="col-1">
+                <div><img style="width: 100%;" src="assets/web/img/verdugo.png" alt=""></div>                     
+            </div>
+            <div id="game" data-key="${element.Codigo}" class="col-11">${element.TitJuego} <span>(${element.Palabra})</span></div>
+        </div>
+    </div>`
+}
+
+const renderItemCompetencia = (element) => {
+    return `<div style="width:100%;margin: 10px 0px;box-shadow: 1px 1px 15px 1px rgb(0 0 0 / 10%);border-left: 5px solid rebeccapurple;">
+        <div class="d-flex align-items-center">
+            <div style="width:100%;padding:0px" class="col-1">
+                <div><img style="width: 100%;" src="assets/web/img/list.png" alt=""></div>                     
+            </div>
+            <div class="col-9">${element.Nombre}</div>
+            <div class="col-2">
+                <a data-key="${element.Codigo}" class="btnAddJuego waves-effect waves-light btn text-white"><i class="material-icons prefix">add</i></a>
+              
+                
+            </div>
+        </div>
+    </div>`
+}
+
+$('#content-app').on('click','.agregar-competencia',function () {
+    $('.render-juego').html(htmlRenderPreloader())
+
+    var data = $(this).data('info')
+    var htmlRender = renderItemJuego(data)
+    $('.render-juego').html(htmlRender)
+    listarCompetencias(function (response) {  
+        if (response.data.length > 0) {
+            ListaCompetencia = response.data 
+        }
+    })
+});
+
+const buscarJuegoCompetencia = (cod) => {
+    var key2 = $('#game').data('key');
+    juegoCompetencia(cod,function (response) {  
+        ListaJuegosCompetencia = response.data;
+        let findIndex = ListaJuegosCompetencia.findIndex(obj => obj.CodigoJuego == key2);
+        if(findIndex != -1){
+            Swal.fire({
+                icon: 'info',
+                title: 'El juego ya está en la competencia'
+              })
+      
+         }else{
+            editarCompetencia({
+                itmCodigoJuego: key2,
+                itmCodigoCompetencia: cod
+              },
+              function (response) { 
+                Swal.fire({
+                    title: response.mensaje,
+                    icon:'success',
+                    showDenyButton: false,
+                    showCancelButton: true,
+                    confirmButtonText: 'Salir',
+                  }).then((result) => {
+                    if (result.isConfirmed) {  
+                        renderAhorcado();
+                        $('.itmBuscarCompetencia').val("");
+                        $('.render-competencia').html('');
+                        $('.modal').modal('close');
+                    }
+                  })
+            })
+      
+        }
+    
+        })
+        
+}
+
+
+
+$(document).on('click','.btnAddJuego',function () {  
+    let key = $(this).data('key');
+    buscarJuegoCompetencia(key);
+})
+
+
+$('.itmBuscarCompetencia').keyup(function () {  
+    let key2 = $('#game').data('key');
+    $('.render-competencia').html(htmlRenderPreloader())
+    let filter = ListaCompetencia.filter(obj => obj.Nombre.toUpperCase().includes($(this).val().toUpperCase()) == true); 
+    let htmlRenderCompetencias = '';
+    if ($(this).val() != '') {
+        filter.forEach(element => {
+ 
+            htmlRenderCompetencias += renderItemCompetencia(element)
+            
+
+        });
+    }
+    $('.render-competencia').html(htmlRenderCompetencias)
+})
+
+$(document).on('click','.modal-close',function () {  
+    $('.itmBuscarCompetencia').val("");
+    $('.render-competencia').html('')
+    
+})
+
+$(document).on('click','.modal-overlay',function () {  
+    $('.itmBuscarCompetencia').val("");
+    $('.render-competencia').html('')
+    
+})

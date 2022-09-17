@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Api;
 use App\Models\User;
 use App\Models\Ahorcado;
+use App\Models\Competencia;
+use App\Models\JuegoCompetencia;
+use Illuminate\Support\Facades\DB;
 use App\Models\Juego;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -56,7 +59,7 @@ class AhorcadoController extends Controller
         $newJuego->Fecha = $request->itmFecha;
         $newJuego->Privado = $request->itmPrivado;
         $newJuego->Vigente = 1;
-        $newJuego->Borrador = 1;
+        $newJuego->Borrador = 0;
         $newJuego->codigoTema = $request->itmTema;
         $newJuego->save();
 
@@ -137,4 +140,31 @@ class AhorcadoController extends Controller
             'mensaje' => 'Restaurado Correctamente'
         ], 200, []);
     }
+
+    public function listCompetencias()
+    {
+        $competencia = Competencia::select(['*',DB::raw('date_format(FechaInicio, "%d/%m/%Y %h:%i %p") as FechaInicioAdd'),
+                                                DB::raw('date_format(FechaTermino, "%d/%m/%Y %h:%i %p") as FechaTerminoAdd')])
+                                ->where('Vigente','=',1)
+                                ->where('CodigoUsuario','=',$this->auth->Codigo)
+                                ->orderBy('Codigo','desc')->get();
+        return response()->json([
+            'data' => $competencia
+        ], 200, []);
+    }
+
+    public function editCompetencias(Request $request)
+    {
+        $newJuegoComp = new JuegoCompetencia();
+        $newJuegoComp->CodigoJuego = $request->itmCodigoJuego;
+        $newJuegoComp->CodigoCompetencia = $request->itmCodigoCompetencia;
+        $newJuegoComp->save();
+
+
+        return response()->json([
+            'mensaje' => 'Se edito correctamente'
+        ], 200, []);
+    }
+
+
 }

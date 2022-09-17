@@ -85,3 +85,35 @@ export const restaurar =  async (body,success) => {
         console.log('Hubo un problema con la petición Fetch:' + error.message);
     });
 }
+
+
+export const listarCompetencias =  async (success) => {
+    let response = await fetch(`${url}/ahorcado-competencias`, { 
+        method: "GET",
+        headers: headersList()
+    })
+    .then(response => response.json())
+    .then(data => {
+        success(data)
+    })
+    .catch(function(error) {
+        console.log('Hubo un problema con la petición Fetch:' + error.message);
+    });
+}
+
+export const editarCompetencia =  async (body,success) => {
+    let bodyContent = JSON.stringify(body);
+
+    let response = await fetch(`${url}/agregar-juego-competencia`, { 
+        method: "POST",
+        body: bodyContent,
+        headers: headersList()
+    })
+    .then(response => response.json())
+    .then(data => {
+        success(data)
+    })
+    .catch(function(error) {
+        console.log('Hubo un problema con la petición Fetch:' + error.message);
+    });
+}

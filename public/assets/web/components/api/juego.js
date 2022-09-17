@@ -45,3 +45,34 @@ export const puntajeAhorcado =  async (body,success) => {
         console.log('Hubo un problema con la petición Fetch:' + error.message);
     });
 }
+
+
+export const listaAhorcadoRelacionados =  async (tema,success) => {
+   
+    let response = await fetch(`${url}/ahorcado-tema-relacionado/${tema.tema}`, { 
+        method: "GET",
+        headers: headersList()
+    })
+    .then(response => response.json())
+    .then(data => {
+        success(data)
+    })
+    .catch(function(error) {
+        console.log('Hubo un problema con la petición Fetch:' + error.message);
+    });
+}
+
+export const listaAhorcadoRelacionados2 =  async (cod,success) => {
+   
+    let response = await fetch(`${url}/ahorcado-autor-relacionado/${cod.cod}`, { 
+        method: "GET",
+        headers: headersList()
+    })
+    .then(response => response.json())
+    .then(data => {
+        success(data)
+    })
+    .catch(function(error) {
+        console.log('Hubo un problema con la petición Fetch:' + error.message);
+    });
+}

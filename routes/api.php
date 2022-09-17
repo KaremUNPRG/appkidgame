@@ -56,6 +56,8 @@ Route::middleware(['authapi'])->group(function () {
 });
 
 Route::get('jugar-ahorcado/{id}',[JuegoController::class,'jugarAhorcado']);
+Route::get('ahorcado-tema-relacionado/{tema}',[JuegoController::class,'listaAhorcadosRelacionados']);
+Route::get('ahorcado-autor-relacionado/{cod}',[JuegoController::class,'listaAhorcadosRelacionados2']);
 
 Route::middleware(['authapi'])->group(function () {
     Route::post('ahorcado',[AhorcadoController::class,'store']);
@@ -63,6 +65,8 @@ Route::middleware(['authapi'])->group(function () {
     Route::delete('ahorcado',[AhorcadoController::class,'destroy']);
     Route::put('ahorcado',[AhorcadoController::class,'update']);
     Route::put('ahorcado/restore',[AhorcadoController::class,'restore']);
+    Route::get('ahorcado-competencias',[AhorcadoController::class,'listCompetencias']);
+    Route::post('agregar-juego-competencia',[AhorcadoController::class,'editCompetencias']);
     Route::post('puntaje-ahorcado',[PuntajeController::class,'storePuntajeAhorcado']);    
 });
     

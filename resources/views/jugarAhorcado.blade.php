@@ -20,7 +20,6 @@
 
 body{
   
-    font-family: sans-serif;
     color: black;
 }
 
@@ -146,13 +145,11 @@ h2.palabra {
 .no-wrap {
   flex-wrap: nowrap !important;
 }
-.col {
+.colum {
   width: 50%;
   height: 250px;
 }
-.col span {
-  
-}
+
 #turnos h3 {
   margin: auto;
 }
@@ -276,7 +273,7 @@ h1#msg-final{
   bottom: 60px;
 }
 
-.col{
+.colum{
   height: 160px;
 }
 
@@ -286,10 +283,133 @@ picture img{
 
 }
 
+.itemRelacionado{
+
+  width: 30vh;
+  margin: 10px;
+
+}
+
+.tit{
+  font-size: 20px;
+}
+
+.j-r{
+  font-family: Poppins-Bold;
+    font-size: 100px;
+    line-height: 1.1;
+}
+
+.nav-rel
+{
+    display: -webkit-box; 
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    border: none;
+}
+
+.nav-rel .nav-item {
+    margin: 0px 15px;
+}
+
+.nav-link{
+    font-size: 18px;
+    color: grey;
+    line-height: 1.2;
+    padding: 0;
+    border-radius: 0px;
+    border: none;
+    cursor: pointer;
+    border-bottom: 1px solid transparent;
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    transition: all 0.4s;
+}
+
+.nav-link.active {
+    color: #333;
+    border-color: #797979;
+}
+
+.selectEstrella{
+            cursor: pointer;
+        }
+        .avatar-comentario{
+            padding-right: 20px;
+        }
+        .avatar-comentario img{
+            border-radius: 50%;
+        }
+        .user-comentario span{
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        .mComentario::-webkit-scrollbar {
+            width: 8px;    
+            height: 8px;
+        }
+        .mComentario::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 4px;
+        }
+
+        .mComentario::-webkit-scrollbar-thumb:hover {
+            background: #b3b3b3;
+            box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+        }
+
+        .mComentario::-webkit-scrollbar-thumb:active {
+            background-color: #999999;
+        }
+        .mComentario::-webkit-scrollbar-track {
+            background: #e1e1e1;
+            border-radius: 4px;
+        }
+        .mComentario::-webkit-scrollbar-track:hover,
+        .mComentario::-webkit-scrollbar-track:active {
+        background: #d4d4d4;
+        }
+
+.button-54 {
+  
+  text-decoration: none;
+  color: #000;
+  cursor: pointer;
+  border: 3px solid;
+  padding: 0.25em 0.5em;
+  box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px, 4px 4px 0px 0px, 5px 5px 0px 0px;
+  position: relative;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-54:active {
+  box-shadow: 0px 0px 0px 0px;
+  top: 5px;
+  left: 5px;
+}
+
+@media (min-width: 768px) {
+  .button-54 {
+    padding: 0.25em 0.75em;
+  }
+}
+
+
+
 </style>
 
 @endsection
 @section('content')
+
+
 
 <div class="main-container" id="main-container">
   <div class="cont">
@@ -298,7 +418,7 @@ picture img{
         <h2 class="tema"></h2>
         
         <div class="flex-row no-warp">
-          <div class="col">
+          <div class="col colum">
             <picture>
               <img src="{{asset('assets/web/img/ahorcadogame/ahorcado_6.png')}}" alt="" id="image6">
               <img src="{{asset('assets/web/img/ahorcadogame/ahorcado_5.png')}}" alt="" id="image5">
@@ -309,7 +429,7 @@ picture img{
               <img src="{{asset('assets/web/img/ahorcadogame/ahorcado_0.png')}}" alt="" id="image0">
             </picture>
             </div>
-          <div class="col">
+          <div class="col colum">
           <h1 id="msg-final"></h1>
           <h3 id="acierto"></h3>
           <h2 class="palabra" id="palabra"></h2> 
@@ -322,6 +442,7 @@ picture img{
 <section class="section2">
                   <div class="estadisticas">
                   <h3>Vidas: <span id="intentos">6</span></h3>
+                  <h3 id="puntajeTotal" style="color: black; margin-top:10px;"></h3>
                   </div>
                   <div class="estadisticas">
                   <h3>Tiempo:</h3>
@@ -337,20 +458,112 @@ picture img{
                       </div>     
                   </div>
 
-      <div id="content" class="estadisticas">
-          <button id="pista" class="pista">Quiero una pista</button>
+      <div id="content" class="estadisticas"> 
 
-<br>
-          <span class="hueco-pista"></span>
-
-
+          <button id="pista" class="button-54 pista" role="button">Quiero una pista</button>
       </div>
 </section>
 </div>
 </div>
+
+<section class="ftco-section bg-light">
+    
+        <div class="row justify-content-center mb-5 pb-2">
+            <div class="col-md-8 text-center heading-section ftco-animate">
+                <h2 class="j-r"><span>Juegos Relacionados</h2>
+        <ul class="nav nav-rel" role="tablist">
+					<li class="nav-item p-b-10">
+						<a class="rel-tema nav-link active" data-toggle="tab" href="#" role="tab">Mismo Tema</a>
+					</li>
+
+					<li class="nav-item p-b-10">
+						<a class="rel-autor nav-link" data-toggle="tab" href="#" role="tab">Mismo autor</a>
+					</li>
+				</ul>
+            </div>
+        </div>
+        <div class="row renderHtmlListaJuego" style="justify-content: center;">
+
+        </div>
+ 
+</section>
+
+<div id="mComentario" class="mComentario modal">
+    <div class="modal-content">
+        <h4 class="titleJuego"></h4>
+        <div class="content-valoracion">
+            <div class="estrella-val d-flex justify-content-between">
+                <div class="puntuacion">
+                    <h1 class="m-0 puntacionRender"></h1>
+                    <div class="renderPuntuacion">
+                    </div>
+                    <div class="totalUser"></div>
+                </div>
+                <div class="grafica col pl-5">
+                    <div class="d-flex     align-items-center">
+                        <div class="px-2">5</div>
+                        <progress id="5Estrella" max="100" value="0" class="col"> </progress>
+                    </div>
+                    <div class="d-flex     align-items-center">
+                        <div class="px-2">4</div>
+                        <progress id="4Estrella" max="100" value="0" class="col"></progress>
+                    </div>
+                    <div class="d-flex     align-items-center">
+                        <div class="px-2">3</div>
+                        <progress id="3Estrella" max="100" value="0" class="col"></progress>
+                    </div>
+                    <div class="d-flex     align-items-center">
+                        <div class="px-2">2</div>
+                        <progress id="2Estrella" max="100" value="0" class="col"></progress>
+                    </div>
+                    <div class="d-flex     align-items-center">
+                        <div class="px-2">1</div>
+                        <progress id="1Estrella" max="100" value="0" class="col"></progress>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content-accion py-3">
+            <div class="miComentario">
+                <div class="input-field d-flex align-items-center">
+                    <input placeholder="Escribir...." id="itemComentario" autocomplete="off" type="text" class="">
+                    <i class="material-icons sendComentario" data-key="" style="font-size: 2rem;cursor: pointer;">send</i>
+                    <label for="itemComentario" style="font-size: 2rem;transform: translateY(-34px) scale(0.8);">
+                        <div class="misEstrellas">
+                            {{-- <span class="ion-ios-star text-secondary selectEstrella" data-index="1"></span>
+                            <span class="ion-ios-star text-secondary selectEstrella" data-index="2"></span>
+                            <span class="ion-ios-star text-secondary selectEstrella" data-index="3"></span>
+                            <span class="ion-ios-star text-secondary selectEstrella" data-index="4"></span>
+                            <span class="ion-ios-star text-secondary selectEstrella" data-index="5"></span> --}}
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="content-comentario">
+            
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cerrar</a>
+    </div>
+</div>
+
       
 @endsection
 
 @section('script')
 <script src="{{asset('assets/web/main/ahorca.js')}}" type="module"></script>
+
+    @if (session('accessToken'))
+        @php
+            $accessToken =session('accessToken');
+        @endphp
+        <script>
+            localStorage.setItem('accessToken',@json($accessToken));
+        </script>
+    @endif
+    <script>
+        $('.modal').modal();
+    </script>
 @endsection
