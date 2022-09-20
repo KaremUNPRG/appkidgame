@@ -117,4 +117,3 @@ export const editarCompetencia =  async (body,success) => {
         console.log('Hubo un problema con la petición Fetch:' + error.message);
     });
 }
-

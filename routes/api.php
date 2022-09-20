@@ -52,12 +52,19 @@ Route::middleware(['authapi'])->group(function () {
     Route::get('sopaletras', [SopaLetrasController::class,'index']);
     Route::delete('sopaletras',[SopaLetrasController::class,'destroy']);
     Route::put('sopaletras',[SopaLetrasController::class,'update']);
+      Route::get('sopa-letras-competencias',[SopaLetrasController::class,'listCompetencias']);
+     Route::post('agregar-sopa-competencia',[SopaLetrasController::class,'editCompetencias']);  
+     Route::post('puntaje-sopa-letras',[PuntajeController::class,'storePuntajeSopaLetras']);  
+    
 
 });
 
 Route::get('jugar-ahorcado/{id}',[JuegoController::class,'jugarAhorcado']);
+Route::get('jugar-sopa-letras/{id}',[JuegoController::class,'jugarSopaLetras']);
 Route::get('ahorcado-tema-relacionado/{tema}',[JuegoController::class,'listaAhorcadosRelacionados']);
 Route::get('ahorcado-autor-relacionado/{cod}',[JuegoController::class,'listaAhorcadosRelacionados2']);
+Route::get('sopa-letras-tema-relacionado/{tema}',[JuegoController::class,'listaSopasRelacionados']);
+Route::get('sopa-letras-autor-relacionado/{cod}',[JuegoController::class,'listaSopasRelacionados2']);
 
 Route::middleware(['authapi'])->group(function () {
     Route::post('ahorcado',[AhorcadoController::class,'store']);

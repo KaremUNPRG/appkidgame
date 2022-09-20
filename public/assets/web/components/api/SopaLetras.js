@@ -81,4 +81,51 @@ export const getTemas = async (success) => {
     });
 
 }
+export const restaurar =  async (body,success) => {
+    let bodyContent = JSON.stringify(body);
+
+    let response = await fetch(`${url}/sopaletras/restore`, { 
+        method: "PUT",
+        body: bodyContent,
+        headers: headersList()
+    })
+    .then(response => response.json())
+    .then(data => {
+        success(data)
+    })
+    .catch(function(error) {
+        console.log('Hubo un problema con la petición Fetch:' + error.message);
+    });
+}
+
+export const listarCompetencias =  async (success) => {
+    let response = await fetch(`${url}/sopa-letras-competencias`, { 
+        method: "GET",
+        headers: headersList()
+    })
+    .then(response => response.json())
+    .then(data => {
+        success(data)
+    })
+    .catch(function(error) {
+        console.log('Hubo un problema con la petición Fetch:' + error.message);
+    });
+}
+
+export const editarCompetencia =  async (body,success) => {
+    let bodyContent = JSON.stringify(body);
+
+    let response = await fetch(`${url}/agregar-sopa-competencia`, { 
+        method: "POST",
+        body: bodyContent,
+        headers: headersList()
+    })
+    .then(response => response.json())
+    .then(data => {
+        success(data)
+    })
+    .catch(function(error) {
+        console.log('Hubo un problema con la petición Fetch:' + error.message);
+    });
+}
 

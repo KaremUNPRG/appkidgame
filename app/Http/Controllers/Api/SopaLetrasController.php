@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\User;
 use App\Models\Tema;
+use App\Models\Competencia;
+use App\Models\JuegoCompetencia;
 use App\Models\Juego;
 use App\Models\SopaLetras;
 use Illuminate\Http\Request;
@@ -146,6 +148,32 @@ class SopaLetrasController extends Controller
 
         return response()->json([
             'mensaje' => 'Se Eliminó Correctamente'
+        ], 200, []);
+    }
+
+
+      public function listCompetencias()
+    {
+        $competencia = Competencia::select(['*',DB::raw('date_format(FechaInicio, "%d/%m/%Y %h:%i %p") as FechaInicioAdd'),
+                                                DB::raw('date_format(FechaTermino, "%d/%m/%Y %h:%i %p") as FechaTerminoAdd')])
+                                ->where('Vigente','=',1)
+                                ->where('CodigoUsuario','=',$this->auth->Codigo)
+                                ->orderBy('Codigo','desc')->get();
+        return response()->json([
+            'data' => $competencia
+        ], 200, []);
+    }
+
+       public function editCompetencias(Request $request)
+    {
+        $newJuegoComp = new JuegoCompetencia();
+        $newJuegoComp->CodigoJuego = $request->itmCodigoJuego;
+        $newJuegoComp->CodigoCompetencia = $request->itmCodigoCompetencia;
+        $newJuegoComp->save();
+
+
+        return response()->json([
+            'mensaje' => 'Se edito correctamente'
         ], 200, []);
     }
 }

@@ -96,4 +96,3 @@ export const juegoCompetencia =  async (codigo, success) => {
         console.log('Hubo un problema con la petición Fetch:' + error.message);
     });
 }
-

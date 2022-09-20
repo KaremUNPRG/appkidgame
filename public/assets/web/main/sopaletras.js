@@ -1,21 +1,66 @@
-import { store, list,eliminar, editar, getTemas } from "../components/api/SopaLetras.js";
+import { store, list,eliminar, editar, getTemas,listarCompetencias,editarCompetencia } from "../components/api/SopaLetras.js";
+import { lista } from "../components/api/Tema.js";
+import { listarJuego, juegoCompetencia } from "../components/api/Competencia.js";
 
 var CodigoJuegoSopa = null;
 var stopTiempo = 0;
+var ListaCompetencia = [];
+var ListaJuegosCompetencia = [];
+
+
+
+
+
+const listarTema = (cod) => {
+    
+    lista(function (response) {  
+        let itemTema = '';
+        response.data.forEach(function (element, index) {
+            if(cod == element.Codigo){
+            itemTema +=`<option value="${element.Codigo}" selected>${element.Titulo}</option>`
+            }else{
+                itemTema +=`<option value="${element.Codigo}">${element.Titulo}</option>`
+            }
+        });
+        let htmlRender = `
+                            <p>Tema</p>
+                            <select id="itmTema" class="form-control">
+                                <option value="">Seleccione tema...</option>
+                                ${itemTema}
+                            </select> 
+                        `;
+            $('.render-tema').html(htmlRender);
+            $('.dropdown-trigger').dropdown();
+        })
+}
+
+
+
+
+
+
+
 const renderSopa = () => {
     list(function (response) {  
         let itemSopa = '';
+         let aux = '';
         response.data.forEach(function (element, index) {
+             if(element.Privado == 1){
+                aux = "Privado"    
+            }else{
+                aux = "Público" 
+            }
+
+ if(element.Vigente == 1){
             itemSopa += ` <div class="col-12 item-sopa-letra ${element.Borrador==1?"item-borrador":""}">
                                     <div class="row justify-content-between">
                                         <div class="col">
-                                            <p class="title-sopa-letra">Titulo: ${element.TitJuego}</p>
+                                            <p style="color: #1eaaf1;" class="title-sopa-letra">Titulo: ${element.TitJuego}</p>
                                             <p class="tema-sopa-letra">Tema del Juego: ${element.Tema}</p>
                                             <p class="tiempo-sopa-letra">Tiempo: ${element.Tiempo} min.</p>
-                                            <p class="fecha-sopa-letra">Fecha: ${element.FechaReg}</p>
-                                            <p class="columnas-filas-sopa-letra">Filas x Columnas: ${element.Filas} x ${element.Columnas}</p>
-                                            <p class="palabras-sopa-letra">Palabras: ${element.Palabras.slice(0,-1)}</p>
-                                            <p class="trampas-sopa-letra">Trampas: ${element.Trampas.slice(0,-1)}</p>
+                                            <p style="color: #28a745;">${aux}</p>
+                                           
+                                            
                                         </div>
                                         <div>
                                             <a class='dropdown-trigger' href='#' data-target='dropdown${index}'>
@@ -26,11 +71,36 @@ const renderSopa = () => {
                                                 <li><a href="#!" class="editar-sopa" data-info='${JSON.stringify(element)}' data-key="${element.CodigoJuego}"><i class="material-icons">create</i>${element.Borrador==1?"Restaurar":"Editar"}</a></li>
                                                 <li><a href="#!" class="delete-sopa" data-key="${element.CodigoJuego}"><i class="material-icons">delete</i>Eliminar</a></li>
                                                 <li><a href="#!" class="jugar-sopa" data-info='${JSON.stringify(element)}' data-key="${element.CodigoJuego}"><i class="material-icons">arrow_right</i>Probar</a></li>
-                                                <li><a href="#!"><i class="material-icons">insert_link</i>Compartir</a></li>
+                                               <li><a href="#!" class="modal-trigger agregar-competencia" data-info='${JSON.stringify(element)}' data-key="${element.Codigo}" data-target="modal1"><i class="material-icons">add</i>Agregar a competencia</a></li>
+
                                             </ul>                                  
                                         </div>
                                     </div>
-                                </div>`
+                                </div>`}else{ 
+         itemSopa += ` <div style="border-left: 4px solid grey;" class="col-12 item-competencia">
+        <div class="row justify-content-between">
+             <div class="col">
+                     <p class="title-sopa-letra">Titulo: ${element.TitJuego}</p>
+                    <p class="tema-sopa-letra">Tema del Juego: ${element.Tema}</p>
+                    <p class="tiempo-sopa-letra">Tiempo: ${element.Tiempo} min.</p>
+
+                    <p>Eliminado</p>
+            </div>
+         <div>
+        <a class='dropdown-trigger' href='#' data-target='dropdown${index}'>
+            <i class="material-icons" style="font-size: 2rem">more_vert</i>
+        </a>
+        <ul id='dropdown${index}' class='dropdown-content'>
+            <li><a href="#!" class="restaurarSopa" data-key="${element.Codigo}"><i class="material-icons">create</i>Restaurar</a></li>
+        </ul>                                  
+</div>
+</div>
+</div>`
+
+        }
+
+
+
         });
         let htmlRender = `<div class="list-sopa-letra">
                                 ${itemSopa}
@@ -74,10 +144,30 @@ const deleteSopa = (codigo) => {
     })
 }
 
+const restaurarSopa = (codigo) => {
+    restaurar({
+        Sopa:codigo
+    },
+    function (response) {  
+        Swal.fire({
+            icon: 'success',
+            title: response.mensaje
+          })
+        renderSopa()
+    })
+}
+
+
 $('#content-app').on('click','.delete-sopa',function () { 
     var key = $(this).data('key')
     // console.log(key)
     deleteSopa(key)
+});
+
+
+$('#content-app').on('click','.restaurarSopa',function () { 
+    var key = $(this).data('key')
+    restaurarSopa(key)
 });
 
 $('#nuevoSopa').click(function(){
@@ -203,6 +293,7 @@ $('#nuevoSopa').click(function(){
                     </div>`
     $('.render-html').html(renderHtml);
     renderTemas();
+    listarTema(0);
 })
 
 // $(document).on('change','.executeBorrador',function () {
@@ -343,8 +434,7 @@ $('#content-app').on('click','.editar-sopa',function () {
     renderList(data.Trampas, 'T');
 
     window.setTimeout(function(){
-        // alert('.........')
-        $('#itmTema').val(data.CodTema);
+        $('#itmTema').val(data.CodigoTema);
         $('select').formSelect();
     }, 500)
     
@@ -866,3 +956,128 @@ function formatoHora(formato) {
     // console.log(`resp`, resp)
     return resp;
 }
+
+
+
+/// agregar juego a competencia
+
+const htmlRenderPreloader = () => {
+    return `<div class="progress">
+                <div class="indeterminate"></div>
+            </div>`
+}
+
+const renderItemJuego = (element) => {
+    return `<div style="width:100%;margin: 10px 0px;box-shadow: 1px 1px 15px 1px rgb(0 0 0 / 10%);border-left: 5px solid rebeccapurple;">
+        <div class="d-flex align-items-center">
+            <div style="width:100%;padding:0px" class="col-1">
+                <div><img style="width: 100%;" src="assets/web/img/verdugo.png" alt=""></div>                     
+            </div>
+            <div id="game" data-key="${element.CodigoJuego}" class="col-11">${element.TitJuego} </span></div>
+        </div>
+    </div>`
+}
+
+const renderItemCompetencia = (element) => {
+    return `<div style="width:100%;margin: 10px 0px;box-shadow: 1px 1px 15px 1px rgb(0 0 0 / 10%);border-left: 5px solid rebeccapurple;">
+        <div class="d-flex align-items-center">
+            <div style="width:100%;padding:0px" class="col-1">
+                <div><img style="width: 100%;" src="assets/web/img/list.png" alt=""></div>                     
+            </div>
+            <div class="col-9">${element.Nombre}</div>
+            <div class="col-2">
+                <a data-key="${element.Codigo}" class="btnAddJuego waves-effect waves-light btn text-white"><i class="material-icons prefix">add</i></a>
+              
+                
+            </div>
+        </div>
+    </div>`
+}
+
+$('#content-app').on('click','.agregar-competencia',function () {
+    $('.render-juego').html(htmlRenderPreloader())
+
+    var data = $(this).data('info')
+    var htmlRender = renderItemJuego(data)
+    $('.render-juego').html(htmlRender)
+    listarCompetencias(function (response) {  
+        if (response.data.length > 0) {
+            ListaCompetencia = response.data 
+        }
+    })
+});
+
+const buscarJuegoCompetencia = (cod) => {
+    var key2 = $('#game').data('key');
+    juegoCompetencia(cod,function (response) {  
+        ListaJuegosCompetencia = response.data;
+        let findIndex = ListaJuegosCompetencia.findIndex(obj => obj.CodigoJuego == key2);
+        if(findIndex != -1){
+            Swal.fire({
+                icon: 'info',
+                title: 'El juego ya está en la competencia'
+              })
+      
+         }else{
+            editarCompetencia({
+                itmCodigoJuego: key2,
+                itmCodigoCompetencia: cod
+              },
+              function (response) { 
+                Swal.fire({
+                    title: response.mensaje,
+                    icon:'success',
+                    showDenyButton: false,
+                    showCancelButton: true,
+                    confirmButtonText: 'Salir',
+                  }).then((result) => {
+                    if (result.isConfirmed) {  
+                        renderSopa();
+                        $('.itmBuscarCompetencia').val("");
+                        $('.render-competencia').html('');
+                        $('.modal').modal('close');
+                    }
+                  })
+            })
+      
+        }
+    
+        })
+        
+}
+
+
+
+$(document).on('click','.btnAddJuego',function () {  
+    let key = $(this).data('key');
+    buscarJuegoCompetencia(key);
+})
+
+
+$('.itmBuscarCompetencia').keyup(function () {  
+    let key2 = $('#game').data('key');
+    $('.render-competencia').html(htmlRenderPreloader())
+    let filter = ListaCompetencia.filter(obj => obj.Nombre.toUpperCase().includes($(this).val().toUpperCase()) == true); 
+    let htmlRenderCompetencias = '';
+    if ($(this).val() != '') {
+        filter.forEach(element => {
+ 
+            htmlRenderCompetencias += renderItemCompetencia(element)
+            
+
+        });
+    }
+    $('.render-competencia').html(htmlRenderCompetencias)
+})
+
+$(document).on('click','.modal-close',function () {  
+    $('.itmBuscarCompetencia').val("");
+    $('.render-competencia').html('')
+    
+})
+
+$(document).on('click','.modal-overlay',function () {  
+    $('.itmBuscarCompetencia').val("");
+    $('.render-competencia').html('')
+    
+})

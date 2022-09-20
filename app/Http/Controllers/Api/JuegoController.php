@@ -51,8 +51,25 @@ class JuegoController extends Controller
             ], 200, []); 
        
 
-
 }
+
+
+ public function jugarSopaLetras (Request $request) {
+        $juego = Juego::select([
+            'juego.Codigo','juego.Titulo', 'Palabras','Trampas',
+            'tema.Titulo as Tema', 'Tiempo','Fondo','tema.CodigoUsuario',
+            'Filas','Columnas'
+            ])
+            ->join('tema','juego.CodigoTema','=','tema.Codigo')
+            ->join('sopa','juego.Codigo','=','sopa.CodigoJuego')
+            ->where('juego.Codigo','=',$request->id)->get();
+
+        return response()->json([
+        'data' => $juego, 
+        ], 200, []); 
+
+
+    }
 
 public function listaAhorcadosRelacionados(Request $request)
 {
@@ -101,6 +118,58 @@ public function listaAhorcadosRelacionados2(Request $request)
 
 
 }
+
+
+public function listaSopasRelacionados(Request $request)
+{
+    $juego = Juego::select([
+                        'juego.Codigo','juego.Titulo as TitJuego',DB::raw('AVG(valoracion.Valoracion) as ValoracionPunto'),
+                        'tema.Titulo as TitTema','tiempo'
+                        ])
+                        ->join('tema','juego.CodigoTema','=','tema.Codigo')
+                        ->leftJoin('valoracion','valoracion.CodigoJuego','juego.Codigo')
+                        ->where('juego.Vigente','=','1')
+                        ->where('juego.Tipo','=','3')
+                        ->where('tema.Titulo','like','%'. $request->tema .'%') 
+                        ->groupBy('juego.Codigo')
+                        ->orderBy('ValoracionPunto','desc')
+                        ->limit(4)->get();
+                        
+
+        return response()->json([
+            'data' => $juego, 
+        ], 200, []); 
+   
+
+
+}
+
+public function listaSopasRelacionados2(Request $request)
+{
+    $juego = Juego::select([
+                        'juego.Codigo','juego.Titulo as TitJuego',DB::raw('AVG(valoracion.Valoracion) as ValoracionPunto'),
+                        'tema.Titulo as TitTema','tiempo'
+                        ])
+                        ->join('tema','juego.CodigoTema','=','tema.Codigo')
+                        ->leftJoin('valoracion','valoracion.CodigoJuego','juego.Codigo')
+                        ->where('juego.Vigente','=','1')
+                        ->where('juego.Tipo','=','3')
+                        ->where('tema.CodigoUsuario','=',$request->cod) 
+                        ->groupBy('juego.Codigo')
+                        ->orderBy('ValoracionPunto','desc')
+                        ->limit(4)->get();
+                        
+
+        return response()->json([
+            'data' => $juego, 
+        ], 200, []); 
+   
+
+
+}
+
+
+
 
 
     /**

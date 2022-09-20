@@ -40,6 +40,29 @@ class PuntajeController extends Controller
         ], 200, []);
     }
 
+    public function storePuntajeSopaLetras (Request $request)
+    {
+        $newJuegoUsuario = new JuegoUsuario;
+        $newJuegoUsuario->CodigoUsuario = $this->auth->Codigo;
+        $newJuegoUsuario->CodigoJuego = $request->Juego;
+        $newJuegoUsuario->Fecha = $request->itmFecha;
+        $newJuegoUsuario->save();
+
+        $newPuntaje = new Puntaje;
+        $newPuntaje->CodigoJuegoUsuario =  $newJuegoUsuario->Codigo;
+        // $newPuntaje->Vidas = $request->itmVidas;
+        $newPuntaje->TiempoTotal = $request->itmTiempoTotal;
+        $newPuntaje->TiempoDemorado = $request->itmTiempoDemorado;
+        $newPuntaje->Descubiertas = $request->itmDescubiertas;
+        $newPuntaje->Totales = $request->itmTotales;
+        $newPuntaje->save();
+
+        $puntaje = ($newPuntaje->TiempoDemorado/$newPuntaje->TiempoTotal)*($newPuntaje->Descubiertas/$newPuntaje->Totales);
+        return response()->json([
+            'puntaje' => $puntaje
+        ], 200, []);
+
+    }
     /**
      * Display the specified resource.
      *

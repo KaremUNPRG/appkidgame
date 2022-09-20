@@ -24,6 +24,11 @@ Route::get('/jugarAhorcado', function () {
     return view('jugarAhorcado');
 })->name('jugarAhorcado');
 
+Route::get('/jugarSopaLetras', function () {
+    return view('jugarSopaLetras');
+})->name('jugarSopaLetras');
+
+
 Route::get('/salir', [VistaController::class,'salirApp'] );
 
 Route::get('auth/google', [GoogleController::class, 'redirectToGoogle']);

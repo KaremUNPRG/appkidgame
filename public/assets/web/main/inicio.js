@@ -54,7 +54,9 @@ $(document).ready(function () {
 const buscarJuego = (tipo,codigo) => {
     if(tipo == 2){  
         $(location).attr('href',`jugarAhorcado?id=${btoa(codigo)}`);  
-    }  
+      }  else if (tipo == 3) {
+        $(location).attr('href',`jugarSopaLetras?id=${btoa(codigo)}`);  
+    } 
 }
 
 const buildEstrella = (estrella) => {
