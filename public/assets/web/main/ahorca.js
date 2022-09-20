@@ -156,7 +156,11 @@ function mostrarPuntaje(suma, cant){
     icon:'success',
     confirmButtonColor: '#3085d6',
     showCancelButton: true,
-    confirmButtonText: `Valorar Juego!`
+    confirmButtonText: `Valorar Juego!`,
+    footer: `<a class="resp-sharing-button__link" href="https://facebook.com/sharer/sharer.php?u=http://127.0.0.1//jugarAhorcado?id=${btoa(codigoJuegoGlobal)}" target="_blank" rel="noopener" aria-label="Share on Facebook">
+    <div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--large"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+      </div>Compartir en Facebook</div>
+  </a>`
     }).then((result) => {
       if (result.isConfirmed) {  
         Swal.fire({
@@ -201,7 +205,11 @@ function compruebaFin() {
               icon:'success',
               confirmButtonColor: '#3085d6',
               showCancelButton: true,
-              confirmButtonText: `Valorar Juego!`
+              confirmButtonText: `Valorar Juego!`,
+              footer: `<a class="resp-sharing-button__link" href="https://facebook.com/sharer/sharer.php?u=http://127.0.0.1//jugarAhorcado?id=${btoa(codigoJuegoGlobal)}" target="_blank" rel="noopener" aria-label="Share on Facebook">
+    <div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--large"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+      </div>Compartir en Facebook</div>
+  </a>`
             }).then((result) => {
               if (result.isConfirmed) {  
                 $('.viewComentario').click();
@@ -255,7 +263,11 @@ function compruebaFin() {
               icon:'success',
               confirmButtonColor: '#3085d6',
               showCancelButton: true,
-              confirmButtonText: `Valorar Juego!`
+              confirmButtonText: `Valorar Juego!`,
+              footer: `<a class="resp-sharing-button__link" href="https://facebook.com/sharer/sharer.php?u=http://127.0.0.1//jugarAhorcado?id=${btoa(codigoJuegoGlobal)}" target="_blank" rel="noopener" aria-label="Share on Facebook">
+    <div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--large"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+      </div>Compartir en Facebook</div>
+  </a>`
             }).then((result) => {
               if (result.isConfirmed) {  
                 $('.viewComentario').click();
@@ -369,7 +381,11 @@ function cargarMinutos(segundos){
               icon:'success',
               confirmButtonColor: '#3085d6',
               showCancelButton: true,
-              confirmButtonText: `Valorar Juego!`
+              confirmButtonText: `Valorar Juego!`,
+              footer: `<a class="resp-sharing-button__link" href="https://facebook.com/sharer/sharer.php?u=http://127.0.0.1//jugarAhorcado?id=${btoa(codigoJuegoGlobal)}" target="_blank" rel="noopener" aria-label="Share on Facebook">
+    <div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--large"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+      </div>Compartir en Facebook</div>
+  </a>`
             }).then((result) => {
               if (result.isConfirmed) {  
                 $('.viewComentario').click();

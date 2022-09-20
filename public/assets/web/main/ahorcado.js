@@ -26,7 +26,7 @@ const listarTema = (cod) => {
         let htmlRender = `
                             <p>Tema</p>
                             <select id="itmTema" class="form-control">
-                                <option value="">Seleccione tema...</option>
+                                <option value="-1">Seleccione tema...</option>
                                 ${itemTema}
                             </select> 
                         `;
@@ -99,7 +99,7 @@ const formAhorcado = () => {
                         <div class="row">
                             <div class="col-xl-12 text-center">
                                 <br>
-                                <button style="height:67px" id="sendAhorcado" class="form-group btn bg-primary btn-primary py-3 px-5 btnSend" type="submit" name="action">Guardar 
+                                <button style="height:67px" id="sendAhorcado" class="form-group btn bg-primary btn-primary py-3 px-5 btnSend" type="submit" name="action" disabled>Guardar 
                                     <i class="material-icons right">send</i>
                                 </button>
                                     
@@ -675,4 +675,40 @@ $(document).on('click','.modal-overlay',function () {
     $('.itmBuscarCompetencia').val("");
     $('.render-competencia').html('')
     
+})
+
+
+//validaciones
+
+$(document).on('change','.form-nuevo',function () {
+    var element = document.getElementById("sendAhorcado");
+    var titulo = document.getElementById('itmTitulo').value;
+    if(titulo.trim().length == 0) {
+        element.disabled = true;
+        return;
+    }
+    var palabra = document.getElementById('itmPalabra').value;
+    if(palabra.trim().length == 0) {
+        element.disabled = true;   
+        return;
+    }
+    var tema = document.getElementById('itmTema').value;
+    if(tema == -1) {
+        element.disabled = true;
+        return;
+    }
+
+    var pista = document.getElementById('itmPistas').value;
+    if(pista.trim().length == 0) {
+        element.disabled = true;
+        return;
+    }
+
+    var tiempo = document.getElementById('itmTiempo').value;
+    if(tiempo > 5 || tiempo < 1) {
+        element.disabled = true;
+        return;
+    }
+
+    element.disabled=false;
 })

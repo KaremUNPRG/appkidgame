@@ -409,8 +409,6 @@ picture img{
 @endsection
 @section('content')
 
-
-
 <div class="main-container" id="main-container">
   <div class="cont">
     <section class="section1">
