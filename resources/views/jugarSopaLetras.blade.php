@@ -7,8 +7,8 @@
 .main-container {
   padding: 10px;
   width: 100%;
-    display: flex;
     align-items: center;
+    text-align: center;
 }
 
 .cont{
@@ -93,12 +93,8 @@ h1#msg-final {
   text-shadow: 2px 0 0 #000;
   text-align: center;
   color: crimson;
-  position: absolute;
   transition: all .5s ease;
   transform: scale(0);
-  min-height: 50px;
-  bottom: 160px;
-  left: -10px;
 }
 .zoom-in {
   transform: scale(1) !important;
@@ -144,13 +140,8 @@ h2.palabra {
 .no-wrap {
   flex-wrap: nowrap !important;
 }
-.col {
-  width: 50%;
-  height: 250px;
-}
-.col span {
-  
-}
+
+
 #turnos h3 {
   margin: auto;
 }
@@ -221,6 +212,17 @@ picture img {
   font-weight: bold;
   color: #d6d6d6;
 }
+@media (max-width: 700px) {
+  #juego {
+    font-size: 9px;
+}
+.puzzleSquare {
+    height: 21px !important;
+    width: 21px !important;
+}
+
+}
+
 
 @media (max-width: 767.98px) {
 
@@ -274,9 +276,7 @@ h1#msg-final{
   bottom: 60px;
 }
 
-.col{
-  height: 160px;
-}
+
 
 picture img{
    height: 140px;
@@ -285,13 +285,7 @@ picture img{
 }
 
  /* PARA LA SOPA */
- #juego {
-    border: 1px solid #f2f2f2;
-    /* padding: 20px; */
-    padding: 10px;
-    float: left;
-    margin: 30px 20px;
-}
+
 
 #juego div {
     width: 100%;
@@ -344,7 +338,6 @@ button::-moz-focus-inner {
     -webkit-column-gap: 20px;
     column-count: 3;
     column-gap: 20px;
-    width: 300px;
 }
 
 #palabras ul {
@@ -443,6 +436,27 @@ margin: 10px;
 
 }
 
+.button-54 {
+  
+  text-decoration: none;
+  color: #000;
+  cursor: pointer;
+  border: 3px solid;
+  padding: 0.25em 0.5em;
+  box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px, 4px 4px 0px 0px, 5px 5px 0px 0px;
+  position: relative;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-54:active {
+  box-shadow: 0px 0px 0px 0px;
+  top: 5px;
+  left: 5px;
+}
+
+
 </style>
 
 @endsection
@@ -459,48 +473,26 @@ margin: 10px;
               <div class="main-container p-0">
                   <div id="juego"></div>
               </div>
+          
+            <h1 id="msg-final"></h1>
+            <div id="content"></div>
+            <!-- <h3 id="acierto"></h3> -->
+            <!-- <h2 class="palabra" id="palabra"></h2>  -->
+  
           </div>
-
-          <div class="col-xl-12">
+ 
+          <div class="col-xl-8">
               <div class="row">
-                  <div class="col-8">
-                    <h5>Palabras:</h5>
+                  <div class="col-12">
+                    <h5 style="font-size: 17px; font-weight: 900;">Palabras:</h5>
                   </div>
-                  <div class="col-8">
+                  <div class="col-12">
                       <div id="palabras"></div>
                   </div>
               </div>
           </div>
-        </div>
 
-        <!-- <div class="flex-row no-warp"> -->
-          <!-- <div class="col"> -->
-            <!-- <div id="juego"></div>
-            <div id="palabras"></div> -->
-            <!-- <picture>
-              <img src="{{asset('assets/web/img/ahorcadogame/ahorcado_6.png')}}" alt="" id="image6">
-              <img src="{{asset('assets/web/img/ahorcadogame/ahorcado_5.png')}}" alt="" id="image5">
-              <img src="{{asset('assets/web/img/ahorcadogame/ahorcado_4.png')}}" alt="" id="image4">
-              <img src="{{asset('assets/web/img/ahorcadogame/ahorcado_3.png')}}" alt="" id="image3">
-              <img src="{{asset('assets/web/img/ahorcadogame/ahorcado_2.png')}}" alt="" id="image2">
-              <img src="{{asset('assets/web/img/ahorcadogame/ahorcado_1.png')}}" alt="" id="image1">
-              <img src="{{asset('assets/web/img/ahorcadogame/ahorcado_0.png')}}" alt="" id="image0">
-            </picture> -->
-          <!-- </div> -->
-          <div class="col">
-            <h1 id="msg-final"></h1>
-            <!-- <h3 id="acierto"></h3> -->
-            <!-- <h2 class="palabra" id="palabra"></h2>  -->
-          </div>
-        <!-- </div> -->
-        
-        <!-- <div class="flex-row" id="abcdario">
-            </div> -->
-</section>
-<section class="section2">
-                  <!-- <div class="estadisticas">
-                  <h3>Vidas: <span id="intentos">6</span></h3>
-                  </div> -->
+          <div class="col-xl-4">
                   <div class="estadisticas">
                   <h3>Tiempo:</h3>
                       <div class="cont-temporizador">
@@ -514,15 +506,9 @@ margin: 10px;
                           </div>
                       </div>     
                   </div>
+            </div>
+        </div>
 
-      <!-- <div id="content" class="estadisticas">
-          <button id="pista" class="pista">Quiero una pista</button>
-
-<br>
-          <span class="hueco-pista"></span>
-
-
-      </div> -->
 </section>
 </div>
 </div>

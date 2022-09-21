@@ -348,7 +348,7 @@ function cargarMinutos(segundos){
 
     if(segundos < 0 && minutos== 0){
       clearInterval(time);
-      let htmlrender = `<button id="reset" class="reset">Reiniciar</button>`
+      let htmlrender = `<button id="reset" class="button-54 reset">Reiniciar</button>`
       document.getElementById("pista").disabled = true;
       document.getElementById("msg-final").innerHTML = "PERDISTE";
     document.getElementById("msg-final").className += "zoom-in";

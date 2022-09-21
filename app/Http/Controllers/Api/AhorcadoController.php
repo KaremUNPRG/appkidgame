@@ -70,7 +70,7 @@ class AhorcadoController extends Controller
         $newAhorcado->save();
 
         return response()->json([
-            'mensaje' => 'Ahorcado Registrado Correctamente'
+            'mensaje' => 'Ahorcado registrado correctamente'
         ], 200, []);
     }
 
@@ -109,7 +109,7 @@ class AhorcadoController extends Controller
 
 
         return response()->json([
-            'mensaje' => 'Se edito correctamente'
+            'mensaje' => 'Se editó correctamente'
         ], 200, []);
     }
 
@@ -162,7 +162,7 @@ class AhorcadoController extends Controller
 
 
         return response()->json([
-            'mensaje' => 'Se edito correctamente'
+            'mensaje' => 'Se editó correctamente'
         ], 200, []);
     }
 

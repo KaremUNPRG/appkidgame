@@ -121,24 +121,23 @@ function mostrarPuntaje(suma, cant) {
     var puntaje = (suma / Ttotal) * (cant / totalPalabras);
 
     Swal.fire({
-        title: "Tu puntaje es:" + puntaje.toFixed(2),
-        icon: "success",
-        showDenyButton: true,
+        title: "Tu puntaje es: " + puntaje.toFixed(2),
+        icon:'success',
+        confirmButtonColor: '#3085d6',
         showCancelButton: true,
-        denyButtonText: `Reiniciar`,
-    }).then((result) => {
-        console.log("result", result);
-        if (result.isConfirmed) {
-            //
-        } else if (result.isDenied) {
-            //
-            location.reload();
-            // $('.reset').click()
-            // renderSopaLetras();
-            // inicio();
-            // segundos = 0;
-        }
-    });
+        confirmButtonText: `Valorar Juego!`,
+        footer: `<a class="resp-sharing-button__link" href="https://facebook.com/sharer/sharer.php?u=http://127.0.0.1//jugarSopaLetras?id=${btoa(codigoJuegoGlobal)}" target="_blank" rel="noopener" aria-label="Share on Facebook">
+        <div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--large"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+          </div>Compartir en Facebook</div>
+      </a>`
+        }).then((result) => {
+          if (result.isConfirmed) {  
+            Swal.fire({
+              icon: 'info',
+              title: 'Debe iniciar sesión'
+            })
+          } 
+        })
 }
 
 // Compruba si ha finalizado
@@ -153,11 +152,12 @@ function compruebaFin() {
 
     // console.log('totalPalabras', totalPalabras)
     // console.log('palabrasRender', palabrasRender.length)
+    
 
     if (totalPalabras == palabrasRender.length) {
+        let htmlrender = `<button id="reset" class="button-54 reset">Reiniciar</button>`;
         clearInterval(time);
 
-        let htmlrender = `<button id="reset" class="reset">Reiniciar</button>`;
         // $('#content').html(htmlrender);
         document.getElementById("msg-final").innerHTML = "GANASTE";
         document.getElementById("msg-final").className += "zoom-in";
@@ -172,6 +172,7 @@ function compruebaFin() {
         let suma = +$("#minutos").html() * 60 + +$("#segundos").html();
 
         if (localStorage.getItem("accessToken")) {
+            htmlrender += `<button class="button-54 viewComentario modal-trigger" href="#mComentario" style="margin-left:10px;">Valorar</button>`
             puntajeSopaLetras(
                 {
                     Juego: ID,
@@ -183,131 +184,34 @@ function compruebaFin() {
                 },
                 function (response) {
                     Swal.fire({
-                        title: "Tu puntaje es:" + response.puntaje.toFixed(2),
-                        icon: "success",
-                        showDenyButton: true,
+                        title: "Tu puntaje es: " + response.puntaje.toFixed(2),
+                        icon:'success',
+                        confirmButtonColor: '#3085d6',
                         showCancelButton: true,
-                        denyButtonText: `Reiniciar`,
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            //
-                        } else if (result.isDenied) {
-                            //
-                            location.reload();
-                        }
-                    });
+                        confirmButtonText: `Valorar Juego!`,
+                        footer: `<a class="resp-sharing-button__link" href="https://facebook.com/sharer/sharer.php?u=http://127.0.0.1//jugarSopaLetras?id=${btoa(codigoJuegoGlobal)}" target="_blank" rel="noopener" aria-label="Share on Facebook">
+                <div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--large"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+                </div>Compartir en Facebook</div>
+                </a>`
+                      }).then((result) => {
+                        if (result.isConfirmed) {  
+                          $('.viewComentario').click();
+                        } 
+                      })
                 }
             );
         } else {
             mostrarPuntaje(suma, palabrasRender.length);
         }
+
+        $('#content').html(htmlrender);
+        $('#content').on('click','.reset',function () {
+         location.reload();
+        });
     }
 
-    //   if( oculta.indexOf("_") == -1 ) {
-    //     clearInterval(time);
-    //     let htmlrender = `<button id="reset" class="reset">Reiniciar</button>`
-    //     document.getElementById("msg-final").innerHTML = "GANASTE";
-    //     document.getElementById("msg-final").className += "zoom-in";
-    //     document.getElementById("palabra").className = " encuadre";
-    //     const fecha = new Date();
-    //     let format = fecha.getFullYear() +"-"+ (fecha.getMonth() +1) + "-" +fecha.getDate();
-    //     let suma = (+$('#minutos').html())*60 + (+$('#segundos').html());
 
-    //     if(localStorage.getItem('accessToken')){
-    //         puntajeAhorcado({
-
-    //           Juego: ID,
-    //           itmFecha: format,
-    //           itmVidas: (+$('#intentos').html()),
-    //           itmTiempoTotal: minutosG*60,
-    //           itmTiempoDemorado: suma,
-    //           itmDescubiertas: palabra.length,
-    //           itmTotales: palabra.length
-    //         },
-    //         function (response) {
-
-    //           Swal.fire({
-    //               title: "Tu puntaje es:" + response.puntaje.toFixed(2),
-    //               icon:'success',
-    //               showDenyButton: true,
-    //               showCancelButton: true,
-    //               denyButtonText: `Reiniciar`,
-    //             }).then((result) => {
-    //               if (result.isConfirmed) {
-    //                   //
-    //               } else if (result.isDenied) {
-    //                   //
-    //               }
-    //             })
-    //       })
-    //     }else{
-    //       mostrarPuntaje(suma,palabra.length);
-    //     }
-
-    //     for (var i = 0; i < buttons.length; i++) {
-    //       buttons[i].disabled = true;
-    //     }
-    //     //document.getElementById("reset").innerHTML = "Empezar";
-    //     $('#content').html(htmlrender);
-    //     $('#content').on('click','.reset',function () {
-    //       location.reload();
-    //     });
-
-    //   }else if( cont == 0 ) {
-    //     clearInterval(time);
-    //     let htmlrender = `<button id="reset" class="reset">Reiniciar</button>`
-    //     document.getElementById("msg-final").innerHTML = "PERDISTE";
-    //     document.getElementById("msg-final").className += "zoom-in";
-    //     //document.getElementById("pista").disabled = true;
-    //     const fecha = new Date();
-    //     const format = fecha.getFullYear() +"-"+ (fecha.getMonth() +1) + "-" +fecha.getDate();
-    //     let suma = (+$('#minutos').html())*60 + (+$('#segundos').html());
-    //     let cant = 0;
-    //     for(var i=0; i<palabra.length; i++) {
-    //       if(oculta[i] == palabra[i]) cant++;
-    //     }
-
-    //     if(localStorage.getItem('accessToken')){
-    //         puntajeAhorcado({
-
-    //           Juego: ID,
-    //           itmFecha: format,
-    //           itmVidas: (+$('#intentos').html()),
-    //           itmTiempoTotal: minutosG*60,
-    //           itmTiempoDemorado: suma,
-    //           itmDescubiertas: cant,
-    //           itmTotales: palabra.length
-    //         },
-    //         function (response) {
-
-    //           Swal.fire({
-    //               title: "Tu puntaje es:" + response.puntaje.toFixed(2),
-    //               icon:'success',
-    //               showDenyButton: true,
-    //               showCancelButton: true,
-    //               denyButtonText: `Reiniciar`,
-    //             }).then((result) => {
-    //               if (result.isConfirmed) {
-    //                   //
-    //               } else if (result.isDenied) {
-    //                   //
-    //               }
-    //             })
-    //       })
-
-    // }else{
-    //   mostrarPuntaje(suma,cant);
-    // }
-
-    //     for (var i = 0; i < buttons.length; i++) {
-    //       buttons[i].disabled = true;
-    //     }
-    //     //document.getElementById("reset").innerHTML = "Empezar";
-    //     $('#content').html(htmlrender);
-    //     $('#content').on('click','.reset',function () {
-    //       location.reload();
-    //     });
-    //   }
+ 
 }
 
 // Iniciar
@@ -360,6 +264,12 @@ function cargarMinutos(segundos) {
     document.getElementById("minutos").innerHTML = txtMinutos;
 
     if (segundos < 0 && minutos == 0) {
+        let palabrasRender = $(".word.wordFound")
+        .map(function () {
+            return this.innerHTML;
+            // console.log(this.innerHtml)
+        })
+        .get();
         clearInterval(time);
         // document.getElementById("pista").disabled = true;
         document.getElementById("msg-final").innerHTML = "PERDISTE";
@@ -374,44 +284,40 @@ function cargarMinutos(segundos) {
             fecha.getDate();
         let cant = 0;
         let suma = +$("#minutos").html() * 60 + +$("#segundos").html();
-
+        let htmlrender = `<button id="reset" class="button-54 reset">Reiniciar</button>`;
         if (localStorage.getItem("accessToken")) {
+            htmlrender += `<button class="button-54 viewComentario modal-trigger" href="#mComentario" style="margin-left:10px;">Valorar</button>`
             puntajeSopaLetras(
                 {
                     Juego: ID,
                     itmFecha: format,
-                    itmVidas: +$("#intentos").html(),
                     itmTiempoTotal: minutosG * 60,
                     itmTiempoDemorado: suma,
-                    itmDescubiertas: cant,
-                    itmTotales: palabra.length,
+                    itmDescubiertas: palabrasRender.length,
+                    itmTotales: totalPalabras,
                 },
                 function (response) {
                     Swal.fire({
-                        title: "Tu puntaje es:" + response.puntaje.toFixed(2),
-                        icon: "success",
-                        showDenyButton: true,
+                        title: "Tu puntaje es: " + response.puntaje.toFixed(2),
+                        icon:'success',
+                        confirmButtonColor: '#3085d6',
                         showCancelButton: true,
-                        denyButtonText: `Reiniciar`,
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            //
-                        } else if (result.isDenied) {
-                            //
-                        }
-                    });
+                        confirmButtonText: `Valorar Juego!`,
+                        footer: `<a class="resp-sharing-button__link" href="https://facebook.com/sharer/sharer.php?u=http://127.0.0.1//jugarSopaLetras?id=${btoa(codigoJuegoGlobal)}" target="_blank" rel="noopener" aria-label="Share on Facebook">
+                <div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--large"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+                </div>Compartir en Facebook</div>
+                </a>`
+                      }).then((result) => {
+                        if (result.isConfirmed) {  
+                          $('.viewComentario').click();
+                        } 
+                      })
                 }
             );
         } else {
             mostrarPuntaje(suma, cant);
         }
 
-        for (var i = 0; i < buttons.length; i++) {
-            buttons[i].disabled = true;
-        }
-        //document.getElementById("reset").innerHTML = "Empezar";
-        //btnInicio.onclick = function () { location.reload() };
-        let htmlrender = `<button id="reset" class="reset">Reiniciar</button>`;
         $("#content").html(htmlrender);
         $("#content").on("click", ".reset", function () {
             location.reload();

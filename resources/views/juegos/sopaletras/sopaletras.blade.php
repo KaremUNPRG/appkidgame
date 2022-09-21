@@ -73,11 +73,7 @@
         }
         /* PARA LA SOPA */
         #juego {
-            border: 1px solid #f2f2f2;
-            /* padding: 20px; */
             padding: 10px;
-            float: left;
-            margin: 30px 20px;
         }
 
         #juego div {
@@ -132,6 +128,7 @@
             column-count: 3;
             column-gap: 20px;
             width: 300px;
+            display: flex;
         }
 
         #palabras ul {
@@ -177,6 +174,16 @@
 
 @media (max-width: 767.98px) {
 
+
+    #juego{
+    font-size: 6px;
+    text-align: center;
+    }
+
+    .puzzleSquare {
+    height: 15px !important;
+    width: 15px !important;
+    }
 .fl {
   display: block !important;
 }

@@ -51,6 +51,7 @@ Route::middleware(['authapi'])->group(function () {
     Route::post('sopaletras', [SopaLetrasController::class,'store']);
     Route::get('sopaletras', [SopaLetrasController::class,'index']);
     Route::delete('sopaletras',[SopaLetrasController::class,'destroy']);
+    Route::put('sopaletras/restore',[SopaLetrasController::class,'restore']);
     Route::put('sopaletras',[SopaLetrasController::class,'update']);
       Route::get('sopa-letras-competencias',[SopaLetrasController::class,'listCompetencias']);
      Route::post('agregar-sopa-competencia',[SopaLetrasController::class,'editCompetencias']);  

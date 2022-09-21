@@ -43,10 +43,10 @@ class SopaLetrasController extends Controller
         $sopaLetras = SopaLetras::join('juego as j','j.Codigo','=','sopa.CodigoJuego')
                     ->join('tema as t','t.Codigo','=','j.CodigoTema')
                         ->select(['*','j.Titulo as TitJuego',DB::raw('date_format(j.fecha, "%d/%m/%Y %h:%i %p") as FechaReg'),
-                        DB::Raw('t.Titulo as Tema'), DB::Raw('j.Codigo as CodigoJuego')])
-                        ->where('j.Vigente','=',1)
+                        DB::Raw('t.Titulo as Tema'), DB::Raw('j.Codigo as CodigoJuego'), DB::Raw('j.Vigente as VigJuego')])
                         ->where('t.CodigoUsuario','=',$this->auth->Codigo)
-                                ->orderBy('j.Codigo','desc')->get();
+                        ->orderBy('j.Vigente','desc')
+                        ->orderBy('j.Codigo','desc')->get();
         return response()->json([
             'data' => $sopaLetras
         ], 200, []);
@@ -85,7 +85,7 @@ class SopaLetrasController extends Controller
         $newSopa->save();
 
         return response()->json([
-            'mensaje' => 'Sopa de Letras Registrada Correctamente'
+            'mensaje' => 'Sopa de letras registrada correctamente'
         ], 200, []);
     }
 
@@ -130,7 +130,7 @@ class SopaLetrasController extends Controller
         $newSopa->update();
 
         return response()->json([
-            'mensaje' => 'Se Editó Sopa de Letras Correctamente'
+            'mensaje' => 'Se editó la sopa de letras correctamente'
         ], 200, []);
     }
 
@@ -144,10 +144,21 @@ class SopaLetrasController extends Controller
     {
         $newJuego = Juego::find($request->itmCodigoJuego);
         $newJuego->Vigente = 0;
-        $newJuego->update();
+        $newJuego->save();
 
         return response()->json([
-            'mensaje' => 'Se Eliminó Correctamente'
+            'mensaje' => 'Se eliminó correctamente'
+        ], 200, []);
+    }
+
+    public function restore(Request $request)
+    {
+        $newJuego = Juego::find($request->itmCodigoJuego);
+        $newJuego->Vigente = 1;
+        $newJuego->save();
+
+        return response()->json([
+            'mensaje' => 'Restaurado correctamente'
         ], 200, []);
     }
 
@@ -173,7 +184,7 @@ class SopaLetrasController extends Controller
 
 
         return response()->json([
-            'mensaje' => 'Se edito correctamente'
+            'mensaje' => 'Se editó correctamente'
         ], 200, []);
     }
 }

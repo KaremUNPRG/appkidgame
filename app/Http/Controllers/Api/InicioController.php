@@ -30,6 +30,7 @@ class InicioController extends Controller
                         ->join('tema','tema.Codigo','=','juego.CodigoTema')
                         ->leftJoin('valoracion','valoracion.CodigoJuego','juego.Codigo')
                         ->where('juego.Vigente','=','1')
+                        ->where('juego.Privado','=','0')
                         ->where('juego.Borrador','=','0')
                         ->groupBy('juego.Codigo')
                         ->orderBy('ValoracionPunto','desc')->get();

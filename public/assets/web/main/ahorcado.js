@@ -24,7 +24,7 @@ const listarTema = (cod) => {
             }
         });
         let htmlRender = `
-                            <p>Tema</p>
+                            <p>Tema <span class="text-danger">*</span></p>
                             <select id="itmTema" class="form-control">
                                 <option value="-1">Seleccione tema...</option>
                                 ${itemTema}
@@ -52,32 +52,50 @@ const formAhorcado = () => {
 
                         <div class="row">
 
-                        <button class="cerrar how-pos3 hov3">
-					        <img id="cerrar" src="assets/web/img/icon-close.png" alt="CLOSE">
-				        </button>
-        
-                            <div class="form-group col-xl-12">
-                                <p>Título</p> <input type="text" class="form-control" id="itmTitulo" placeholder="Ingrese titulo...">
-                            </div>
-      
-                            <div class="form-group col-xl-6 render-tema">  
+                            <button class="cerrar how-pos3 hov3">
+                                <img id="cerrar" src="assets/web/img/icon-close.png" alt="CLOSE">
+                            </button>
+            
+                                <div class="col-xl-8">
+                                <div class="input-field">
+                                    <input type="text" class="validate executeBorrador" id="itmTitulo">
+                                    <label for="itmTitulo">Título <span class="text-danger">*</span></label>
+                                    </div> 
+                                </div>
+
+                                <div class="col-xl-4">  
+                                <div class="input-field">     
+                                    <input type="number" id="itmTiempo" min="1" max="5" class="validate executeBorrador">
+                                    <label for="itmTiempo">Tiempo <small>(1 a 5 min)</small> <span class="text-danger">*</span></label>
+                                </div> 
+                                </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-8 render-tema">  
                         
                             </div>
+                        </div>
 
-                            <div class="form-group col-xl-6">       
-                                <p>Palabra</p> <input type="text" class="form-control" id="itmPalabra" placeholder="Ingrese palabra para el juego...">
-                            </div>  
-                            <div class="form-group col-xl-6">       
-                                <p>Pista</p> <input type="text" class="form-control" id="itmPistas" placeholder="Ingrese pista para el juego...">
+                        <hr class="text-primary mb-1">
+
+                        <div class="row">
+                            <div class="col-xl-6">  
+                                <div class="input-field">       
+                                    <input type="text" id="itmPalabra" class="validate executeBorrador">
+                                    <label for="itmPalabra">Palabra <span class="text-danger">*</span></label>
+                                </div>  
+                            </div>
+                            <div class="col-xl-6">  
+                                <div class="input-field">         
+                                <input type="text" id="itmPistas" class="validate executeBorrador" >
+                                <label for="itmPistas">Pista <span class="text-danger">*</span></label>
                             </div>        
-                            <div class="form-group col-xl-6">       
-                                <p>Tiempo (minutos)</p> <input type="number" class="form-control" id="itmTiempo" min="1" max="5" value="5">
-                            </div> 
+                            </div>
                    
                             <div class="form-group col-xl-6">
                                 <div class="">
                                     <label for="itmFondo">Fondo * </label>
-                                    <input id="itmFondo" type="color" class="validate">
+                                    <input id="itmFondo" type="color" value="#7DBF85" class="validate">
                                 </div>
                             </div>
                             <div class="form-group col-xl-3">
@@ -97,9 +115,9 @@ const formAhorcado = () => {
 
                         </div>
                         <div class="row">
-                            <div class="col-xl-12 text-center">
+                            <div class="col-xl-12" style="text-align: right">
                                 <br>
-                                <button style="height:67px" id="sendAhorcado" class="form-group btn bg-primary btn-primary py-3 px-5 btnSend" type="submit" name="action" disabled>Guardar 
+                                <button id="sendAhorcado" class="btn btn-outline-primary btnSend" type="submit" name="action">Registrar 
                                     <i class="material-icons right">send</i>
                                 </button>
                                     
@@ -112,6 +130,7 @@ const formAhorcado = () => {
 }
 
 $('#nuevoAhorcado').click(function () {  
+    limpiar();
     formAhorcado();
     listarTema(0);
 })
@@ -120,6 +139,23 @@ $('#nuevoAhorcado').click(function () {
 $('#content-app').on('click','.btnSend',function () { 
     const fecha = new Date();
     const format = fecha.getFullYear() +"-"+ (fecha.getMonth() +1) + "-" +fecha.getDate();
+
+    var titul = document.getElementById('itmTitulo').value;
+    var palabr = document.getElementById('itmPalabra').value;
+    var tem = document.getElementById('itmTema').value;
+    var pist = document.getElementById('itmPistas').value;
+    var tiemp = document.getElementById('itmTiempo').value;
+
+    if(titul.trim().length == 0 || palabr.trim().length == 0 || tem == -1 || pist.trim().length == 0 || (tiemp > 5 || tiemp < 1) ){
+        Swal.fire({
+            title: 'Completa los datos (*)',
+            icon:'error',
+            showDenyButton: false,
+            showConfirmButton: false,
+            showCancelButton: false,
+        });
+    }else{
+
     store({
         itmTitulo: $('#itmTitulo').val(),
         itmTema: $('#itmTema').val(),
@@ -147,6 +183,7 @@ $('#content-app').on('click','.btnSend',function () {
             }
           })
     })
+}
 })
 
 
@@ -295,6 +332,23 @@ $('#content-app').on('click','.btnEdit',function () {
     console.log(CodigoAhorcado);
     const fecha = new Date();
     const format = fecha.getFullYear() +"-"+ (fecha.getMonth() +1) + "-" +fecha.getDate();
+    
+    var titul = document.getElementById('itmTitulo').value;
+    var palabr = document.getElementById('itmPalabra').value;
+    var tem = document.getElementById('itmTema').value;
+    var pist = document.getElementById('itmPistas').value;
+    var tiemp = document.getElementById('itmTiempo').value;
+
+    if(titul.trim().length == 0 || palabr.trim().length == 0 || tem == -1 || pist.trim().length == 0 || (tiemp > 5 || tiemp < 1) ){
+        Swal.fire({
+            title: 'Completa los datos (*)',
+            icon:'error',
+            showDenyButton: false,
+            showConfirmButton: false,
+            showCancelButton: false,
+        });
+    }else{
+
     editar({
         itmTitulo: $('#itmTitulo').val(),
         itmPalabra: $('#itmPalabra').val(),
@@ -322,6 +376,8 @@ $('#content-app').on('click','.btnEdit',function () {
             }
           })
     })
+
+}
 })
 
 
@@ -677,38 +733,3 @@ $(document).on('click','.modal-overlay',function () {
     
 })
 
-
-//validaciones
-
-$(document).on('change','.form-nuevo',function () {
-    var element = document.getElementById("sendAhorcado");
-    var titulo = document.getElementById('itmTitulo').value;
-    if(titulo.trim().length == 0) {
-        element.disabled = true;
-        return;
-    }
-    var palabra = document.getElementById('itmPalabra').value;
-    if(palabra.trim().length == 0) {
-        element.disabled = true;   
-        return;
-    }
-    var tema = document.getElementById('itmTema').value;
-    if(tema == -1) {
-        element.disabled = true;
-        return;
-    }
-
-    var pista = document.getElementById('itmPistas').value;
-    if(pista.trim().length == 0) {
-        element.disabled = true;
-        return;
-    }
-
-    var tiempo = document.getElementById('itmTiempo').value;
-    if(tiempo > 5 || tiempo < 1) {
-        element.disabled = true;
-        return;
-    }
-
-    element.disabled=false;
-})
