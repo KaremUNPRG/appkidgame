@@ -75,13 +75,15 @@ class JuegoController extends Controller
                 'Key' => $key."01",
                 'Imagen'=> $value->Imagen,
                 'DescCarta'=> $value->DescCarta,
+                'Tipo'=> 'Imagen'
             ]);
         }
         foreach ($juego as $key => $value) {
             array_push($juegoArray,[
                 'Key' => $key."02",
                 'Imagen'=> $value->Imagen,
-                'DescCarta'=> $value->DescCarta
+                'DescCarta'=> $value->DescCarta,
+                'Tipo'=> 'Texto'
             ]);
         }
         return response()->json([

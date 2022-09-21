@@ -46,7 +46,9 @@ const agregarPuntaje = () => {
 function bloquearTarjetas(){
     ListaCarta.forEach(element => {
         let tarjetaBloqueada = document.getElementById(element.Key);
-        tarjetaBloqueada.innerHTML = `<img src="${element.Imagen}" alt="">`;
+        
+    
+        tarjetaBloqueada.innerHTML = (element.Tipo == 'Imagen') ?`<img src="${element.Imagen}" alt="">`: `<span>${element.DescCarta}<span>`;
         tarjetaBloqueada.disabled = true;
     });
 }
@@ -79,7 +81,7 @@ function destapar(id){
     tarjeta1 = document.getElementById(id);
     primerResultado = ListaCarta.find(obj => obj.Key == id);
     //tarjeta1.innerHTML = primerResultado.DescCarta;
-    tarjeta1.innerHTML = `<img src="${primerResultado.Imagen}" alt="">`
+    tarjeta1.innerHTML = (primerResultado.Tipo == 'Imagen') ? `<img src="${primerResultado.Imagen}" alt="">` : `<span>${primerResultado.DescCarta}<span>`
     
     //Deshabilitando primera tarjeta
     tarjeta1.disabled = true;
@@ -87,7 +89,7 @@ function destapar(id){
         tarjeta2 = document.getElementById(id);
         segundoResultado = ListaCarta.find(obj => obj.Key == id);
         //tarjeta2.innerHTML = segundoResultado.DescCarta;
-        tarjeta2.innerHTML = `<img src="${segundoResultado.Imagen}" alt="">`
+        tarjeta2.innerHTML = (segundoResultado.Tipo == 'Imagen') ? `<img src="${segundoResultado.Imagen}" alt="">` : `<span>${segundoResultado.DescCarta}<span>`
         tarjeta2.disabled = true;
 
         // Incrementar movimientos
@@ -130,7 +132,7 @@ juegoMemorama({id:ID,id2:IDCOMPETENCIA},function (response) {
     mostrarTiempo.innerHTML = `${timerInicial} s`
     ListaCarta = response.data
     response.data.forEach(element => {
-        htmlRender += `<button id="${element.Key}"  class="itemCarta"></button>`
+        htmlRender += `<button id="${element.Key}" data-type="${element.Tipo}"  class="itemCarta"></button>`
     });
     $('#main-container').css({'background':response.juego.Fondo})
     if(localStorage.getItem('accessToken')){

@@ -290,9 +290,9 @@ picture img{
 }
 
 button{
-    height: 150px;
-    width: 150px;
-    font-size: 40px;
+    height: 210px;
+    width: 210px;
+    font-size: 30px;
     padding:0px;
     color: black;
     font-weight: bold;
@@ -333,7 +333,7 @@ button img{
             
             <div class="flex-row no-warp">
               <div class="render-memorama" style="display: grid;
-        grid-template-columns: repeat(4, 1fr);">
+        grid-template-columns: repeat(3, 1fr);">
 
               </div>
             
