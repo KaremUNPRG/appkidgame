@@ -4,7 +4,10 @@ import { listaValoracion, insertValoracion } from "../components/api/Inicio.js";
 // ### VARIABLES ###
 
 let params = new URLSearchParams(location.search);
+// console.log( atob(params.get('id2')));
 var ID = atob(params.get('id'));
+
+var IDCOMPETENCIA = params.get('id2') != null ? atob(params.get('id2')) : null;
 // Palabra a averiguar
 var palabra = "";
 // Palabra oculta
@@ -195,7 +198,8 @@ function compruebaFin() {
           itmTiempoTotal: minutosG*60,
           itmTiempoDemorado: suma,
           itmDescubiertas: palabra.length,
-          itmTotales: palabra.length
+          itmTotales: palabra.length,
+          Competencia: IDCOMPETENCIA
         },
         function (response) { 
           let htmlrender2= `Puntaje total: <span style="font-size: 20px;"> ${response.puntaje.toFixed(2)} </span>`

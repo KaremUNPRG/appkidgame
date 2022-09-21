@@ -15,7 +15,7 @@ const htmlRenderAddJuego = () => {
     return `<div>
                 <div>
                     <div class="header-juego modal-trigger" data-target="modal1">
-                        <div><h6>Juegos</h6></div>
+                        <div><h6>Juegos <i class="bi bi-plus-circle-fill"></i></h6></div>
                     </div>
                     <div class="content-juego">
                         
@@ -124,13 +124,16 @@ $('#content-app').on('click','.btnSend',function () {
 })
 
 const renderCompetencia = () => {
+    // <li><a href="https://api.whatsapp.com/send?text=http://127.0.0.1:8000/competencia"><i class="bi bi-whatsapp" style="font-size:22px"></i> Whatsapp</a></li>
+    // <li><a href="#!"><i class="material-icons">remove_red_eye</i>Ver Clave</a></li>
     list(function (response) {  
         let itemCompetencia = '';
         response.data.forEach(function (element, index) {
+            let linkFacebook = `http://www.facebook.com/sharer.php?s=100&p[url]=http://127.0.0.1:8000/competencia&p[title]=${element.Nombre}&p[summary]=Jugar Competencia&p[images][0]=http://127.0.0.1:8000/assets/web/img/verdugo.png`;
             itemCompetencia += ` <div class="col-12 item-competencia">
                                     <div class="row justify-content-between">
                                         <div class="col">
-                                            <p class="title-competencia">${element.Nombre}</p>
+                                            <p class="title-competencia"><a target="black" href="/competencia/jugar/${element.Codigo}">${element.Nombre}</a></p>
                                             <p>${element.FechaInicioAdd} a ${element.FechaTerminoAdd}</p>
                                         </div>
                                         <div>
@@ -140,8 +143,8 @@ const renderCompetencia = () => {
                                             <ul id='dropdown${index}' class='dropdown-content'>
                                                 <li><a href="#!" class="editarCompetencia" data-info='${JSON.stringify(element)}' data-key="${element.Codigo}"><i class="material-icons">create</i>Editar</a></li>
                                                 <li><a href="#!" class="deleteCompetencia" data-key="${element.Codigo}"><i class="material-icons">delete</i>Eliminar</a></li>
-                                                <li><a href="#!"><i class="material-icons">insert_link</i>Compartir</a></li>
-                                                <li><a href="#!"><i class="material-icons">remove_red_eye</i>Ver Clave</a></li>
+                                                <li><a href="${linkFacebook}" target="black"><i class="bi bi-facebook" style="font-size:22px"></i> Facebook</a></li>
+                                                <li><a target="black" href="https://api.whatsapp.com/send?text=http://127.0.0.1:8000/competencia/jugar/${element.Codigo}"><i class="bi bi-whatsapp" style="font-size:22px"></i> Whatsapp</a></li>
                                             </ul>                                  
                                         </div>
                                     </div>
@@ -251,7 +254,7 @@ const renderItemJuego = (element) => {
                 ${
                     (findIndex != -1) 
                     ? 'Agregado' 
-                    : `<a data-key="${element.CodigoJuego}" class="btnAddJuego waves-effect waves-light btn text-white"><i class="material-icons prefix">fingerprint</i></a>`
+                    : `<a data-key="${element.CodigoJuego}" class="btnAddJuego waves-effect waves-light btn text-white"><i class="bi bi-plus-circle-fill"></i></a>`
                 }    
             </div>
         </div>

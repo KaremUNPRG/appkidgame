@@ -8,9 +8,11 @@ use App\Models\Puntaje;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 
 class JuegoController extends Controller
 {
+    private $auth ;
     public function index()
     {
         $juego = Juego::select([
@@ -178,4 +180,43 @@ public function listaSopasRelacionados2(Request $request)
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+    public function jugarMemorama(Request $request)
+    {
+        $this->auth = User::ApiAuth($request->header('Authorization'));
+        $juegoArray = [];
+        $juego = Juego::select([
+                            'juego.Titulo','carta.Descripcion as DescCarta','Imagen',
+                            'tema.Descripcion', 'tiempo','Fondo','carta.Codigo as CodigoCarta',
+                            'juego.Tiempo as Tiempo','juego.Fondo as Fondo',
+                            DB::raw('(select pt.Puntaje from puntaje as pt inner join 
+                            juegousuario as ju on pt.CodigoJuegoUsuario = ju.Codigo 
+                            where ju.CodigoJuego = juego.Codigo and 
+                            ju.CodigoUsuario '.($this->auth == null ? 'is null':(' = '.$this->auth->Codigo)).' and 
+                            ju.CodigoCompetencia '.($request->id2 == null ? 'is null':(' = '.$request->id2)).' Limit 1) as MiPuntaje')
+                            ])
+                            ->join('tema','juego.CodigoTema','=','tema.Codigo')
+                            ->join('carta','juego.Codigo','=','carta.CodigoJuego')
+                            ->where('juego.Codigo','=',$request->id)->get();
+        foreach ($juego as $key => $value) {
+            array_push($juegoArray,[
+                'Key' => $key."01",
+                'Imagen'=> $value->Imagen,
+                'DescCarta'=> $value->DescCarta,
+                'Tipo'=> 'Imagen'
+            ]);
+        }
+        foreach ($juego as $key => $value) {
+            array_push($juegoArray,[
+                'Key' => $key."02",
+                'Imagen'=> $value->Imagen,
+                'DescCarta'=> $value->DescCarta,
+                'Tipo'=> 'Texto'
+            ]);
+        }
+        return response()->json([
+            'data' => $juegoArray, 
+            'juego'=> $juego[0]
+        ], 200, []); 
+    }
 }

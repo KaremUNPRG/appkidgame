@@ -39,19 +39,92 @@
         .mComentario::-webkit-scrollbar-track:active {
         background: #d4d4d4;
         }
+        .item-tab{
+            margin: 10px 20px;
+            cursor: pointer;
+            font-size: 1.3rem;
+        }
+        .item-tab-select{
+            font-weight: bold;
+            color: #2859fc;
+            position: relative;
+        }
+        .item-tab-select::after{
+            content: '';
+            border-left: 50px solid;
+            border-top: 3px solid;
+            position: absolute;
+            left: 0;
+            top: 30px;
+        }
+        .input-buscar{
+            position: absolute;
+            background: #fff!important;
+            font-size: 1.3rem!important;
+            padding: 0px 20px!important;
+            left: 0px;
+            right: 0px;
+            height: 100%!important;
+            top: 0px;
+            bottom: 0px;
+            border: 1px solid #a6aaad!important;
+            border-radius: 10px!important;
+            transform: scale(1);
+            transition: .1s!important;
+        }
+        .view-input-search .icon-close{
+            position: absolute;
+            z-index: 1;
+            right: -10px;
+            top: 15%;
+            font-size: 2rem;
+            color: #f10862;
+            cursor: pointer;
+        }
+
+        .view-input-search .icon-buscar{
+            position: absolute;
+            z-index: 1;
+            right: 30px;
+            top: 15%;
+            font-size: 2rem;
+            color: #1eaaf1;
+            cursor: pointer;
+        }
+
+        .hide-efecto .icon-close{
+            display: none;
+        }
+        .hide-efecto .icon-buscar{
+            display: none;
+        }
+
+        .hide-efecto input{
+            transform: scale(0);
+            transition: .1s!important;
+        }
     </style>
 @endsection
 @section('content')
 
-<section class="ftco-section bg-light">
+<section class="ftco-section bg-light" style="padding-top: 50px;">
     <div class="container">
-        <div class="row justify-content-center mb-5 pb-2">
-            <div class="col-md-8 text-center heading-section ftco-animate">
-                <h2 class="mb-4"><span>Juegos</span> Recientes</h2>
+        <div class="row justify-content-center mb-5 pb-2" style="position: relative">
+            <div class="item-tab item-tab-select" data-key="0">Reciente</div>
+            <div class="item-tab" data-key="1">Mejores</div>
+            <div style=" margin: 10px 20px;">
+                <div class="view-input-search hide-efecto">
+                    <i class="bi bi-x-lg icon-close"></i>
+                    <i class="bi bi-search icon-buscar"></i>
+                    <input type="text" class="input-buscar" autocomplete="off">
+                </div>
+                <button type="button" class="btn btnBuscarJuego"  style="background: transparent;color: #454545;border: 1px solid!important;margin-top: 0px;">
+                    <i class="bi bi-search"></i>
+                </button>
             </div>
         </div>
-        <div class="row renderHtmlListaJuego">
-
+        <div class="row renderHtmlListaJuego pt-5" style="min-height: 500px">
+            
         </div>
     </div>
 </section>
@@ -115,7 +188,7 @@
         </div>
     </div>
 </section>
-<div id="mComentario" class="mComentario modal" style="width: 25%;">
+<div id="mComentario" class="mComentario modal" style="width: 40%;">
     <div class="modal-content">
         <h4 class="titleJuego"></h4>
         <div class="content-valoracion">
@@ -178,16 +251,25 @@
 
 @endsection
 @section('script')
-    @if (session('accessToken'))
-        @php
-            $accessToken =session('accessToken');
-        @endphp
-        <script>
-            localStorage.setItem('accessToken',@json($accessToken));
-        </script>
-    @endif
+    
     <script src="{{asset('assets/web/main/inicio.js')}}?v1={{time()}}" type="module"></script>
     <script>
         $('.modal').modal();
+        $('.btnBuscarJuego').click(function (e) { 
+            if($('.view-input-search').hasClass('hide-efecto')){
+                $('.view-input-search').removeClass('hide-efecto')
+                $('.input-buscar').focus()
+            }else{
+                $('.view-input-search').addClass('hide-efecto')
+            }
+        });
+
+        $('.icon-close').click(function () {  
+            if($('.view-input-search').hasClass('hide-efecto')){
+                $('.view-input-search').removeClass('hide-efecto')
+            }else{
+                $('.view-input-search').addClass('hide-efecto')
+            }
+        })
     </script>
 @endsection

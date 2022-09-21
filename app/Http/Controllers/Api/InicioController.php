@@ -20,9 +20,10 @@ class InicioController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $juegos = Juego::select(['juego.Titulo as TitJuego','tema.Titulo as TitTema','juego.Tipo','juego.Tiempo',
                         'juego.Codigo as CodigoJuego',DB::raw('AVG(valoracion.Valoracion) as ValoracionPunto'),
@@ -31,9 +32,16 @@ class InicioController extends Controller
                         ->leftJoin('valoracion','valoracion.CodigoJuego','juego.Codigo')
                         ->where('juego.Vigente','=','1')
                         ->where('juego.Privado','=','0')
-                        ->where('juego.Borrador','=','0')
-                        ->groupBy('juego.Codigo')
-                        ->orderBy('ValoracionPunto','desc')->get();
+                        ->where('juego.Borrador','=','0');
+        if (isset($request->Buscar)) {
+            $juegos = $juegos->where('juego.Titulo','LIKE','%'.$request->Buscar.'%');
+        }       
+        $juegos = $juegos->groupBy('juego.Codigo');
+        if ($request->Modo == 0) {
+            $juegos = $juegos->orderBy('juego.Fecha','desc')->get();
+        }else{
+            $juegos = $juegos->orderBy('ValoracionPunto','desc')->get();
+        }
 
         return response()->json([
             'data' => $juegos

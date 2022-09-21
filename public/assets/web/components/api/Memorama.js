@@ -81,3 +81,17 @@ export const listarTema =  async (success) => {
     });
 }
 
+export const cartaMemorama =  async (codigo, success) => {
+
+    let response = await fetch(`${url}/memorama/get/${codigo}`, { 
+        method: "GET",
+        headers: headersList()
+    })
+    .then(response => response.json())
+    .then(data => {
+        success(data)
+    })
+    .catch(function(error) {
+        console.log('Hubo un problema con la petición Fetch:' + error.message);
+    });
+}

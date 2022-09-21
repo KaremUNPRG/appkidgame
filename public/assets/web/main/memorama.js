@@ -1,4 +1,4 @@
-import { store, list,eliminar, editar, listarTema } from "../components/api/Memorama.js";
+import { store, list,eliminar, editar, listarTema,cartaMemorama } from "../components/api/Memorama.js";
 
 var CodigoJuegoMemorama = null;
 var ListaCartaJuego = [];
@@ -185,7 +185,8 @@ $('#content-app').on('click','.btnSend',function () {
         itmFondo: $('#itmFondo').val(),
         CodigoTema: $('#itmTema').val(),
         itmCodigoJuego:CodigoJuegoMemorama,
-        itmRegistro:'SI'
+        itmRegistro:'SI',
+        itmListaCarta: ListaCartaJuego
       },
       function (response) { 
         Swal.fire({
@@ -207,7 +208,7 @@ $('#content-app').on('click','.btnSend',function () {
 
 $('#content-app').on('click','.editarMemorama',function () { 
     var key = $(this).data('key')
-
+    ListaCartaJuego = []
     // console.log($(this).data('info'));
     var data = $(this).data('info')
     $('#nuevoMemorama').click()
@@ -216,10 +217,24 @@ $('#content-app').on('click','.editarMemorama',function () {
     $('#itmPrivado').val(data.Privado).focus()
     $('#itmFondo').val(data.Fondo).focus()
     $('#itmTema').val(data.CodigoTema).focus()
+    $('#itmTema').formSelect();
     $('#sendMemorama').removeClass('btnSend')
     $('#sendMemorama').addClass('btnEdit')
     $('#sendMemorama').html(`Actualizar`)
     CodigoJuegoMemorama = key
+    cartaMemorama(CodigoJuegoMemorama, function (response) {  
+        // ListaCartaJuego = response.data
+        response.data.forEach(element => {
+            ListaCartaJuego.push({
+                'Codigo' : (ListaCartaJuego.length +1),
+                'Descripcion' : element.Descripcion,
+                'Tipo'        : '01',
+                'Imagen'      : element.Imagen,
+                'CodigoCarta' : element.Codigo   
+            })
+        });
+        renderAddCartaJuego(ListaCartaJuego)
+    })
     // editarMemorama(key)
 });
 
@@ -231,7 +246,8 @@ $('#content-app').on('click','.btnEdit',function () {
         itmFondo: $('#itmFondo').val(),
         CodigoTema: $('#itmTema').val(),
         itmCodigoJuego:CodigoJuegoMemorama,
-        itmRegistro:'NO'
+        itmRegistro:'SI',
+        itmListaCarta: ListaCartaJuego
       },
       function (response) { 
         Swal.fire({
@@ -302,7 +318,8 @@ $('.btnAgregarCarta').click(function () {
         'Codigo' : (ListaCartaJuego.length +1),
         'Descripcion' : $('.itmDescripcionCarta').val(),
         'Tipo'        : $('.itmTipoRecurso').val(),
-        'Imagen'      : recursoTemporal
+        'Imagen'      : recursoTemporal,
+        'CodigoCarta' : null   
     })
     renderAddCartaJuego(ListaCartaJuego)
 })

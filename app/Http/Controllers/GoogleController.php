@@ -31,11 +31,8 @@ class GoogleController extends Controller
     public function handleGoogleCallback()
     {
         try {
-      
             $user = Socialite::driver('google')->user();
-            // dd($user);
             $finduser = User::where('IdGoogle', $user->id)->first();
-            
             if($finduser){
                 Auth::login($finduser);
             }else{
@@ -54,7 +51,7 @@ class GoogleController extends Controller
                 'RefreshToken'  => $user->refreshToken,
                 'ExpiresIn'     => $user->expiresIn
             ]);
-            return redirect('/')->with( 'accessToken', $user->token);
+            return redirect( (session('ir') != null) ? session('ir') : '/')->with( 'accessToken', $user->token);
         } catch (Exception $e) {
             dd($e->getMessage());
         }

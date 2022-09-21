@@ -7,7 +7,7 @@
 
     <link href="https://fonts.googleapis.com/css?family=Work+Sans:100,200,300,400,500,600,700,800,900" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Fredericka+the+Great" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="{{asset('template/css/open-iconic-bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{asset('template/css/animate.css')}}">
     <link rel="stylesheet" href="{{asset('template/css/owl.carousel.min.css')}}">
@@ -69,6 +69,51 @@
             0% { transform: translateX(200px);  }
             100% { transform: translateX(0px);  }
         }
+        .ftco-navbar-light.scrolled{
+            margin-top: -0px;
+            background: #e2f1fc !important;
+        }
+        .ftco_navbar{
+            position: fixed;
+            background: #e2f1fc!important;
+        }
+        #preloader_3{
+            position:relative;
+            margin: 10% auto;
+        }
+        #preloader_3:before{
+            width:20px;
+            height:20px;
+            border-radius:20px;
+            background:blue;
+            content:'';
+            position:absolute;
+            background:#9b59b6;
+            animation: preloader_3_before 1.5s infinite ease-in-out;
+        }
+        
+        #preloader_3:after{
+            width:20px;
+            height:20px;
+            border-radius:20px;
+            background:blue;
+            content:'';
+            position:absolute;
+            background:#2ecc71;
+            left:22px;
+            animation: preloader_3_after 1.5s infinite ease-in-out;
+        }
+        
+        @keyframes preloader_3_before {
+            0% {transform: translateX(0px) rotate(0deg)}
+            50% {transform: translateX(50px) scale(1.2) rotate(260deg); background:#2ecc71;border-radius:0px;}
+            100% {transform: translateX(0px) rotate(0deg)}
+        }
+        @keyframes preloader_3_after {
+            0% {transform: translateX(0px)}
+            50% {transform: translateX(-50px) scale(1.2) rotate(-260deg);background:#9b59b6;border-radius:0px;}
+            100% {transform: translateX(0px)}
+        }
     </style>
 
 </head>
@@ -95,7 +140,7 @@
     </div>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark ftco_navbar ftco-navbar-light" id="ftco-navbar">
         <div class="container d-flex align-items-center">
-            <a class="navbar-brand" href="index.html">Kiddos</a>
+            <a class="navbar-brand" href="/"><img style="width: 60px;" src="{{asset('logo.png')}}" alt=""></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
                 aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="oi oi-menu"></span>
@@ -143,7 +188,9 @@
     </nav>
     <!-- END nav -->
 
-    @yield('content')
+    <div style="padding-top: 80px">
+        @yield('content')
+    </div>
 
    	<footer class="ftco-footer ftco-bg-dark ftco-section">
         <div class="container">
@@ -288,6 +335,19 @@
             window.location.href = '/salir'
          })
     </script>
+    @if (!Auth::check())
+        <script>
+             localStorage.removeItem('accessToken');
+        </script>
+    @endif
+    @if (session('accessToken'))
+        @php
+            $accessToken =session('accessToken');
+        @endphp
+        <script>
+            localStorage.setItem('accessToken',@json($accessToken));
+        </script>
+    @endif
     @yield('script')
 </body>
 

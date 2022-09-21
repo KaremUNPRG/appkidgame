@@ -10,7 +10,7 @@ class Puntaje extends Model
     use HasFactory;
     protected $table = 'Puntaje';
 
-    protected $primaryKey = 'Codigo';
+    protected $primaryKey = 'CodigoJuegoUsuario';
 
     public $timestamps = false;
 }

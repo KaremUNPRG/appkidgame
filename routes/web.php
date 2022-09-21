@@ -17,6 +17,7 @@ use App\Http\Controllers\GoogleController;
 */
 
 Route::get('/', function () {
+    // dd(session('ir'));
     return view('welcome');
 })->name('welcome');
 
@@ -29,6 +30,8 @@ Route::get('/jugarSopaLetras', function () {
 })->name('jugarSopaLetras');
 
 
+Route::get('jugar-memoria/{id}',[VistaController::class,'jugarMemorama']);
+
 Route::get('/salir', [VistaController::class,'salirApp'] );
 
 Route::get('auth/google', [GoogleController::class, 'redirectToGoogle']);
@@ -36,6 +39,9 @@ Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallba
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/competencia', [VistaController::class,'competencia'])->name('competencia');
+
+    Route::get('/competencia/jugar/{codigo}', [VistaController::class,'competenciaJugar'])->name('competenciajugar');
+
     Route::get('/memorama', [VistaController::class,'memorama'])->name('memorama');
     Route::get('/ahorcado', [VistaController::class,'ahorcado'])->name('ahorcado');
     Route::get('/sopaletras', [VistaController::class,'sopaletras'])->name('sopaletras');

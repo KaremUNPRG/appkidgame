@@ -31,6 +31,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('inicio/juego',[InicioController::class,'index']);
 Route::get('juego/valoracion/{CodigoJuego}',[InicioController::class,'showValoracion']);
 
+Route::post('juegomemorama/',[JuegoController::class,'jugarMemorama']);
+
 Route::middleware(['authapi'])->group(function () {
     Route::post('competencia',[CompetenciaController::class,'store']);
     Route::get('competencia',[CompetenciaController::class,'index']);
@@ -38,6 +40,10 @@ Route::middleware(['authapi'])->group(function () {
     Route::get('competencia/get/{codigoCompetencia}',[CompetenciaController::class,'show']);
     Route::put('competencia',[CompetenciaController::class,'update']);
     Route::get('competencia/juegos',[CompetenciaController::class,'listaJuego']);
+    Route::post('competencia/listarjuegos',[CompetenciaController::class,'listaJuegoCompetencia']);
+    Route::post('competencia/verificarclave',[CompetenciaController::class,'verificarClave']);
+    // Route::post('competencia/verificarjugado',[CompetenciaController::class,'verificarYaJugado']);
+    Route::post('competencia/juegos/agregar',[CompetenciaController::class,'agregarJuegoCompetencia']);
 
     Route::post('juego/valoracion',[InicioController::class,'store']);
     
@@ -46,6 +52,8 @@ Route::middleware(['authapi'])->group(function () {
     Route::delete('memorama',[MemoramaController::class,'destroy']);
     Route::put('memorama',[MemoramaController::class,'update']);
     Route::get('memorama/listar/tema',[MemoramaController::class,'listarTema']);
+    Route::get('memorama/get/{codigoMemorama}',[MemoramaController::class,'show']);
+    Route::post('puntaje-memorama',[PuntajeController::class,'storePuntajeMemorama']);   
 
     Route::get('sopaletras/temas', [SopaLetrasController::class,'getTemas']);
     Route::post('sopaletras', [SopaLetrasController::class,'store']);
@@ -56,8 +64,8 @@ Route::middleware(['authapi'])->group(function () {
       Route::get('sopa-letras-competencias',[SopaLetrasController::class,'listCompetencias']);
      Route::post('agregar-sopa-competencia',[SopaLetrasController::class,'editCompetencias']);  
      Route::post('puntaje-sopa-letras',[PuntajeController::class,'storePuntajeSopaLetras']);  
-    
 
+ 
 });
 
 Route::get('jugar-ahorcado/{id}',[JuegoController::class,'jugarAhorcado']);
