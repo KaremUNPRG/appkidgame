@@ -126,9 +126,10 @@ class MemoramaController extends Controller
         if(!file_exists($carpeta)){
             mkdir($carpeta,'0777');
         }
-        // dd($carpeta);
+        // dd($request->itmListaCarta);
+        $delete = Memorama::where('CodigoJuego','=',$newJuego->Codigo)->delete();
         foreach ($request->itmListaCarta as $key => $value) {
-            if ( !($value['CodigoCarta'] > 0)) {
+            // if ( !($value['CodigoCarta'] > 0)) {
                 $archivo = '';
                 if($value['Tipo'] == '02'){
                     $extension = explode('/',$value['Imagen']);
@@ -148,7 +149,7 @@ class MemoramaController extends Controller
                 $newMemorama->Descripcion = $value['Descripcion'];
                 $newMemorama->Imagen = '/'.$archivo;
                 $newMemorama->save();
-            }
+            // }
 
         }
 
