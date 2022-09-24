@@ -6,6 +6,9 @@ import { listaValoracion, insertValoracion } from "../components/api/Inicio.js";
 
 let params = new URLSearchParams(location.search);
 var ID = atob(params.get("id"));
+
+var IDCOMPETENCIA = params.get('id2') != null ? atob(params.get('id2')) : null;
+var KEYPARAMS = params.get('key') != null ? params.get('key') : null;
 // Palabra a averiguar
 var palabras = [];
 var totalPalabras = 0;
@@ -175,7 +178,8 @@ function compruebaFin() {
             htmlrender += `<button class="button-54 viewComentario modal-trigger" href="#mComentario" style="margin-left:10px;">Valorar</button>`
             puntajeSopaLetras(
                 {
-                    Juego: ID,
+                    Juego: ID,            
+                    Competencia: IDCOMPETENCIA,
                     itmFecha: format,
                     itmTiempoTotal: minutosG * 60,
                     itmTiempoDemorado: suma,
@@ -183,21 +187,33 @@ function compruebaFin() {
                     itmTotales: totalPalabras,
                 },
                 function (response) {
-                    Swal.fire({
-                        title: "Tu puntaje es: " + response.puntaje.toFixed(2),
-                        icon:'success',
-                        confirmButtonColor: '#3085d6',
-                        showCancelButton: true,
-                        confirmButtonText: `Valorar Juego!`,
-                        footer: `<a class="resp-sharing-button__link" href="https://facebook.com/sharer/sharer.php?u=http://127.0.0.1//jugarSopaLetras?id=${btoa(codigoJuegoGlobal)}" target="_blank" rel="noopener" aria-label="Share on Facebook">
-                <div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--large"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
-                </div>Compartir en Facebook</div>
-                </a>`
-                      }).then((result) => {
-                        if (result.isConfirmed) {  
-                          $('.viewComentario').click();
-                        } 
-                      })
+                    if (IDCOMPETENCIA == null) {
+                        Swal.fire({
+                            title: "Tu puntaje es: " + response.puntaje.toFixed(2),
+                            icon:'success',
+                            confirmButtonColor: '#3085d6',
+                            showCancelButton: true,
+                            confirmButtonText: `Valorar Juego!`,
+                            footer: `<a class="resp-sharing-button__link" href="https://facebook.com/sharer/sharer.php?u=http://127.0.0.1//jugarSopaLetras?id=${btoa(codigoJuegoGlobal)}" target="_blank" rel="noopener" aria-label="Share on Facebook">
+                                    <div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--large"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+                                    </div>Compartir en Facebook</div>
+                                    </a>`
+                        }).then((result) => {
+                            if (result.isConfirmed) {  
+                                $('.viewComentario').click();
+                            } 
+                        })
+                    }else{
+                        Swal.fire({
+                            title: "Tu puntaje es:" + response.puntaje.toFixed(2),
+                            icon:'success',
+                            showCancelButton: false,
+                        }).then((result) => {
+                            if (IDCOMPETENCIA != null) {                
+                                $(location).attr('href',`/competencia/jugar/${IDCOMPETENCIA}?key=${KEYPARAMS}`);  
+                            }
+                        })
+                    }
                 }
             );
         } else {
@@ -289,7 +305,8 @@ function cargarMinutos(segundos) {
             htmlrender += `<button class="button-54 viewComentario modal-trigger" href="#mComentario" style="margin-left:10px;">Valorar</button>`
             puntajeSopaLetras(
                 {
-                    Juego: ID,
+                    Juego: ID,            
+                    Competencia: IDCOMPETENCIA,
                     itmFecha: format,
                     itmTiempoTotal: minutosG * 60,
                     itmTiempoDemorado: suma,
@@ -297,21 +314,33 @@ function cargarMinutos(segundos) {
                     itmTotales: totalPalabras,
                 },
                 function (response) {
-                    Swal.fire({
-                        title: "Tu puntaje es: " + response.puntaje.toFixed(2),
-                        icon:'success',
-                        confirmButtonColor: '#3085d6',
-                        showCancelButton: true,
-                        confirmButtonText: `Valorar Juego!`,
-                        footer: `<a class="resp-sharing-button__link" href="https://facebook.com/sharer/sharer.php?u=http://127.0.0.1//jugarSopaLetras?id=${btoa(codigoJuegoGlobal)}" target="_blank" rel="noopener" aria-label="Share on Facebook">
-                <div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--large"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
-                </div>Compartir en Facebook</div>
-                </a>`
+                    if (IDCOMPETENCIA == null) {
+                        Swal.fire({
+                            title: "Tu puntaje es: " + response.puntaje.toFixed(2),
+                            icon:'success',
+                            confirmButtonColor: '#3085d6',
+                            showCancelButton: true,
+                            confirmButtonText: `Valorar Juego!`,
+                            footer: `<a class="resp-sharing-button__link" href="https://facebook.com/sharer/sharer.php?u=http://127.0.0.1//jugarSopaLetras?id=${btoa(codigoJuegoGlobal)}" target="_blank" rel="noopener" aria-label="Share on Facebook">
+                                        <div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--large"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+                                        </div>Compartir en Facebook</div>
+                                        </a>`
                       }).then((result) => {
                         if (result.isConfirmed) {  
                           $('.viewComentario').click();
                         } 
                       })
+                    }else{
+                        Swal.fire({
+                            title: "Tu puntaje es:" + response.puntaje.toFixed(2),
+                            icon:'success',
+                            showCancelButton: false,
+                        }).then((result) => {
+                            if (IDCOMPETENCIA != null) {                
+                                $(location).attr('href',`/competencia/jugar/${IDCOMPETENCIA}?key=${KEYPARAMS}`);  
+                            }
+                        })
+                    }
                 }
             );
         } else {

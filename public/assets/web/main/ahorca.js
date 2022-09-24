@@ -8,6 +8,8 @@ let params = new URLSearchParams(location.search);
 var ID = atob(params.get('id'));
 
 var IDCOMPETENCIA = params.get('id2') != null ? atob(params.get('id2')) : null;
+var KEYPARAMS = params.get('key') != null ? params.get('key') : null;
+
 // Palabra a averiguar
 var palabra = "";
 // Palabra oculta
@@ -204,21 +206,33 @@ function compruebaFin() {
         function (response) { 
           let htmlrender2= `Puntaje total: <span style="font-size: 20px;"> ${response.puntaje.toFixed(2)} </span>`
           $('#puntajeTotal').html(htmlrender2);
-          Swal.fire({
-              title: "Tu puntaje es: " + response.puntaje.toFixed(2),
-              icon:'success',
-              confirmButtonColor: '#3085d6',
-              showCancelButton: true,
-              confirmButtonText: `Valorar Juego!`,
-              footer: `<a class="resp-sharing-button__link" href="https://facebook.com/sharer/sharer.php?u=http://127.0.0.1//jugarAhorcado?id=${btoa(codigoJuegoGlobal)}" target="_blank" rel="noopener" aria-label="Share on Facebook">
-    <div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--large"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
-      </div>Compartir en Facebook</div>
-  </a>`
+          if (IDCOMPETENCIA == null) {
+            Swal.fire({
+                title: "Tu puntaje es: " + response.puntaje.toFixed(2),
+                icon:'success',
+                confirmButtonColor: '#3085d6',
+                showCancelButton: true,
+                confirmButtonText: `Valorar Juego!`,
+                footer: `<a class="resp-sharing-button__link" href="https://facebook.com/sharer/sharer.php?u=http://127.0.0.1//jugarAhorcado?id=${btoa(codigoJuegoGlobal)}" target="_blank" rel="noopener" aria-label="Share on Facebook">
+                            <div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--large"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+                              </div>Compartir en Facebook</div>
+                          </a>`
             }).then((result) => {
               if (result.isConfirmed) {  
                 $('.viewComentario').click();
               } 
             })
+          }else{
+              Swal.fire({
+                  title: "Tu puntaje es:" + response.puntaje.toFixed(2),
+                  icon:'success',
+                  showCancelButton: false,
+              }).then((result) => {
+                  if (IDCOMPETENCIA != null) {                
+                      $(location).attr('href',`/competencia/jugar/${IDCOMPETENCIA}?key=${KEYPARAMS}`);  
+                  }
+              })
+          }
       })
     }else{
       mostrarPuntaje(suma,palabra.length);

@@ -3,6 +3,7 @@ import { juegoMemorama, puntajeMemorama } from "../components/api/JugarMemorama.
 let params = new URLSearchParams(location.search);
 var ID = (params.get('id'));
 var IDCOMPETENCIA = params.get('id2') != null ? atob(params.get('id2')) : null;
+var KEYPARAMS = params.get('key') != null ? params.get('key') : null;
 
 let tarjetasDestapadas =0;
 let tarjeta1=null;
@@ -33,12 +34,16 @@ const agregarPuntaje = () => {
             itmTotales: ListaCarta.length/2
         },function (response) {
             $('.puntuacionrecord').html(`<h2 id="mipuntuacion" class="estadisticas">
-        Mi Puntuación:${response.puntaje.toFixed(2)} </h2> `);
+                                        Mi Puntuación:${response.puntaje.toFixed(2)} </h2> `);
             Swal.fire({
                 title: "Tu puntaje es:" + response.puntaje.toFixed(2),
                 icon:'success',
                 showCancelButton: false,
-              })
+            }).then((result) => {
+                if (IDCOMPETENCIA != null) {                
+                    $(location).attr('href',`/competencia/jugar/${IDCOMPETENCIA}?key=${KEYPARAMS}`);  
+                }
+            })
         })
     }
 } 

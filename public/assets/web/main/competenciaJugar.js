@@ -1,16 +1,24 @@
 import { listarJuegos,verificarClave } from "../components/api/CompetenciaJugar.js";
 let params = new URLSearchParams(location.search);
-
+var keyParams = params.get('key');
 const buscarJuego = (tipo,codigo,competencia) => {
     if(tipo == 2){  
-        $(location).attr('href',`/jugarAhorcado?id=${btoa(codigo)}&id2=${btoa(competencia)}`);  
+        // var win = window.open(`/jugarAhorcado?id=${btoa(codigo)}&id2=${btoa(competencia)}&key=${keyParams}`);
+        // Cambiar el foco al nuevo tab (punto opcional)
+        // win.focus();
+        $(location).attr('href',`/jugarAhorcado?id=${btoa(codigo)}&id2=${btoa(competencia)}&key=${keyParams}`);  
     }  
     if(tipo == 1){
-        var win = window.open(`/jugar-memoria/${codigo}?id=${codigo}&id2=${btoa(competencia)}`, '_blank');
+        // var win = window.open(`/jugar-memoria/${codigo}?id=${codigo}&id2=${btoa(competencia)}&key=${keyParams}`);
         // Cambiar el foco al nuevo tab (punto opcional)
-        win.focus();
-        // $(location).attr('href',`/jugar-memoria/${codigo}?id=${codigo}&id2=${btoa(competencia)}`);
-        
+            // win.focus();
+        $(location).attr('href',`/jugar-memoria/${codigo}?id=${codigo}&id2=${btoa(competencia)}&key=${keyParams}`);
+    }
+    if (tipo == 3) {
+        // var win = window.open(`/jugarSopaLetras?id=${btoa(codigo)}&id2=${btoa(competencia)}&key=${keyParams}`);
+        // Cambiar el foco al nuevo tab (punto opcional)
+        // win.focus();
+        $(location).attr('href',`/jugarSopaLetras?id=${btoa(codigo)}&id2=${btoa(competencia)}&key=${keyParams}`);
     }
 }
 
