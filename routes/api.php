@@ -42,6 +42,8 @@ Route::middleware(['authapi'])->group(function () {
     Route::get('competencia/juegos',[CompetenciaController::class,'listaJuego']);
     Route::post('competencia/listarjuegos',[CompetenciaController::class,'listaJuegoCompetencia']);
     Route::post('competencia/verificarclave',[CompetenciaController::class,'verificarClave']);
+    Route::post('competencia/ranking',[CompetenciaController::class,'rankingCompetencia']);
+    Route::post('competencia/buscar',[CompetenciaController::class,'buscarCompetencia']);
     // Route::post('competencia/verificarjugado',[CompetenciaController::class,'verificarYaJugado']);
     Route::post('competencia/juegos/agregar',[CompetenciaController::class,'agregarJuegoCompetencia']);
 

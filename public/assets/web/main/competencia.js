@@ -1,4 +1,5 @@
-import { store, list,eliminar, editar, listarJuego, juegoCompetencia } from "../components/api/Competencia.js";
+import { store, list,eliminar, editar, listarJuego, juegoCompetencia, ranking, buscarCompetencia } from "../components/api/Competencia.js";
+import { listarTema } from "../components/api/Memorama.js";
 
 var CodigoCompetencia = null
 var ListaJuegosCompetencia = []
@@ -123,40 +124,98 @@ $('#content-app').on('click','.btnSend',function () {
     })
 })
 
+const renderItemCompetencia = (element,index) => {
+    let linkFacebook = `http://www.facebook.com/sharer.php?s=100&p[url]=http://127.0.0.1:8000/competencia&p[title]=${element.Nombre}&p[summary]=Jugar Competencia&p[images][0]=http://127.0.0.1:8000/assets/web/img/verdugo.png`;
+            
+    return `<div class="col-12 item-competencia">
+                <div class="row justify-content-between">
+                    <div class="col">
+                        <p class="title-competencia"><a target="black" href="/competencia/jugar/${element.Codigo}">${element.Nombre}</a></p>
+                        <p>${element.FechaInicioAdd} a ${element.FechaTerminoAdd}</p>
+                    </div>
+                    <div>
+                        <a class='dropdown-trigger' href='#' data-target='dropdown${index}'>
+                            <i class="material-icons" style="font-size: 2rem">more_vert</i>
+                        </a>
+                        <ul id='dropdown${index}' class='dropdown-content'>
+                            <li><a href="#!" class="editarCompetencia" data-info='${JSON.stringify(element)}' data-key="${element.Codigo}"><i class="material-icons">create</i>Editar</a></li>
+                            <li><a href="#!" class="deleteCompetencia" data-key="${element.Codigo}"><i class="material-icons">delete</i>Eliminar</a></li>
+                            <li><a href="${linkFacebook}" target="black"><i class="bi bi-facebook" style="font-size:22px"></i> Facebook</a></li>
+                            <li><a target="black" href="https://api.whatsapp.com/send?text=http://127.0.0.1:8000/competencia/jugar/${element.Codigo}"><i class="bi bi-whatsapp" style="font-size:22px"></i> Whatsapp</a></li>
+                            <li><a href="#!" data-target="modalRanking" class="modal-trigger verranking" data-key="${element.Codigo}"><i class="bi bi-trophy" style="font-size:22px"></i> Ranking</a></li>    
+                        </ul>                                  
+                    </div>
+                </div>
+            </div>`
+}
+
 const renderCompetencia = () => {
+    $('.render-html').html(`<div class="content-loader">
+                                <div id="preloader_3"></div>
+                            </div>`)
     // <li><a href="https://api.whatsapp.com/send?text=http://127.0.0.1:8000/competencia"><i class="bi bi-whatsapp" style="font-size:22px"></i> Whatsapp</a></li>
     // <li><a href="#!"><i class="material-icons">remove_red_eye</i>Ver Clave</a></li>
     list(function (response) {  
         let itemCompetencia = '';
         response.data.forEach(function (element, index) {
-            let linkFacebook = `http://www.facebook.com/sharer.php?s=100&p[url]=http://127.0.0.1:8000/competencia&p[title]=${element.Nombre}&p[summary]=Jugar Competencia&p[images][0]=http://127.0.0.1:8000/assets/web/img/verdugo.png`;
-            itemCompetencia += ` <div class="col-12 item-competencia">
-                                    <div class="row justify-content-between">
-                                        <div class="col">
-                                            <p class="title-competencia"><a target="black" href="/competencia/jugar/${element.Codigo}">${element.Nombre}</a></p>
-                                            <p>${element.FechaInicioAdd} a ${element.FechaTerminoAdd}</p>
-                                        </div>
-                                        <div>
-                                            <a class='dropdown-trigger' href='#' data-target='dropdown${index}'>
-                                                <i class="material-icons" style="font-size: 2rem">more_vert</i>
-                                            </a>
-                                            <ul id='dropdown${index}' class='dropdown-content'>
-                                                <li><a href="#!" class="editarCompetencia" data-info='${JSON.stringify(element)}' data-key="${element.Codigo}"><i class="material-icons">create</i>Editar</a></li>
-                                                <li><a href="#!" class="deleteCompetencia" data-key="${element.Codigo}"><i class="material-icons">delete</i>Eliminar</a></li>
-                                                <li><a href="${linkFacebook}" target="black"><i class="bi bi-facebook" style="font-size:22px"></i> Facebook</a></li>
-                                                <li><a target="black" href="https://api.whatsapp.com/send?text=http://127.0.0.1:8000/competencia/jugar/${element.Codigo}"><i class="bi bi-whatsapp" style="font-size:22px"></i> Whatsapp</a></li>
-                                            </ul>                                  
-                                        </div>
-                                    </div>
-                                </div>`
+            itemCompetencia += renderItemCompetencia(element,index)
         });
-        let htmlRender = `<div class="list-competencia">
-                                ${itemCompetencia}
+        let htmlRender = `<div class="" >
+                                <div class="secction-buscar" >
+                                    <button type="button" class="btn btnSelectBuscar" data-key="Alfabetico">Orden Alfabetico</button>
+                                    <button type="button" class="btn btnSelectBuscar" data-key="Reciente">Reciente</button>
+                                    <button type="button" class="btn btnSelectBuscar" data-key="Jugando">Jugando</button>
+                                    <div style="position: relative;padding: 0px 20px;">
+                                        <input type="text" class="form-control " id="inputBuscar"><i class="bi bi-search buscarJuego"></i>
+                                    </div>
+                                </div>
+                                <div class="list-competencia">
+                                    ${itemCompetencia}
+                                </div>
                             </div>`;
         $('.render-html').html(htmlRender);
         $('.dropdown-trigger').dropdown();
     })
 }
+
+$(document).on('click','.btnSelectBuscar',function () {  
+    $('.btnSelectBuscar').removeClass('btn-select')
+    
+    $(this).addClass('btn-select')
+     $('.list-competencia').html(`<div class="content-loader">
+                                <div id="preloader_3"></div>
+                            </div>`)
+    buscarCompetencia({
+        Modo: $(this).data('key')
+    },function (response) { 
+        let itemCompetencia = '';
+        response.data.forEach(function (element, index) {
+            itemCompetencia += renderItemCompetencia(element,index)
+        });
+        
+        $('.list-competencia').html(itemCompetencia);
+        $('.dropdown-trigger').dropdown();
+     })
+})
+
+$(document).on('click','.buscarJuego',function () {  
+    $('.btnSelectBuscar').removeClass('btn-select')
+    $('.list-competencia').html(`<div class="content-loader">
+                                <div id="preloader_3"></div>
+                            </div>`)
+    buscarCompetencia({
+        Modo: 'Buscar',
+        Buscar: $('#inputBuscar').val()
+    },function (response) { 
+        let itemCompetencia = '';
+        response.data.forEach(function (element, index) {
+            itemCompetencia += renderItemCompetencia(element,index)
+        });
+        
+        $('.list-competencia').html(itemCompetencia);
+        $('.dropdown-trigger').dropdown();
+     })
+})
 
 const deleteCompetencia = (codigo) => {
     eliminar({
@@ -182,7 +241,6 @@ $('#content-app').on('click','.deleteCompetencia',function () {
 
 $('#content-app').on('click','.editarCompetencia',function () { 
     var key = $(this).data('key')
-    // console.log($(this).data('info'));
     var data = $(this).data('info')
     $('#nuevoCompetencia').click()
     $('#itmNombre').val(data.Nombre).focus()
@@ -201,7 +259,6 @@ $('#content-app').on('click','.editarCompetencia',function () {
         ListaJuegosCompetencia = response.data
         renderAddJuegoCompetencia()
     })
-    // editarCompetencia(key)
 });
 
 $(document).ready(function () {
@@ -339,6 +396,28 @@ $(document).on('click','.btnRemoveJuego',function () {
     let index = ListaJuegosCompetencia.findIndex(obj => obj.CodigoJuego == codigo)
     ListaJuegosCompetencia.splice(index,1)
     renderAddJuegoCompetencia()
+})
+
+$(document).on('click','.verranking', function () {  
+    let codigo = $(this).data('key')
+    ranking({Competencia:codigo}, function (response) { 
+        let html = '' 
+        response.ranking.forEach(element => {
+            html += `<div style="width:100%;margin: 10px 0px;box-shadow: 1px 1px 15px 1px rgb(0 0 0 / 10%);border-left: 5px solid rebeccapurple;">
+                        <div class="d-flex align-items-center">
+                            <div style="width:100%;padding:0px" class="col-1">
+                                <div><img style="width: 100%;" src="${element.Avatar}" alt=""></div>                     
+                            </div>
+                            <div class="col-9">${element.Nombre} ${element.Apellido}</div>
+                            <div class="col-2">
+                                <span>${Number(element.PuntajeTotal).toFixed(5)}</span>
+                            </div>
+                        </div>
+                    </div>`
+        });
+        
+        $('.renderRanking').html(html)
+    })
 })
 
 $('#rankingCompetencia').click(function () {  

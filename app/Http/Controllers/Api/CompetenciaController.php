@@ -216,4 +216,59 @@ class CompetenciaController extends Controller
             'jugado' => $sql > 0 ? true : false
         ], 200, []);
     }
+
+    public function rankingCompetencia(Request $request)
+    {
+        $sql = DB::select('SELECT *, SUM(pu.Puntaje) as PuntajeTotal FROM juegousuario as ju
+                                INNER JOIN usuario as u ON u.Codigo = ju.CodigoUsuario
+                                INNER JOIN puntaje as pu ON ju.Codigo = pu.CodigoJuegoUsuario
+                                WHERE ju.CodigoCompetencia = ? 
+                                GROUP BY ju.CodigoUsuario,ju.CodigoCompetencia
+                                ORDER BY PuntajeTotal DESC;',[$request->Competencia]);
+        return response()->json([
+            'ranking' => $sql
+        ], 200, []);
+    }
+
+    public function buscarCompetencia(Request $request)
+    {
+        if ($request->Modo == 'Alfabetico') {
+            $juegos = Competencia::select(['*',DB::raw('date_format(FechaInicio, "%d/%m/%Y %h:%i %p") as FechaInicioAdd'),
+                                                    DB::raw('date_format(FechaTermino, "%d/%m/%Y %h:%i %p") as FechaTerminoAdd')])
+                                        ->where('Vigente','=',1)
+                                        ->where('CodigoUsuario','=',$this->auth->Codigo)
+                                        ->orderBy('Nombre','asc')->get();
+        }
+
+        if ($request->Modo == 'Reciente') {
+            $juegos = Competencia::select(['*',DB::raw('date_format(FechaInicio, "%d/%m/%Y %h:%i %p") as FechaInicioAdd'),
+                                                    DB::raw('date_format(FechaTermino, "%d/%m/%Y %h:%i %p") as FechaTerminoAdd')])
+                                        ->where('Vigente','=',1)
+                                        ->where('CodigoUsuario','=',$this->auth->Codigo)
+                                        ->orderBy('Fecha','desc')->get();
+        }
+
+        if ($request->Modo == 'Jugando') {
+            $juegos = Competencia::select(['*',DB::raw('date_format(FechaInicio, "%d/%m/%Y %h:%i %p") as FechaInicioAdd'),
+                                                    DB::raw('date_format(FechaTermino, "%d/%m/%Y %h:%i %p") as FechaTerminoAdd')])
+                                        ->where('Vigente','=',1)
+                                        ->where('CodigoUsuario','=',$this->auth->Codigo)
+                                        ->whereBetween(DB::raw('NOW()'),[DB::raw('FechaInicio'),DB::raw('FechaTermino')])
+                                        ->orderBy('FechaInicioAdd','desc')->get();
+        }
+
+        if ($request->Modo == 'Buscar') {
+            $juegos = Competencia::select(['*',DB::raw('date_format(FechaInicio, "%d/%m/%Y %h:%i %p") as FechaInicioAdd'),
+                                                    DB::raw('date_format(FechaTermino, "%d/%m/%Y %h:%i %p") as FechaTerminoAdd')])
+                                        ->where('Vigente','=',1)
+                                        ->where('CodigoUsuario','=',$this->auth->Codigo)
+                                        ->where('Nombre','LIKE','%'.$request->Buscar.'%')
+                                        // ->whereBetween(DB::raw('NOW()'),[DB::raw('FechaInicio'),DB::raw('FechaTermino')])
+                                        ->orderBy('FechaInicioAdd','desc')->get();
+        }
+        
+        return response()->json([
+            'data' => $juegos
+        ], 200, []);
+    }
 }
