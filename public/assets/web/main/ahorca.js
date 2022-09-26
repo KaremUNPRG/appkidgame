@@ -1,4 +1,5 @@
-import { ahorcado,puntajeAhorcado,listaAhorcadoRelacionados,listaAhorcadoRelacionados2 } from "../components/api/Juego.js";
+import { ahorcado,puntajeAhorcado,listaAhorcadoRelacionados,listaAhorcadoRelacionados2 } from "../components/api/juego.js";
+
 import { listaValoracion, insertValoracion } from "../components/api/Inicio.js";
 
 // ### VARIABLES ###
@@ -162,7 +163,7 @@ function mostrarPuntaje(suma, cant){
     confirmButtonColor: '#3085d6',
     showCancelButton: true,
     confirmButtonText: `Valorar Juego!`,
-    footer: `<a class="resp-sharing-button__link" href="https://facebook.com/sharer/sharer.php?u=http://127.0.0.1//jugarAhorcado?id=${btoa(codigoJuegoGlobal)}" target="_blank" rel="noopener" aria-label="Share on Facebook">
+    footer: `<a class="resp-sharing-button__link" href="https://facebook.com/sharer/sharer.php?u=https://appkidgame-production.up.railway.app/jugarAhorcado?id=${btoa(codigoJuegoGlobal)}" target="_blank" rel="noopener" aria-label="Share on Facebook">
     <div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--large"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
       </div>Compartir en Facebook</div>
   </a>`
@@ -212,7 +213,7 @@ function compruebaFin() {
                 confirmButtonColor: '#3085d6',
                 showCancelButton: true,
                 confirmButtonText: `Valorar Juego!`,
-                footer: `<a class="resp-sharing-button__link" href="https://facebook.com/sharer/sharer.php?u=http://127.0.0.1//jugarAhorcado?id=${btoa(codigoJuegoGlobal)}" target="_blank" rel="noopener" aria-label="Share on Facebook">
+                footer: `<a class="resp-sharing-button__link" href="https://facebook.com/sharer/sharer.php?u=https://appkidgame-production.up.railway.app/jugarAhorcado?id=${btoa(codigoJuegoGlobal)}" target="_blank" rel="noopener" aria-label="Share on Facebook">
                             <div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--large"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
                               </div>Compartir en Facebook</div>
                           </a>`
@@ -281,7 +282,7 @@ function compruebaFin() {
               confirmButtonColor: '#3085d6',
               showCancelButton: true,
               confirmButtonText: `Valorar Juego!`,
-              footer: `<a class="resp-sharing-button__link" href="https://facebook.com/sharer/sharer.php?u=http://127.0.0.1//jugarAhorcado?id=${btoa(codigoJuegoGlobal)}" target="_blank" rel="noopener" aria-label="Share on Facebook">
+              footer: `<a class="resp-sharing-button__link" href="https://facebook.com/sharer/sharer.php?u=https://appkidgame-production.up.railway.app/jugarAhorcado?id=${btoa(codigoJuegoGlobal)}" target="_blank" rel="noopener" aria-label="Share on Facebook">
     <div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--large"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
       </div>Compartir en Facebook</div>
   </a>`
@@ -399,7 +400,7 @@ function cargarMinutos(segundos){
               confirmButtonColor: '#3085d6',
               showCancelButton: true,
               confirmButtonText: `Valorar Juego!`,
-              footer: `<a class="resp-sharing-button__link" href="https://facebook.com/sharer/sharer.php?u=http://127.0.0.1//jugarAhorcado?id=${btoa(codigoJuegoGlobal)}" target="_blank" rel="noopener" aria-label="Share on Facebook">
+              footer: `<a class="resp-sharing-button__link" href="https://facebook.com/sharer/sharer.php?u=https://appkidgame-production.up.railway.app/jugarAhorcado?id=${btoa(codigoJuegoGlobal)}" target="_blank" rel="noopener" aria-label="Share on Facebook">
     <div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--large"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
       </div>Compartir en Facebook</div>
   </a>`

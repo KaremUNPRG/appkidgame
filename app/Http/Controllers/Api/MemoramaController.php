@@ -53,8 +53,8 @@ class MemoramaController extends Controller
         $newJuego->Borrador = 1;
         $newJuego->CodigoTema = $request->CodigoTema;
         $newJuego->save();
-
-        $carpeta = 'storage/memorama/'.$this->auth->Codigo."_".date('Y-m');
+        // .$this->auth->Codigo."_".date('Y-m')
+        $carpeta = 'almacenamiento/memorama';
         if(!file_exists($carpeta)){
             mkdir($carpeta,'0777');
         }
@@ -124,7 +124,8 @@ class MemoramaController extends Controller
         }
         $newJuego->CodigoTema = $request->CodigoTema;
         $newJuego->save();
-        $carpeta = 'storage/memorama/'.$this->auth->Codigo."_".date('Y_m');
+        // .$this->auth->Codigo."_".date('Y_m')
+        $carpeta = 'almacenamiento/memorama';
         
         if(!file_exists($carpeta)){
             mkdir($carpeta,'0777');
@@ -149,15 +150,16 @@ class MemoramaController extends Controller
                         file_put_contents($archivo,file_get_contents(public_path($value['Imagen'])));
                     }else{
                         $archivo = $carpeta.'/'.$value['Descripcion'].'_'.time().'.jpg';
-                        file_put_contents($archivo,file_get_contents($value['Imagen']));
+                        $archivo = $value['Imagen'];
+                        // file_put_contents($archivo,file_get_contents($value['Imagen']));
                     }
                     
                 }
-    
+                $exist = strpos($value['Imagen'], 'http');
                 $newMemorama = new Memorama;
                 $newMemorama->CodigoJuego = $newJuego->Codigo;
                 $newMemorama->Descripcion = $value['Descripcion'];
-                $newMemorama->Imagen = '/'.$archivo;
+                $newMemorama->Imagen = ($exist === false) ? ('/'.$archivo):  $archivo;
                 $newMemorama->save();
             // }
 
