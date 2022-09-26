@@ -22,7 +22,7 @@ class TemaController extends Controller
      */
     public function index()
     {        $Tema = Tema::where('CodigoUsuario','=',$this->auth->Codigo)
-                        ->orderBy('Tema.Vigente','desc')->get();
+                        ->orderBy('Vigente','desc')->get();
         return response()->json([
             'data' => $Tema,
         ], 200, []);
