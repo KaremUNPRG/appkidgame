@@ -1,7 +1,5 @@
 import { sopaLetras, puntajeSopaLetras,listaSopaRelacionados,listaSopaRelacionados2 } from "../components/api/juego.js";
 import { listaValoracion, insertValoracion } from "../components/api/Inicio.js";
-
-
 // ### VARIABLES ###
 
 let params = new URLSearchParams(location.search);
