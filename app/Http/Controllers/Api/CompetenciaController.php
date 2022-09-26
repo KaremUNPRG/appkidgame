@@ -66,7 +66,7 @@ class CompetenciaController extends Controller
         }
 
         return response()->json([
-            'mensaje' => 'Competencia Registrada Correctamente'
+            'mensaje' => 'Competencia registrada correctamente'
         ], 200, []);
     }
 
@@ -111,7 +111,7 @@ class CompetenciaController extends Controller
         }
 
         return response()->json([
-            'mensaje' => 'Se Editó Correctamente'
+            'mensaje' => 'Se editó correctamente'
         ], 200, []);
     }
 
@@ -128,7 +128,7 @@ class CompetenciaController extends Controller
         $newCompetencia->save();
 
         return response()->json([
-            'mensaje' => 'Se Eliminó Correctamente'
+            'mensaje' => 'Se eliminó correctamente'
         ], 200, []);
     }
 
@@ -201,7 +201,7 @@ class CompetenciaController extends Controller
             $newJuegoComp->save();
             
             return response()->json([
-                'mensaje' => 'Se agrego Correctamente'
+                'mensaje' => 'Se agrego correctamente'
             ], 200, []);
         }else{
             return response()->json([
