@@ -250,7 +250,7 @@
                         <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                     </p>
                     <p>
-                       Desarrollador por:<br>Jorge Campos<br>Karem Chinchay<br>Sergio Delgado<br>Rubén Hernández<br>Noely Moscol<br>Ulises Cangalaya<br>Orlando Ñiquen<br>Franklin Terán
+                       Desarrollador por:<br>César Gonzáles<br>Jorge Campos<br>Karem Chinchay<br>Sergio Delgado<br>Rubén Hernández<br>Noely Moscol<br>Ulises Cangalaya<br>Orlando Ñiquen<br>Franklin Terán
                     </p>
                 </div>
             </div>
