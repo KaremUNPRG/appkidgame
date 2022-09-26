@@ -42,6 +42,8 @@ Route::middleware(['authapi'])->group(function () {
     Route::get('competencia/juegos',[CompetenciaController::class,'listaJuego']);
     Route::post('competencia/listarjuegos',[CompetenciaController::class,'listaJuegoCompetencia']);
     Route::post('competencia/verificarclave',[CompetenciaController::class,'verificarClave']);
+    Route::post('competencia/ranking',[CompetenciaController::class,'rankingCompetencia']);
+    Route::post('competencia/buscar',[CompetenciaController::class,'buscarCompetencia']);
     // Route::post('competencia/verificarjugado',[CompetenciaController::class,'verificarYaJugado']);
     Route::post('competencia/juegos/agregar',[CompetenciaController::class,'agregarJuegoCompetencia']);
 
@@ -53,6 +55,8 @@ Route::middleware(['authapi'])->group(function () {
     Route::put('memorama',[MemoramaController::class,'update']);
     Route::get('memorama/listar/tema',[MemoramaController::class,'listarTema']);
     Route::get('memorama/get/{codigoMemorama}',[MemoramaController::class,'show']);
+    
+    Route::post('memorama/buscar',[MemoramaController::class,'buscarMemorama']);
     Route::post('puntaje-memorama',[PuntajeController::class,'storePuntajeMemorama']);   
 
     Route::get('sopaletras/temas', [SopaLetrasController::class,'getTemas']);
@@ -65,6 +69,13 @@ Route::middleware(['authapi'])->group(function () {
      Route::post('agregar-sopa-competencia',[SopaLetrasController::class,'editCompetencias']);  
      Route::post('puntaje-sopa-letras',[PuntajeController::class,'storePuntajeSopaLetras']);  
 
+
+     Route::post('tema',[TemaController::class,'store']);
+    Route::get('tema',[TemaController::class,'index']);
+    Route::get('tema/juego',[TemaController::class,'listarTema']);
+    Route::delete('tema',[TemaController::class,'destroy']);
+    Route::put('tema',[TemaController::class,'update']);
+    Route::put('tema/restore',[TemaController::class,'restore']);
  
 });
 

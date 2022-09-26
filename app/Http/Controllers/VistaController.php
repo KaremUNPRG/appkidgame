@@ -16,6 +16,12 @@ class VistaController extends Controller
         return view('competencia');
     }
 
+    public function tema()
+    {
+        return view('tema');
+    }
+
+
     public function ahorcado()
     {
         return view('juegos.ahorcado.ahorcado');

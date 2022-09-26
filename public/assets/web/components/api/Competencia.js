@@ -18,9 +18,9 @@ export const store =  async (body,success) => {
     });
 }
 
-export const list =  async (success) => {
+export const list =  async (success, get = 0) => {
 
-    let response = await fetch(`${url}/competencia`, { 
+    let response = await fetch(`${url}/competencia?page=${get}`, { 
         method: "GET",
         headers: headersList()
     })
@@ -96,3 +96,40 @@ export const juegoCompetencia =  async (codigo, success) => {
         console.log('Hubo un problema con la petición Fetch:' + error.message);
     });
 }
+
+export const ranking =  async (body,success) => {
+       
+    let bodyContent = JSON.stringify(body);
+
+    let response = await fetch(`${url}/competencia/ranking`, { 
+        method: "POST",
+        body: bodyContent,
+        headers: headersList()
+    })
+    .then(response => response.json())
+    .then(data => {
+        success(data)
+    })
+    .catch(function(error) {
+        console.log('Hubo un problema con la petición Fetch:' + error.message);
+    });
+}
+
+export const buscarCompetencia =  async (body,success) => {
+       
+    let bodyContent = JSON.stringify(body);
+
+    let response = await fetch(`${url}/competencia/buscar`, { 
+        method: "POST",
+        body: bodyContent,
+        headers: headersList()
+    })
+    .then(response => response.json())
+    .then(data => {
+        success(data)
+    })
+    .catch(function(error) {
+        console.log('Hubo un problema con la petición Fetch:' + error.message);
+    });
+}
+

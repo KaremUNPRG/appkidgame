@@ -150,7 +150,7 @@
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item active"><a href="/" class="nav-link pl-0">Inicio</a></li>
                     @if (Auth::check())
-                        
+                        <li class="nav-item"><a href="{{route('tema')}}" class="nav-link">Temas</a></li>
                         <li class="nav-item"><a href="{{route('ahorcado')}}" class="nav-link">Ahorcado</a></li>
                         <li class="nav-item"><a href="{{route('memorama')}}" class="nav-link">Memoria</a></li>
                         <li class="nav-item" ><a href="{{route('sopaletras')}}" class="nav-link">Sopa de letras</a></li>

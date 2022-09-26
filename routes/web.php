@@ -44,6 +44,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/memorama', [VistaController::class,'memorama'])->name('memorama');
     Route::get('/ahorcado', [VistaController::class,'ahorcado'])->name('ahorcado');
+    Route::get('/tema', [VistaController::class,'tema'])->name('tema');
     Route::get('/sopaletras', [VistaController::class,'sopaletras'])->name('sopaletras');
 });
 

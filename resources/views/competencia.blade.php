@@ -75,6 +75,46 @@
         .content-juego{
             min-height: 100px;
         }
+        .secction-buscar{
+            display: flex;
+            flex-wrap: wrap;
+            background: #fff;
+        }
+        .secction-buscar button{
+            height: 55px;
+            background: transparent!important;
+            color: #000!important;
+            display: inline-block;
+        }
+
+        .secction-buscar .btn-select{
+            color: #fff!important;
+            background-color: #2b95bb!important;
+        }
+
+        #preloader_3{
+            margin: 20% 50%!important;
+        }
+
+        .content-loader{
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            background: #fff;
+            min-height: 400px;
+            height: 100%;
+        }
+
+        .buscarJuego {
+            position: absolute;
+            right: 0;
+            top: 20px;
+            cursor: pointer;
+            background: #fff;
+            padding: 0px 10px;
+        }
+        
     </style>
 @endsection
 @section('content')
@@ -93,18 +133,21 @@
                             <div ><img src="{{asset('assets/web/img/registro.png')}}" alt="" style="width: 30px;"></div>
                             <div class="font-weight-bold text-option"> Nuevo</div>
                         </div>
-                        <div class="item-option d-flex" id="rankingCompetencia">
+                        {{-- <div class="item-option d-flex" id="rankingCompetencia">
                             <div><img src="{{asset('assets/web/img/ranking.png')}}" alt="" style="width: 30px;"></div>
                             <div class="font-weight-bold text-option"> Ranking</div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
                 <div class="render-html col-xl-9" id="content-app">
-                    
+                    <div class="content-loader">
+                        <div id="preloader_3"></div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
     <div id="modal1" class="modal">
         <div class="modal-content">
             <h5>Agregar Juego</h5>
@@ -133,6 +176,21 @@
             </div>
             <div class="render-juego py-4 col-12">
 
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect bg-danger text-white waves-green btn-flat">Cancelar</a>
+        </div>
+    </div>
+    
+    <div id="modalRanking" class="modal">
+        <div class="modal-content">
+            <h5 class="titleCompetencia"></h5>
+            <hr>
+            <div>
+                <div class="renderRanking">
+
+                </div>
             </div>
         </div>
         <div class="modal-footer">

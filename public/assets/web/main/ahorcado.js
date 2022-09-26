@@ -1,5 +1,5 @@
 import { store, list,eliminar, editar,restaurar,listarCompetencias,editarCompetencia} from "../components/api/Ahorcado.js";
-import { lista } from "../components/api/Tema.js";
+import { listaT } from "../components/api/Tema.js";
 import { listarJuego, juegoCompetencia } from "../components/api/Competencia.js";
 
 var oculta = [];
@@ -14,7 +14,7 @@ var ListaJuegosCompetencia = [];
 
 const listarTema = (cod) => {
     
-    lista(function (response) {  
+    listaT(function (response) {  
         let itemTema = '';
         response.data.forEach(function (element, index) {
             if(cod == element.Codigo){

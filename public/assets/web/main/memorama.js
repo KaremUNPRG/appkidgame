@@ -1,14 +1,86 @@
-import { store, list,eliminar, editar, listarTema,cartaMemorama } from "../components/api/Memorama.js";
+import { store, list,eliminar, editar, listarTema,cartaMemorama, buscarMemorama } from "../components/api/Memorama.js";
 
 var CodigoJuegoMemorama = null;
 var ListaCartaJuego = [];
 var ListaTema = [];
 
+var tipoFiltro = 'All';
+var scrollEvent = true;
+
+
+var inputBuscar = ''
+
+$(document).on('click','.buscarJuego',function () {  
+    scrollEvent = true
+    tipoFiltro = 'Buscar'
+    
+    inputBuscar = $('#inputBuscar').val()
+    buscarMemorama({
+        Modo: 'Buscar',
+        Buscar: $('#inputBuscar').val()
+    },function (response) { 
+        let itemMemorama = '';
+        response.data.forEach(function (element, index) {
+            itemMemorama += itemMemoramaRender(element,index)
+        });
+        $('.list-memorama').html(itemMemorama);
+        $('.dropdown-trigger').dropdown();
+        scrollEvent = true
+     })
+})
+
+const mostrarScroll = () => {
+    let scrollTop = document.documentElement.scrollTop;
+    let ubicacion = $('.item-memorama').length - 2;
+
+    let offset = $('.item-memorama').eq(ubicacion-1).offset();
+    var top = offset.top;
+    if (top < scrollTop && scrollEvent) {
+        scrollEvent = false
+        if (($('.item-memorama').length % 5) == 0) {
+            if (tipoFiltro == 'All') {
+                
+                list(function (response) {  
+                    let itemMemorama = '';
+                    response.data.forEach(function (element, index) {
+                        itemMemorama += itemMemoramaRender(element,index)
+                    });
+                    console.log(itemMemorama);
+                    $('.list-memorama').append(itemMemorama);
+                    $('.dropdown-trigger').dropdown();
+                    scrollEvent = true
+                }, ($('.item-memorama').length / 5) + 1)
+            }
+
+            if(tipoFiltro == 'Buscar'){
+                buscarMemorama({
+                    Modo: tipoFiltro,
+                    Buscar:inputBuscar,
+                    page: ($('.item-memorama').length / 5) + 1
+                },function (response) { 
+                    let itemMemorama = '';
+                    response.data.forEach(function (element, index) {
+                        itemMemorama += itemMemoramaRender(element,index)
+                    });
+                    
+                    $('.list-memorama').append(itemMemorama);
+                    $('.dropdown-trigger').dropdown();
+                    scrollEvent = true
+                 })
+            }
+            
+        }
+    }    
+}
+
+window.addEventListener('scroll',mostrarScroll)
+
+
 const htmlRenderCarta = () => {
     return `<div>
                 <div>
                     <div class="header-carta modal-trigger" data-target="modal1">
-                        <div><h6>Carta</h6></div>
+                        <div><h6>Carta <i class="bi bi-plus-circle-fill"></i></h6></div>
                     </div>
                     <div class="content-carta">
                         
@@ -17,34 +89,48 @@ const htmlRenderCarta = () => {
             </div>`
 }
 
+const itemMemoramaRender = (element, index) => {
+    return ` <div class="col-12 item-memorama ${element.Borrador==1?"item-borrador":""}">
+                <div class="row justify-content-between">
+                    <div class="col">
+                        <p class="title-memorama m-0">Titulo: ${element.TituloJuego}</p>
+                        <div class="d-flex"><p class="tema-memorama">Tema del Juego: ${element.TituloTema}</p>
+                        <p class="tiempo-memorama pl-3">Tiempo: ${element.Tiempo}</p></div>
+                        
+                    </div>
+                    <div>
+                        <a class='dropdown-trigger' href='#' data-target='dropdown${index}'>
+                            <i class="material-icons" style="font-size: 2rem">more_vert</i>
+                        </a>
+                        <ul id='dropdown${index}' class='dropdown-content'>
+                            
+                            <li><a href="#!" class="editarMemorama" data-info='${JSON.stringify(element)}' data-key="${element.codigoJuego}"><i class="material-icons">create</i>${element.Borrador==1?"Restaurar":"Editar"}</a></li>
+                            <li><a href="#!" class="deleteMemorama" data-key="${element.codigoJuego}"><i class="material-icons">delete</i>Eliminar</a></li>
+                            <li><a href="#!" class="probarJuego" data-key="${element.codigoJuego}"><i class="bi bi-play-circle-fill"></i> Probar</a></li>
+                            
+                            <li><a href="#!"><i class="material-icons">insert_link</i>Compartir</a></li>
+                        </ul>                                  
+                    </div>
+                </div>
+            </div>`
+}
+
 const renderMemorama = () => {
     list(function (response) {  
         let itemMemorama = '';
+        //<p class="fecha-memorama">Fecha: ${element.Fecha}</p>
         response.data.forEach(function (element, index) {
-            itemMemorama += ` <div class="col-12 item-memorama ${element.Borrador==1?"item-borrador":""}">
-                                    <div class="row justify-content-between">
-                                        <div class="col">
-                                            <p class="title-memorama">Titulo: ${element.TituloJuego}</p>
-                                            <p class="tema-memorama">Tema del Juego: ${element.TituloTema}</p>
-                                            <p class="tiempo-memorama">Tiempo: ${element.Tiempo}</p>
-                                            <p class="fecha-memorama">Fecha: ${element.Fecha}</p>
-                                        </div>
-                                        <div>
-                                            <a class='dropdown-trigger' href='#' data-target='dropdown${index}'>
-                                                <i class="material-icons" style="font-size: 2rem">more_vert</i>
-                                            </a>
-                                            <ul id='dropdown${index}' class='dropdown-content'>
-                                                
-                                                <li><a href="#!" class="editarMemorama" data-info='${JSON.stringify(element)}' data-key="${element.codigoJuego}"><i class="material-icons">create</i>${element.Borrador==1?"Restaurar":"Editar"}</a></li>
-                                                <li><a href="#!" class="deleteMemorama" data-key="${element.codigoJuego}"><i class="material-icons">delete</i>Eliminar</a></li>
-                                                <li><a href="#!"><i class="material-icons">insert_link</i>Compartir</a></li>
-                                            </ul>                                  
-                                        </div>
-                                    </div>
-                                </div>`
+            itemMemorama += itemMemoramaRender(element,index)
         });
-        let htmlRender = `<div class="list-memorama">
-                                ${itemMemorama}
+        let htmlRender = `<div class="" >
+                                <div class="secction-buscar" >
+                                    <div style="position: relative;">
+                                        <input type="text" class="form-control " id="inputBuscar"><i class="bi bi-search buscarJuego"></i>
+                                    </div>
+                                </div>
+                                <div class="list-memorama">
+                                    ${itemMemorama}
+                                </div>
                             </div>`;
         $('.render-html').html(htmlRender);
         $('.dropdown-trigger').dropdown();
@@ -52,6 +138,8 @@ const renderMemorama = () => {
 }
 
 $(document).ready(function () {
+    scrollEvent = true
+        tipoFiltro = 'All'
     renderMemorama()
     listarTema(function (response) {
         ListaTema = response.data
@@ -59,6 +147,8 @@ $(document).ready(function () {
 });
 
 $('#listarMemorama').click(function () { 
+    scrollEvent = true
+        tipoFiltro = 'All'
     renderMemorama()
 })
 
@@ -71,6 +161,8 @@ const deleteMemorama = (codigo) => {
             icon: 'success',
             title: response.mensaje
           })
+          scrollEvent = true
+        tipoFiltro = 'All'
         renderMemorama()
     })
 }
@@ -80,6 +172,15 @@ $('#content-app').on('click','.deleteMemorama',function () {
     console.log(key)
     deleteMemorama(key)
 });
+
+$('#content-app').on('click','.probarJuego', function () {
+    var key = $(this).data('key')
+    var win = window.open(`jugar-memoria/${key}?id=${key}`);
+        // Cambiar el foco al nuevo tab (punto opcional)
+    win.focus();
+    
+    //$(location).attr('href',`jugar-memoria/${key}?id=${key}`);
+})
 
 $('#nuevoMemorama').click(function(){
     CodigoJuegoMemorama = null;
@@ -178,32 +279,44 @@ $(document).on('change','.executeBorrador',function () {
 })
 
 $('#content-app').on('click','.btnSend',function () { 
-    editar({
-        itmTitulo: $('#itmTitulo').val(),
-        itmTiempo: $('#itmTiempo').val(),
-        itmPrivado: $('#itmPrivado').prop('checked') ? 1 : 0,
-        itmFondo: $('#itmFondo').val(),
-        CodigoTema: $('#itmTema').val(),
-        itmCodigoJuego:CodigoJuegoMemorama,
-        itmRegistro:'SI',
-        itmListaCarta: ListaCartaJuego
-      },
-      function (response) { 
+    if (ListaCartaJuego.length >= 2) {
+        editar({
+            itmTitulo: $('#itmTitulo').val(),
+            itmTiempo: $('#itmTiempo').val(),
+            itmPrivado: $('#itmPrivado').prop('checked') ? 1 : 0,
+            itmFondo: $('#itmFondo').val(),
+            CodigoTema: $('#itmTema').val(),
+            itmCodigoJuego:CodigoJuegoMemorama,
+            itmRegistro:'SI',
+            itmListaCarta: ListaCartaJuego
+          },
+          function (response) { 
+            Swal.fire({
+                title: response.mensaje,
+                icon:'success',
+                showDenyButton: true,
+                showCancelButton: false,
+                confirmButtonText: 'Listar',
+                denyButtonText: `Nuevo`,
+              }).then((result) => {
+                if (result.isConfirmed) {  
+                    scrollEvent = true
+            tipoFiltro = 'All'
+                    renderMemorama()
+                } else if (result.isDenied) {
+                    $('#nuevoMemorama').click()
+                }
+              })
+        })
+    }else{
         Swal.fire({
-            title: response.mensaje,
-            icon:'success',
-            showDenyButton: true,
+            title: 'Al menos 2 cartas debe ingresar.',
+            icon:'info',
+            showDenyButton: false,
             showCancelButton: false,
-            confirmButtonText: 'Listar',
-            denyButtonText: `Nuevo`,
-          }).then((result) => {
-            if (result.isConfirmed) {  
-                renderMemorama()
-            } else if (result.isDenied) {
-                $('#nuevoMemorama').click()
-            }
+            confirmButtonText: 'Ok',
           })
-    })
+    }
 })
 
 $('#content-app').on('click','.editarMemorama',function () { 
@@ -239,32 +352,44 @@ $('#content-app').on('click','.editarMemorama',function () {
 });
 
 $('#content-app').on('click','.btnEdit',function () { 
-    editar({
-        itmTitulo: $('#itmTitulo').val(),
-        itmTiempo: $('#itmTiempo').val(),
-        itmPrivado: $('#itmPrivado').prop('checked') ? 1 : 0,
-        itmFondo: $('#itmFondo').val(),
-        CodigoTema: $('#itmTema').val(),
-        itmCodigoJuego:CodigoJuegoMemorama,
-        itmRegistro:'SI',
-        itmListaCarta: ListaCartaJuego
-      },
-      function (response) { 
+    if (ListaCartaJuego.length >= 2) {
+        editar({
+            itmTitulo: $('#itmTitulo').val(),
+            itmTiempo: $('#itmTiempo').val(),
+            itmPrivado: $('#itmPrivado').prop('checked') ? 1 : 0,
+            itmFondo: $('#itmFondo').val(),
+            CodigoTema: $('#itmTema').val(),
+            itmCodigoJuego:CodigoJuegoMemorama,
+            itmRegistro:'SI',
+            itmListaCarta: ListaCartaJuego
+        },
+        function (response) { 
+            Swal.fire({
+                title: response.mensaje,
+                icon:'success',
+                showDenyButton: true,
+                showCancelButton: false,
+                confirmButtonText: 'Listar',
+                denyButtonText: `Nuevo`,
+            }).then((result) => {
+                if (result.isConfirmed) { 
+                    scrollEvent = true
+            tipoFiltro = 'All' 
+                    renderMemorama()
+                } else if (result.isDenied) {
+                    $('#nuevoMemorama').click()
+                }
+            })
+        })
+    }else{
         Swal.fire({
-            title: response.mensaje,
-            icon:'success',
-            showDenyButton: true,
+            title: 'Al menos 2 cartas debe ingresar.',
+            icon:'info',
+            showDenyButton: false,
             showCancelButton: false,
-            confirmButtonText: 'Listar',
-            denyButtonText: `Nuevo`,
-          }).then((result) => {
-            if (result.isConfirmed) {  
-                renderMemorama()
-            } else if (result.isDenied) {
-                $('#nuevoMemorama').click()
-            }
+            confirmButtonText: 'Ok',
           })
-    })
+    }
 })
 
 $('.itmTipoRecurso').change(function () {
@@ -342,5 +467,7 @@ $(document).on('click','.btnRemoveCarta',function () {
 })
 
 $('#content-app').on('click','.cerrar',function () { 
+    scrollEvent = true
+        tipoFiltro = 'All'
     renderMemorama()
 });
