@@ -188,7 +188,7 @@
     </nav>
     <!-- END nav -->
 
-    <div style="padding-top: 80px">
+    <div style="padding-top: 50px">
         @yield('content')
     </div>
 
