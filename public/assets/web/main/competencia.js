@@ -139,10 +139,10 @@ const renderItemCompetencia = (element,index) => {
                         <p>${element.FechaInicioAdd} a ${element.FechaTerminoAdd}</p>
                     </div>
                     <div>
-                        <a class='dropdown-trigger' href='#' data-target='dropdown${index}'>
+                        <a class='dropdown-trigger' href='#' data-target='dropdown${element.Codigo}'>
                             <i class="material-icons" style="font-size: 2rem">more_vert</i>
                         </a>
-                        <ul id='dropdown${index}' class='dropdown-content'>
+                        <ul id='dropdown${element.Codigo}' class='dropdown-content'>
                             <li><a href="#!" class="editarCompetencia" data-info='${JSON.stringify(element)}' data-key="${element.Codigo}"><i class="material-icons">create</i>Editar</a></li>
                             <li><a href="#!" class="deleteCompetencia" data-key="${element.Codigo}"><i class="material-icons">delete</i>Eliminar</a></li>
                             <li><a href="${linkFacebook}" target="black"><i class="bi bi-facebook" style="font-size:22px"></i> Facebook</a></li>
