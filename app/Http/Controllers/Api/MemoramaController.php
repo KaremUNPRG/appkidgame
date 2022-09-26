@@ -150,15 +150,16 @@ class MemoramaController extends Controller
                         file_put_contents($archivo,file_get_contents(public_path($value['Imagen'])));
                     }else{
                         $archivo = $carpeta.'/'.$value['Descripcion'].'_'.time().'.jpg';
-                        file_put_contents($archivo,file_get_contents($value['Imagen']));
+                        $archivo = $value['Imagen'];
+                        // file_put_contents($archivo,file_get_contents($value['Imagen']));
                     }
                     
                 }
-    
+                $exist = strpos($value['Imagen'], 'http');
                 $newMemorama = new Memorama;
                 $newMemorama->CodigoJuego = $newJuego->Codigo;
                 $newMemorama->Descripcion = $value['Descripcion'];
-                $newMemorama->Imagen = '/'.$archivo;
+                $newMemorama->Imagen = ($exist === false) ? ('/'.$archivo):  $archivo;
                 $newMemorama->save();
             // }
 
