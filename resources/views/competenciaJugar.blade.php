@@ -17,7 +17,7 @@
             @if (count($juegos) > 0)
                 @if ($disponible)
                     <div class="row justify-content-center mb-5 pb-2">
-                        <div class="col-md-8 text-center heading-section ftco-animate">
+                        <div class="col-md-8 text-center heading-section ftco-animate mt-4">
                             <h2 class="mb-4" style="font-size: 22px;">  {{$juegos[0]->NomCompetencia}} <br> 
                                     <span style="font-size: 34px;margin-top: 10px;display: block;"> Puntaje General: {{$puntajeTotal}}</span></h2>
                         </div>
