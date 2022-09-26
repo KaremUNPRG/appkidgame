@@ -130,7 +130,7 @@ $('#content-app').on('click','.btnSend',function () {
 })
 
 const renderItemCompetencia = (element,index) => {
-    let linkFacebook = `http://www.facebook.com/sharer.php?s=100&p[url]=http://127.0.0.1:8000/competencia&p[title]=${element.Nombre}&p[summary]=Jugar Competencia&p[images][0]=http://127.0.0.1:8000/assets/web/img/verdugo.png`;
+    let linkFacebook = `http://www.facebook.com/sharer.php?s=100&p[url]=https://appkidgame-production.up.railway.app/competencia&p[title]=${element.Nombre}&p[summary]=Jugar Competencia&p[images][0]=http://127.0.0.1:8000/assets/web/img/verdugo.png`;
             
     return `<div class="col-12 item-competencia">
                 <div class="row justify-content-between">
@@ -146,7 +146,7 @@ const renderItemCompetencia = (element,index) => {
                             <li><a href="#!" class="editarCompetencia" data-info='${JSON.stringify(element)}' data-key="${element.Codigo}"><i class="material-icons">create</i>Editar</a></li>
                             <li><a href="#!" class="deleteCompetencia" data-key="${element.Codigo}"><i class="material-icons">delete</i>Eliminar</a></li>
                             <li><a href="${linkFacebook}" target="black"><i class="bi bi-facebook" style="font-size:22px"></i> Facebook</a></li>
-                            <li><a target="black" href="https://api.whatsapp.com/send?text=http://127.0.0.1:8000/competencia/jugar/${element.Codigo}"><i class="bi bi-whatsapp" style="font-size:22px"></i> Whatsapp</a></li>
+                            <li><a target="black" href="https://api.whatsapp.com/send?text=https://appkidgame-production.up.railway.app/competencia/jugar/${element.Codigo}"><i class="bi bi-whatsapp" style="font-size:22px"></i> Whatsapp</a></li>
                             <li><a href="#!" data-target="modalRanking" class="modal-trigger verranking" data-key="${element.Codigo}"><i class="bi bi-trophy" style="font-size:22px"></i> Ranking</a></li>    
                         </ul>                                  
                     </div>
