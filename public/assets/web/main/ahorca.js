@@ -1,4 +1,5 @@
 import { ahorcado,puntajeAhorcado,listaAhorcadoRelacionados,listaAhorcadoRelacionados2 } from "../components/api/juego.js";
+
 import { listaValoracion, insertValoracion } from "../components/api/Inicio.js";
 
 // ### VARIABLES ###
