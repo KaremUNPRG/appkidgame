@@ -53,8 +53,8 @@ class MemoramaController extends Controller
         $newJuego->Borrador = 1;
         $newJuego->CodigoTema = $request->CodigoTema;
         $newJuego->save();
-
-        $carpeta = 'almacenamiento/memorama/'.$this->auth->Codigo."_".date('Y-m');
+        // .$this->auth->Codigo."_".date('Y-m')
+        $carpeta = 'almacenamiento/memorama';
         if(!file_exists($carpeta)){
             mkdir($carpeta,'0777');
         }
@@ -124,7 +124,8 @@ class MemoramaController extends Controller
         }
         $newJuego->CodigoTema = $request->CodigoTema;
         $newJuego->save();
-        $carpeta = 'almacenamiento/memorama/'.$this->auth->Codigo."_".date('Y_m');
+        // .$this->auth->Codigo."_".date('Y_m')
+        $carpeta = 'almacenamiento/memorama';
         
         if(!file_exists($carpeta)){
             mkdir($carpeta,'0777');
