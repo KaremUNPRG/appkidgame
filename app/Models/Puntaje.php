@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Puntaje extends Model
 {
     use HasFactory;
-    protected $table = 'Puntaje';
+    protected $table = 'puntaje';
 
     protected $primaryKey = 'CodigoJuegoUsuario';
 
