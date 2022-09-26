@@ -115,11 +115,11 @@ class PuntajeController extends Controller
         // $newPuntaje->Vidas = $request->itmVidas;
         $newPuntaje->TiempoTotal = $request->itmTiempoTotal;
         $newPuntaje->TiempoDemorado = $request->itmTiempoDemorado;
-        $newPuntaje->Descubiertas = $request->itmDescubiertas;
+        $newPuntaje->CantidadDescubiertas = $request->itmDescubiertas;
         $newPuntaje->Totales = $request->itmTotales;
         $newPuntaje->save();
 
-        $puntaje = ($newPuntaje->TiempoDemorado/$newPuntaje->TiempoTotal)*($newPuntaje->Descubiertas/$newPuntaje->Totales);
+        $puntaje = ($newPuntaje->TiempoDemorado/$newPuntaje->TiempoTotal)*($newPuntaje->CantidadDescubiertas/$newPuntaje->Totales);
         return response()->json([
             'puntaje' => $puntaje
         ], 200, []);
