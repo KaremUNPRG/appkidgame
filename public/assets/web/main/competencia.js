@@ -6,6 +6,9 @@ var ListaJuegosCompetencia = []
 
 var ListaJuego = []
 
+var tipoFiltro = 'All';
+var scrollEvent = true;
+
 const htmlRenderPreloader = () => {
     return `<div class="progress">
                 <div class="indeterminate"></div>
@@ -116,6 +119,8 @@ $('#content-app').on('click','.btnSend',function () {
             denyButtonText: `Nuevo`,
           }).then((result) => {
             if (result.isConfirmed) {  
+                scrollEvent = true
+                tipoFiltro = 'Buscar'
                 renderCompetencia()
             } else if (result.isDenied) {
                 $('#nuevoCompetencia').click()
@@ -162,7 +167,7 @@ const renderCompetencia = () => {
         });
         let htmlRender = `<div class="" >
                                 <div class="secction-buscar" >
-                                    <button type="button" class="btn btnSelectBuscar" data-key="Alfabetico">Orden Alfabetico</button>
+                                    <button type="button" class="btn btnSelectBuscar" data-key="Alfabetico">Orden Alfabético</button>
                                     <button type="button" class="btn btnSelectBuscar" data-key="Reciente">Reciente</button>
                                     <button type="button" class="btn btnSelectBuscar" data-key="Jugando">Jugando</button>
                                     <div style="position: relative;padding: 0px 20px;">
@@ -180,13 +185,14 @@ const renderCompetencia = () => {
 
 $(document).on('click','.btnSelectBuscar',function () {  
     $('.btnSelectBuscar').removeClass('btn-select')
-    
+    scrollEvent = true
+    tipoFiltro = $(this).data('key')
     $(this).addClass('btn-select')
      $('.list-competencia').html(`<div class="content-loader">
                                 <div id="preloader_3"></div>
                             </div>`)
     buscarCompetencia({
-        Modo: $(this).data('key')
+        Modo: $(this).data('key'),
     },function (response) { 
         let itemCompetencia = '';
         response.data.forEach(function (element, index) {
@@ -198,11 +204,17 @@ $(document).on('click','.btnSelectBuscar',function () {
      })
 })
 
+var inputBuscar = ''
+
 $(document).on('click','.buscarJuego',function () {  
+    scrollEvent = true
+    tipoFiltro = 'Buscar'
+
     $('.btnSelectBuscar').removeClass('btn-select')
     $('.list-competencia').html(`<div class="content-loader">
                                 <div id="preloader_3"></div>
                             </div>`)
+    inputBuscar = $('#inputBuscar').val()
     buscarCompetencia({
         Modo: 'Buscar',
         Buscar: $('#inputBuscar').val()
@@ -226,11 +238,15 @@ const deleteCompetencia = (codigo) => {
             icon: 'success',
             title: response.mensaje
           })
+        scrollEvent = true
+        tipoFiltro = 'Buscar'
         renderCompetencia()
     })
 }
 
-$('#listarCompetencia').click(function () { 
+$('#listarCompetencia').click(function () {
+    scrollEvent = true
+    tipoFiltro = 'Buscar' 
     renderCompetencia()
 })
 
@@ -262,6 +278,8 @@ $('#content-app').on('click','.editarCompetencia',function () {
 });
 
 $(document).ready(function () {
+    scrollEvent = true
+    tipoFiltro = 'Buscar'
     renderCompetencia()
 });
 
@@ -287,6 +305,8 @@ $('#content-app').on('click','.btnEdit',function () {
             denyButtonText: `Nuevo`,
           }).then((result) => {
             if (result.isConfirmed) {  
+                scrollEvent = true
+                tipoFiltro = 'Buscar'
                 renderCompetencia()
             } else if (result.isDenied) {
                 $('#nuevoCompetencia').click()
@@ -473,3 +493,47 @@ $('#rankingCompetencia').click(function () {
     
     $('.render-html').html(htmlRender);
 })
+
+const mostrarScroll = () => {
+    let scrollTop = document.documentElement.scrollTop;
+    let ubicacion = $('.item-competencia').length - 2;
+
+    let offset = $('.item-competencia').eq(ubicacion-1).offset();
+    var top = offset.top;
+    if (top < scrollTop && scrollEvent) {
+        scrollEvent = false
+        if (($('.item-competencia').length % 5) == 0) {
+            if (tipoFiltro == 'All') {
+                list(function (response) {  
+                    let itemCompetencia = '';
+                    response.data.forEach(function (element, index) {
+                        itemCompetencia += renderItemCompetencia(element,index)
+                    },);
+                    $('.list-competencia').append(itemCompetencia);
+                    $('.dropdown-trigger').dropdown();
+                    scrollEvent = true
+                }, ($('.item-competencia').length / 5) + 1)
+            }
+
+            if(tipoFiltro == 'Alfabetico' || tipoFiltro == 'Reciente' || tipoFiltro == 'Jugando' || tipoFiltro == 'Buscar'){
+                buscarCompetencia({
+                    Modo: tipoFiltro,
+                    Buscar:inputBuscar,
+                    page: ($('.item-competencia').length / 5) + 1
+                },function (response) { 
+                    let itemCompetencia = '';
+                    response.data.forEach(function (element, index) {
+                        itemCompetencia += renderItemCompetencia(element,index)
+                    });
+                    
+                    $('.list-competencia').append(itemCompetencia);
+                    $('.dropdown-trigger').dropdown();
+                 })
+            }
+            
+        }
+    }    
+}
+
+window.addEventListener('scroll',mostrarScroll)
+

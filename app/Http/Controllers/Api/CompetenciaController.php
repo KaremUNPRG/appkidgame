@@ -25,13 +25,17 @@ class CompetenciaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index(Request $request)
+    {   
+        $page = $request->input('page') == null ? 1 : ($request->input('page') <= 0 ? 1 : (int)$request->input('page'));
+        // dd((($page - 1) * 5));
         $competencia = Competencia::select(['*',DB::raw('date_format(FechaInicio, "%d/%m/%Y %h:%i %p") as FechaInicioAdd'),
                                                 DB::raw('date_format(FechaTermino, "%d/%m/%Y %h:%i %p") as FechaTerminoAdd')])
                                 ->where('Vigente','=',1)
                                 ->where('CodigoUsuario','=',$this->auth->Codigo)
+                                ->skip((($page - 1) * 5))->take(5)
                                 ->orderBy('Codigo','desc')->get();
+                                // dd($competencia);
         return response()->json([
             'data' => $competencia
         ], 200, []);
@@ -232,12 +236,16 @@ class CompetenciaController extends Controller
 
     public function buscarCompetencia(Request $request)
     {
+        $page = $request->input('page') == null ? 1 : ($request->input('page') <= 0 ? 1 : (int)$request->input('page'));
+        
         if ($request->Modo == 'Alfabetico') {
             $juegos = Competencia::select(['*',DB::raw('date_format(FechaInicio, "%d/%m/%Y %h:%i %p") as FechaInicioAdd'),
                                                     DB::raw('date_format(FechaTermino, "%d/%m/%Y %h:%i %p") as FechaTerminoAdd')])
                                         ->where('Vigente','=',1)
                                         ->where('CodigoUsuario','=',$this->auth->Codigo)
+                                        ->skip((($page - 1) * 5))->take(5)
                                         ->orderBy('Nombre','asc')->get();
+            
         }
 
         if ($request->Modo == 'Reciente') {
@@ -245,6 +253,7 @@ class CompetenciaController extends Controller
                                                     DB::raw('date_format(FechaTermino, "%d/%m/%Y %h:%i %p") as FechaTerminoAdd')])
                                         ->where('Vigente','=',1)
                                         ->where('CodigoUsuario','=',$this->auth->Codigo)
+                                        ->skip((($page - 1) * 5))->take(5)
                                         ->orderBy('Fecha','desc')->get();
         }
 
@@ -254,6 +263,7 @@ class CompetenciaController extends Controller
                                         ->where('Vigente','=',1)
                                         ->where('CodigoUsuario','=',$this->auth->Codigo)
                                         ->whereBetween(DB::raw('NOW()'),[DB::raw('FechaInicio'),DB::raw('FechaTermino')])
+                                        ->skip((($page - 1) * 5))->take(5)
                                         ->orderBy('FechaInicioAdd','desc')->get();
         }
 
@@ -263,6 +273,7 @@ class CompetenciaController extends Controller
                                         ->where('Vigente','=',1)
                                         ->where('CodigoUsuario','=',$this->auth->Codigo)
                                         ->where('Nombre','LIKE','%'.$request->Buscar.'%')
+                                        ->skip((($page - 1) * 5))->take(5)
                                         // ->whereBetween(DB::raw('NOW()'),[DB::raw('FechaInicio'),DB::raw('FechaTermino')])
                                         ->orderBy('FechaInicioAdd','desc')->get();
         }

@@ -21,6 +21,7 @@ const templateItemJuego = (element) => {
                     <div class="text bg-white p-4">
                         <h3 class="heading"><a href="#">${element.TitJuego}</a></h3>
                         <p>${element.TitTema}</p>
+                        <span style="font-size: 12px;font-weight: 600;background: #018e78;color: #fff;padding: 5px;border-radius: 20px;">${element.NombreUsuario}</span>
                         <div class="d-flex align-items-center mt-4">
                             <p class="mb-0"><a data-key="${element.Tipo}" data-id="${element.CodigoJuego}" href="#" class="jugar btn btn-primary">Jugar <span
                                         class="ion-ios-arrow-round-forward"></span></a></p>

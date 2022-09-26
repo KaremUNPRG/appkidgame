@@ -18,9 +18,9 @@ export const store =  async (body,success) => {
     });
 }
 
-export const list =  async (success) => {
+export const list =  async (success, get = 0) => {
 
-    let response = await fetch(`${url}/competencia`, { 
+    let response = await fetch(`${url}/competencia?page=${get}`, { 
         method: "GET",
         headers: headersList()
     })

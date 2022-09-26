@@ -27,8 +27,10 @@ class InicioController extends Controller
     {
         $juegos = Juego::select(['juego.Titulo as TitJuego','tema.Titulo as TitTema','juego.Tipo','juego.Tiempo',
                         'juego.Codigo as CodigoJuego',DB::raw('AVG(valoracion.Valoracion) as ValoracionPunto'),
-                        DB::raw('COUNT(valoracion.Comentario) as CantidadComentario')])
+                        DB::raw('COUNT(valoracion.Comentario) as CantidadComentario'),
+                        'usuario.Nombre as NombreUsuario'])
                         ->join('tema','tema.Codigo','=','juego.CodigoTema')
+                        ->join('usuario','usuario.Codigo','=','tema.CodigoUsuario')
                         ->leftJoin('valoracion','valoracion.CodigoJuego','juego.Codigo')
                         ->where('juego.Vigente','=','1')
                         ->where('juego.Privado','=','0')
