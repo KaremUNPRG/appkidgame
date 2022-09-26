@@ -1,5 +1,5 @@
 
-import { store, lista,eliminar, editar,restaurar } from "../components/api/Tema.js";
+import { store, lista,eliminar, editar,restaurar } from "../components/api/tema.js";
 
 
 var CodigoTema = null

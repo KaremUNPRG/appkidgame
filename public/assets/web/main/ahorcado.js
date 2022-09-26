@@ -1,5 +1,5 @@
 import { store, list,eliminar, editar,restaurar,listarCompetencias,editarCompetencia} from "../components/api/Ahorcado.js";
-import { listaT } from "../components/api/Tema.js";
+import { listaT } from "../components/api/tema.js";
 import { listarJuego, juegoCompetencia } from "../components/api/Competencia.js";
 
 var oculta = [];
