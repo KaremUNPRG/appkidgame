@@ -1,4 +1,4 @@
-import { sopaLetras, puntajeSopaLetras,listaSopaRelacionados,listaSopaRelacionados2 } from "../components/api/Juego.js";
+import { sopaLetras, puntajeSopaLetras,listaSopaRelacionados,listaSopaRelacionados2 } from "../components/api/juego.js";
 import { listaValoracion, insertValoracion } from "../components/api/Inicio.js";
 
 
