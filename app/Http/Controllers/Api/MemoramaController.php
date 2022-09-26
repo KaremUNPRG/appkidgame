@@ -21,11 +21,14 @@ class MemoramaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() //LISTAR BASE DE MEMORAMA
+    public function index(Request $request) //LISTAR BASE DE MEMORAMA
     {
+        $page = $request->input('page') == null ? 1 : ($request->input('page') <= 0 ? 1 : (int)$request->input('page'));
+        
         $memorama = DB::select("select *,j.Codigo as codigoJuego,j.Titulo as TituloJuego, t.Titulo as TituloTema 
         from juego j inner join tema t on j.CodigoTema = t.Codigo inner join usuario u on u.Codigo = t.CodigoUsuario 
-        where u.Codigo = ? and j.Tipo = 1 and j.Vigente = 1 order by Fecha desc", [$this->auth->Codigo]);
+        where u.Codigo = ? and j.Tipo = 1 and j.Vigente = 1 order by Fecha desc limit ? OFFSET ?", [$this->auth->Codigo,
+        5,(($page - 1) * 5)]);
         return response()->json([
         'data' => $memorama
         ], 200, []);
@@ -140,8 +143,15 @@ class MemoramaController extends Controller
                     $archivo = $carpeta.'/'.$value['Descripcion'].'_'.time().'.'.$extension;
                     file_put_contents($archivo,$img);
                 }else{
-                    $archivo = $carpeta.'/'.$value['Descripcion'].'_'.time().'.jpg';
-                    file_put_contents($archivo,file_get_contents($value['Imagen']));
+                    $exist = strpos($value['Imagen'], 'http');
+                    if ($exist === false) {
+                        $archivo = $carpeta.'/'.$value['Descripcion'].'_'.time().'.jpg';
+                        file_put_contents($archivo,file_get_contents(public_path($value['Imagen'])));
+                    }else{
+                        $archivo = $carpeta.'/'.$value['Descripcion'].'_'.time().'.jpg';
+                        file_put_contents($archivo,file_get_contents($value['Imagen']));
+                    }
+                    
                 }
     
                 $newMemorama = new Memorama;
@@ -154,7 +164,7 @@ class MemoramaController extends Controller
         }
 
         return response()->json([
-            'mensaje' => $request->itmRegistro == 'SI' ? 'Juego Registrado' : 'Juego Actualizado'
+            'mensaje' => $request->itmRegistro == 'SI' ? 'Juego Actualizado' : 'Juego Actualizado'
         ], 200, []);
     }
 
@@ -180,6 +190,24 @@ class MemoramaController extends Controller
         $tema = DB::select('select * from tema where Vigente = 1 and CodigoUsuario = ?',[$this->auth->Codigo]);
         return response()->json([
             'data' => $tema
+        ], 200, []);
+    }
+
+    public function buscarMemorama(Request $request)
+    {
+        $page = $request->input('page') == null ? 1 : ($request->input('page') <= 0 ? 1 : (int)$request->input('page'));
+    
+        if ($request->Modo == 'Buscar') {
+            $memorama = DB::select("select *,j.Codigo as codigoJuego,j.Titulo as TituloJuego, t.Titulo as TituloTema 
+                                    from juego j inner join tema t on j.CodigoTema = t.Codigo inner join usuario u on u.Codigo = t.CodigoUsuario 
+                                    where u.Codigo = ? and j.Tipo = 1 and j.Vigente = 1 and
+                                    j.Titulo like ? order by Fecha desc limit ? OFFSET ?", [$this->auth->Codigo,
+                                    '%'.$request->Buscar.'%',5,(($page - 1) * 5)]);
+
+        }
+        
+        return response()->json([
+            'data' => $memorama
         ], 200, []);
     }
 }

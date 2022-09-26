@@ -34,7 +34,19 @@ const agregarPuntaje = () => {
             itmTotales: ListaCarta.length/2
         },function (response) {
             $('.puntuacionrecord').html(`<h2 id="mipuntuacion" class="estadisticas">
-                                        Mi Puntuación:${response.puntaje.toFixed(2)} </h2> `);
+                                        <span style="font-size: 17px;
+                                        margin: 0rem;
+                                        font-weight: 900;" >Mi Puntuación: </span>
+        <span style="display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(136, 115, 227, 0.695);
+            box-shadow: 0px 0px 6px 2px #9058d9 inset;
+            color: #ffffff;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 1px;
+            border-radius: 5px;">${response.puntaje.toFixed(2)}</span> </h2> `);
             Swal.fire({
                 title: "Tu puntaje es:" + response.puntaje.toFixed(2),
                 icon:'success',
@@ -142,7 +154,16 @@ juegoMemorama({id:ID,id2:IDCOMPETENCIA},function (response) {
     $('#main-container').css({'background':response.juego.Fondo})
     if(localStorage.getItem('accessToken')){
         $('.puntuacionrecord').html(`<h2 id="mipuntuacion" class="estadisticas">
-        Mi Puntuación:${response.juego.MiPuntaje == null ? '--' : response.juego.MiPuntaje} </h2> `);
+        <span style="font-size: 17px;margin: 0rem;font-weight: 900;" >Mi Puntuación:</span> <span style="display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(136, 115, 227, 0.695);
+        box-shadow: 0px 0px 6px 2px #9058d9 inset;
+        color: #ffffff;
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 1px;
+        border-radius: 5px;">${response.juego.MiPuntaje == null ? '--' : response.juego.MiPuntaje}</span> </h2> `);
 
     }
     $('.render-memorama').html(htmlRender)

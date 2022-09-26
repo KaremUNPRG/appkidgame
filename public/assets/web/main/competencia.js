@@ -120,7 +120,7 @@ $('#content-app').on('click','.btnSend',function () {
           }).then((result) => {
             if (result.isConfirmed) {  
                 scrollEvent = true
-                tipoFiltro = 'Buscar'
+                tipoFiltro = 'All'
                 renderCompetencia()
             } else if (result.isDenied) {
                 $('#nuevoCompetencia').click()
@@ -239,14 +239,14 @@ const deleteCompetencia = (codigo) => {
             title: response.mensaje
           })
         scrollEvent = true
-        tipoFiltro = 'Buscar'
+        tipoFiltro = 'All'
         renderCompetencia()
     })
 }
 
 $('#listarCompetencia').click(function () {
     scrollEvent = true
-    tipoFiltro = 'Buscar' 
+    tipoFiltro = 'All' 
     renderCompetencia()
 })
 
@@ -279,7 +279,7 @@ $('#content-app').on('click','.editarCompetencia',function () {
 
 $(document).ready(function () {
     scrollEvent = true
-    tipoFiltro = 'Buscar'
+    tipoFiltro = 'All'
     renderCompetencia()
 });
 
@@ -306,7 +306,7 @@ $('#content-app').on('click','.btnEdit',function () {
           }).then((result) => {
             if (result.isConfirmed) {  
                 scrollEvent = true
-                tipoFiltro = 'Buscar'
+                tipoFiltro = 'All'
                 renderCompetencia()
             } else if (result.isDenied) {
                 $('#nuevoCompetencia').click()

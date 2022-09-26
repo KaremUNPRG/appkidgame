@@ -61,8 +61,6 @@
             line-height: 1;
             cursor: pointer;
             
-            
-            
         }
         
         .hov3 {
@@ -72,6 +70,13 @@
 .hov3:hover {
   opacity: 1;
 }
+.buscarJuego {
+            position: absolute;
+            right: 0;
+            top: 0;
+            cursor: pointer;
+            background: #fff;padding: 11px;
+        }
     </style>
 @endsection
 @section('content')
@@ -89,10 +94,6 @@
                         <div class="item-option d-flex" id="nuevoMemorama">
                             <div ><img src="{{asset('assets/web/img/registro.png')}}" alt="" style="width: 30px;"></div>
                             <div class="font-weight-bold text-option"> Nuevo</div>
-                        </div>
-                        <div class="item-option d-flex">
-                            <div><img src="{{asset('assets/web/img/ranking.png')}}" alt="" style="width: 30px;"></div>
-                            <div class="font-weight-bold text-option"> Ranking</div>
                         </div>
                     </div>
                 </div>

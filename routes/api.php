@@ -55,6 +55,8 @@ Route::middleware(['authapi'])->group(function () {
     Route::put('memorama',[MemoramaController::class,'update']);
     Route::get('memorama/listar/tema',[MemoramaController::class,'listarTema']);
     Route::get('memorama/get/{codigoMemorama}',[MemoramaController::class,'show']);
+    
+    Route::post('memorama/buscar',[MemoramaController::class,'buscarMemorama']);
     Route::post('puntaje-memorama',[PuntajeController::class,'storePuntajeMemorama']);   
 
     Route::get('sopaletras/temas', [SopaLetrasController::class,'getTemas']);
