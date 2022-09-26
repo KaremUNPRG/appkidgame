@@ -80,6 +80,7 @@ class TemaController extends Controller
         ], 200, []);
     }
 
+
     public function restore(Request $request)
     {
         $newTema = Tema::find($request->Tema);
